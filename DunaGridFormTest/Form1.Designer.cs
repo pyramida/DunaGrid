@@ -33,17 +33,18 @@
             // 
             // dunaGrid1
             // 
+            this.dunaGrid1.DataSource = null;
             this.dunaGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dunaGrid1.Location = new System.Drawing.Point(0, 0);
             this.dunaGrid1.Name = "dunaGrid1";
-            this.dunaGrid1.Size = new System.Drawing.Size(704, 348);
+            this.dunaGrid1.Size = new System.Drawing.Size(477, 530);
             this.dunaGrid1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 348);
+            this.ClientSize = new System.Drawing.Size(477, 530);
             this.Controls.Add(this.dunaGrid1);
             this.Name = "Form1";
             this.Text = "DunaGrid Test Form";
@@ -54,6 +55,7 @@
         #endregion
 
         private DunaGrid.DunaGrid dunaGrid1;
+
     }
 }
 

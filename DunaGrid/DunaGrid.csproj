@@ -43,11 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="components\DunaHScrollBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DunaHScrollBar.Designer.cs">
+      <DependentUpon>DunaHScrollBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="DunaGrid.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="components\DunaHScrollBar.resx">
+      <DependentUpon>DunaHScrollBar.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
