@@ -1,0 +1,24 @@
+vlastnosti:
+	- filter row
+	- pripojitelnost na BindingSource
+	- vicenasobne razeni
+	- podbarvovani radku/bunek
+	- zamykani radku/bunky
+	- zmena poradi sloupcu
+	- stridave podbarvovani
+	- automaticke roztahovani sirky sloupce po dvojkliku na hranicni caru
+	- automaticke roztahovani vysky radku tak, aby se tam vesel cely text
+	- naznaceni, ze clovek nevidi cely obsah bunky
+	- editace bunky, vyber mysi, ruzne pocty kliku, ctrl+a - vybere cely obsah bunky
+	- vicenasobne oznacovani radku (sloupec s checkboxem)
+	- kopirovani, asi by stacilo text oddeleny tabulatory
+	- soucty sloupcu
+	- combo box, check box, date picker, text, link, obrazek, obecny soubor? (neco jako sponka + nazev souboru)
+	- (pripichovani radku)
+	- (pripichovani sloupcu)
+	- razeni radku
+	- hledani v celem formulari
+	- evidence filtru/razeni (ukladani a nacitani)
+	- validaèní pravidla
+	- (konfigurovatelné masky)
+	- mergetool :)

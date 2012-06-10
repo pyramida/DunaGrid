@@ -10,14 +10,14 @@ using DunaGrid.components;
 
 namespace DunaGrid
 {
-    public partial class DunaGrid : Panel
+    public partial class DunaGrid : Control
     {
         #region protected datove cleny
         /// <summary>
         /// Zdroj dat pro zobrazeni v gridu
         /// Grid bude umet vice moznosti: DataTable, BindingSource, array,...
         /// </summary>
-        protected object dataSource;
+        protected object dataSource=null;
 
         /// <summary>
         /// vertikalni scrollbar
@@ -71,23 +71,11 @@ namespace DunaGrid
             hscrollbar.NavigateBarWidth = 120;
             hscrollbar.RightMargin = vscrollbar.Width;
             hscrollbar.Dock = DockStyle.Bottom;
-            
+
             this.Controls.Add(hscrollbar);
-
-
-            
-
         }
 
         private void DunaGrid_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        /// <summary>
-        /// Aktualizuje data z datoveho zdroje 
-        /// </summary>
-        public void Update()
         {
 
         }
