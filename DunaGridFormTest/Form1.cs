@@ -44,5 +44,10 @@ namespace DunaGridFormTest
 
             dunaGrid1.DataSource = bs;
         }
+
+        private void dunaGrid1_Click(object sender, EventArgs e)
+        {
+           
+        }
     }
 }

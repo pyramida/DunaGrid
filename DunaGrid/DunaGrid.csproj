@@ -43,21 +43,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColumnCollection.cs" />
+    <Compile Include="columns\AbstractColumn.cs" />
+    <Compile Include="CellRenderState.cs" />
+    <Compile Include="columns\ColumnCollection.cs" />
+    <Compile Include="columns\ColumnContext.cs" />
+    <Compile Include="columns\TextColumn.cs" />
+    <Compile Include="GraphicsContext.cs" />
     <Compile Include="components\DunaHScrollBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="components\DunaHScrollBar.Designer.cs">
       <DependentUpon>DunaHScrollBar.cs</DependentUpon>
     </Compile>
+    <Compile Include="dataReaders\BindingSourceDataReader.cs" />
     <Compile Include="dataReaders\DataReaderCollection.cs" />
-    <Compile Include="IRow.cs" />
+    <Compile Include="rows\IRow.cs" />
     <Compile Include="OrderRule.cs" />
     <Compile Include="dataReaders\IDataReader.cs" />
     <Compile Include="DunaGrid.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="IColumn.cs" />
+    <Compile Include="columns\IColumn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
@@ -66,7 +72,6 @@
       <DependentUpon>DunaHScrollBar.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,9 +6,12 @@ using System.Text;
 namespace DunaGrid
 {
     /// <summary>
-    /// rozhrani pro tridy reprezentujici data v jednom radku
+    /// stav bunky predavany pri vykreslovani
     /// </summary>
-    interface IRow
+    public enum CellRenderState
     {
+        Normal,
+        Edit,
+        Disable
     }
 }

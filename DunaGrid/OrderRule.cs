@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DunaGrid.dataReaders
+namespace DunaGrid
 {
     /// <summary>
     /// struktura popisujici podle ceho a jak budou data razena

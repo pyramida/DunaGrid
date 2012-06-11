@@ -39,6 +39,7 @@
             this.dunaGrid1.Name = "dunaGrid1";
             this.dunaGrid1.Size = new System.Drawing.Size(477, 530);
             this.dunaGrid1.TabIndex = 0;
+            this.dunaGrid1.Click += new System.EventHandler(this.dunaGrid1_Click);
             // 
             // Form1
             // 

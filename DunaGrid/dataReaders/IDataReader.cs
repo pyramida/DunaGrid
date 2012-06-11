@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DunaGrid.columns;
+using DunaGrid.rows;
 
 namespace DunaGrid.dataReaders
 {
     /// <summary>
     /// rozhrani popisujici tridy, ktere zajistuji cteni z ruznych datovych zdroju
     /// </summary>
-    interface IDataReader
+    public interface IDataReader
     {
+        /// <summary>
+        /// Datovy zdroj na ktery je navazan
+        /// </summary>
+        object DataSource { get; set; }
+
         /// <summary>
         /// vrati vsechny sloupce tabulky (automaticky je vygeneruje z datoveho zdroje)
         /// </summary>
@@ -43,7 +50,7 @@ namespace DunaGrid.dataReaders
 
         /// <summary>
         /// metoda urcujici zda datareader umi cist dany typ dat
-        /// podle toho se urcuje jako datareader vybrat
+        /// podle toho se urcuje jaky datareader vybrat
         /// </summary>
         /// <param name="data">data, ktera chci otestovat</param>
         /// <returns></returns>

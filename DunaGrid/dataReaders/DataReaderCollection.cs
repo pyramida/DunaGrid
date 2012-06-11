@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DunaGrid.dataReaders
 {
-    class DataReaderCollection : List<IDataReader>
+    public class DataReaderCollection : List<IDataReader>
     {
         /// <summary>
         /// vrati datareader podle typu datasource
