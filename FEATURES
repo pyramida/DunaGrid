@@ -6,6 +6,7 @@ vlastnosti:
 	- zamykani radku/bunky
 	- zmena poradi sloupcu
 	- stridave podbarvovani
+	- zmena sirky sloupcu
 	- automaticke roztahovani sirky sloupce po dvojkliku na hranicni caru
 	- automaticke roztahovani vysky radku tak, aby se tam vesel cely text
 	- naznaceni, ze clovek nevidi cely obsah bunky
@@ -22,3 +23,4 @@ vlastnosti:
 	- validaèní pravidla
 	- (konfigurovatelné masky)
 	- mergetool :)
+	
