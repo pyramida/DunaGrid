@@ -70,6 +70,18 @@ namespace DunaGrid
             }
         }
 
+        public ColumnCollection Columns
+        {
+            get
+            {
+                return this.columns;
+            }
+            set
+            {
+                this.columns = value;
+            }
+        }
+
         public bool AutoColumnGenerator
         {
             get

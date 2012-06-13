@@ -11,14 +11,13 @@ namespace DunaGrid.columns
     /// </summary>
     public abstract class AbstractColumn : IColumn
     {
-        public const int AUTOSIZE = -1;
-
-        protected int width = AUTOSIZE;
+        protected int width = 200;
         protected string column_name = null;
         protected bool visible = true;
         protected bool read_only = false;
         protected DunaGrid parent = null;
         protected int datasource_column_index = 0;
+        protected bool fill_column = false;
 
         public int Width
         {
@@ -28,7 +27,7 @@ namespace DunaGrid.columns
             }
             set
             {
-                if (value > 0 || value == AUTOSIZE)
+                if (value >= 0)
                 {
                     this.width = value;
                 }
@@ -36,6 +35,19 @@ namespace DunaGrid.columns
                 {
                     throw new ArgumentOutOfRangeException(); //TODO: pridat zpravu. Neco ve smyslu ze hodnota musi byt vetsi nez nula nebo povolena zaporna konstanta
                 }
+            }
+        }
+
+        public bool Elastic
+        {
+            get
+            {
+                return this.fill_column;
+            }
+
+            set
+            {
+                this.fill_column = value;
             }
         }
 
