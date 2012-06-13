@@ -31,9 +31,17 @@ namespace DunaGrid.dataReaders
             ColumnCollection temp = new ColumnCollection();
 
             DataTable dt = (DataTable)data_source.DataSource;
+
+            int i = 0;
+
             foreach (DataColumn dc in dt.Columns)
             {
-                //TODO: az budou hotove ruzne typy sloupcu, vytvaret jejich instance
+                IColumn col = ColumnTypeDelegator.getByType(dc.DataType);
+                col.HeadText = dc.ColumnName;
+                col.Width = 100;
+                col.DataSourceColumnIndex = i;
+                temp.Add(col);
+                i++;
             }
 
             return temp;
@@ -51,12 +59,23 @@ namespace DunaGrid.dataReaders
 
         public int GetRowsCount()
         {
-            throw new NotImplementedException();
+            return this.data_source.List.Count;
         }
 
         public IRow GetRow(int index)
         {
-            throw new NotImplementedException();
+            IRow temp = new StandardRow();
+
+            if (this.data_source != null)
+            {
+                DataRowView row = (DataRowView)this.data_source.List[index];
+                for (int i = 0; i < row.Row.Table.Columns.Count; i++)
+                {
+                    temp.addCell(row[i]);
+                }
+            }
+
+            return temp;
         }
 
         public bool IsReadable(object data)

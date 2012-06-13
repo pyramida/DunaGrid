@@ -38,7 +38,9 @@ namespace DunaGridFormTest
                 {
                     dr[ic] = rnd.Next(0, 999);
                 }
+                dt.Rows.Add(dr);
             }
+            ds.Tables.Add(dt);
 
             bs.DataSource = ds.Tables["test_table"];
 
