@@ -12,6 +12,7 @@ namespace DunaGrid.columns
     public abstract class AbstractColumn : IColumn
     {
         protected int width = 200;
+        protected int minwidth = 20;
         protected string column_name = null;
         protected bool visible = true;
         protected bool read_only = false;
@@ -27,13 +28,13 @@ namespace DunaGrid.columns
             }
             set
             {
-                if (value >= 0)
+                if (value >= this.minwidth)
                 {
                     this.width = value;
                 }
                 else
                 {
-                    throw new ArgumentOutOfRangeException(); //TODO: pridat zpravu. Neco ve smyslu ze hodnota musi byt vetsi nez nula nebo povolena zaporna konstanta
+                    throw new ArgumentOutOfRangeException("Zadana hodnota je nizsi nez minimalni povolena sirka");
                 }
             }
         }
@@ -150,6 +151,26 @@ namespace DunaGrid.columns
         protected bool fitStringToCell(string text)
         {
             return true; //soucasna implementace je jen zkusebni TODO: dodelat
+        }
+
+
+        public int MinimalWidth
+        {
+            get
+            {
+                return this.minwidth;
+            }
+            set
+            {
+                if (value > 0)
+                {
+                    minwidth = value;
+                    if (this.width < this.minwidth)
+                    {
+                        this.width = value;
+                    }
+                }
+            }
         }
     }
 }

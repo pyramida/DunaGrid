@@ -133,6 +133,7 @@ namespace DunaGrid
             vscrollbar.Scroll += new ScrollEventHandler(hscrollbar_Scroll);
 
             this.DoubleBuffered = true;
+            this.ResizeRedraw = true;
 
             this.Controls.Add(hscrollbar);
 
@@ -187,7 +188,7 @@ namespace DunaGrid
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            int sirka_celeho_gridu = 31;
+            int sirka_celeho_gridu = 31; //31 = sirka sedych obdelniku pred radkem
 
             //vykresli hlavicky sloupcu
             GraphicsContext gc = new GraphicsContext();
@@ -198,6 +199,8 @@ namespace DunaGrid
             gc.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
 
             gc.Graphics.TranslateTransform(31, 0);
+
+            this.countWidthForElasticColumn();
 
             foreach (IColumn c in this.columns)
             {
@@ -221,6 +224,43 @@ namespace DunaGrid
             }
 
             base.OnPaint(e);
+        }
+
+        protected void countWidthForElasticColumn()
+        {
+            int sirka_neelastickych = 31; //31 = sirka sedych obdelniku pred radkem
+            int sirka_elastickych = 0;
+            List<int> elasticke_sloupce = new List<int>(); //uchovava indexy elastickych sloupcu
+
+            for (int i = 0; i < this.columns.Count; i++)
+            {
+                IColumn c = this.columns[i];
+                if (c.Elastic)
+                {
+                    elasticke_sloupce.Add(i);
+                    sirka_elastickych += c.MinimalWidth;
+                }
+                else
+                {
+                    sirka_neelastickych += c.Width + 1;
+                }
+            }
+
+            if (elasticke_sloupce.Count > 0)
+            {
+                sirka_neelastickych += elasticke_sloupce.Count;
+                int zbyvajici_plocha = this.ClientSize.Width - sirka_neelastickych;
+
+                foreach (int index in elasticke_sloupce)
+                {
+                    float pomer = (float)this.columns[index].MinimalWidth / sirka_elastickych;
+                    int nova_sirka = (int)Math.Floor((float)zbyvajici_plocha * pomer);
+                    if (nova_sirka > this.columns[index].MinimalWidth)
+                    {
+                        this.columns[index].Width = nova_sirka;
+                    }
+                }
+            }
         }
 
         protected override void OnResize(EventArgs e)

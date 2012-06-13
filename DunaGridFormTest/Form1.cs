@@ -45,6 +45,18 @@ namespace DunaGridFormTest
             bs.DataSource = ds.Tables["test_table"];
 
             dunaGrid1.DataSource = bs;
+
+            dunaGrid1.Columns[2].Elastic = true; //sloupec se bude roztahovat 
+            dunaGrid1.Columns[2].MinimalWidth = 150;
+
+            dunaGrid1.Columns[1].Elastic = true;
+            dunaGrid1.Columns[1].MinimalWidth = 100;
+
+            dunaGrid1.Columns[3].Elastic = true;
+            dunaGrid1.Columns[3].MinimalWidth = 90;
+
+            dunaGrid1.Columns[4].Elastic = true;
+            dunaGrid1.Columns[4].MinimalWidth = 100;
         }
 
         private void dunaGrid1_Click(object sender, EventArgs e)
