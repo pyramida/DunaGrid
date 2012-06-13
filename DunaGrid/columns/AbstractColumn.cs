@@ -11,13 +11,13 @@ namespace DunaGrid.columns
     /// </summary>
     public abstract class AbstractColumn : IColumn
     {
-        public const int AUTOSIZE = -1;
-
-        protected int width = AUTOSIZE;
+        protected int width = 200;
         protected string column_name = null;
         protected bool visible = true;
         protected bool read_only = false;
         protected DunaGrid parent = null;
+        protected int datasource_column_index = 0;
+        protected bool fill_column = false;
 
         public int Width
         {
@@ -27,7 +27,7 @@ namespace DunaGrid.columns
             }
             set
             {
-                if (value > 0 || value == AUTOSIZE)
+                if (value >= 0)
                 {
                     this.width = value;
                 }
@@ -35,6 +35,19 @@ namespace DunaGrid.columns
                 {
                     throw new ArgumentOutOfRangeException(); //TODO: pridat zpravu. Neco ve smyslu ze hodnota musi byt vetsi nez nula nebo povolena zaporna konstanta
                 }
+            }
+        }
+
+        public bool Elastic
+        {
+            get
+            {
+                return this.fill_column;
+            }
+
+            set
+            {
+                this.fill_column = value;
             }
         }
 
@@ -47,6 +60,19 @@ namespace DunaGrid.columns
             set
             {
                 this.parent = value;
+            }
+        }
+
+        public int DataSourceColumnIndex
+        {
+            get
+            {
+                return this.datasource_column_index;
+            }
+
+            set
+            {
+                this.datasource_column_index = value;
             }
         }
 
@@ -102,7 +128,8 @@ namespace DunaGrid.columns
         /// <param name="context"></param>
         public void renderHead(GraphicsContext g, ColumnContext context)
         {
-            //TODO: implementovat!
+            g.Graphics.Clear(Color.DarkGray);
+            g.Graphics.DrawString(this.HeadText, g.Font, Brushes.Black, new PointF(3, 3));
         }
 
         /// <summary>
@@ -112,7 +139,17 @@ namespace DunaGrid.columns
         /// <param name="render_state"></param>
         public void renderCellBackground(GraphicsContext g, CellRenderState render_state = CellRenderState.Normal)
         {
-            throw new NotImplementedException();
+            
+        }
+
+        /// <summary>
+        /// urci zda se string vejde do bunky
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        protected bool fitStringToCell(string text)
+        {
+            return true; //soucasna implementace je jen zkusebni TODO: dodelat
         }
     }
 }

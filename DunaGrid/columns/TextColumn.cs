@@ -45,7 +45,7 @@ namespace DunaGrid.columns
             switch (render_state)
             {
                 case CellRenderState.Normal:
-
+                    g.Graphics.DrawString(hodnota, g.Font, Brushes.Black, new PointF(3, 3));
                     break;
 
                 case CellRenderState.Disable:

@@ -13,6 +13,7 @@ namespace DunaGrid.columns
         bool Visible { get; set; } //je sloupec viditelny?
         bool ReadOnly { get; set; } //je sloupec jenom pro cteni?
         DunaGrid ParentGrid { get; set; } //odkaz na grid, ve kterem se sloupec nachazi
+        int DataSourceColumnIndex { set; get; } //cislo sloupce v datovem zdroji (od nuly)
 
         void renderHead(GraphicsContext g, ColumnContext context);
         void renderCell(GraphicsContext g, object value, CellRenderState render_state = CellRenderState.Normal);
