@@ -11,6 +11,7 @@ using DunaGrid.components;
 using DunaGrid.dataReaders;
 using DunaGrid.columns;
 using DunaGrid.rows;
+using DunaGrid.formatters;
 
 namespace DunaGrid
 {
@@ -51,6 +52,8 @@ namespace DunaGrid
 
         protected ColumnCollection columns = new ColumnCollection();
 
+        protected List<IFormatter> formatters = new List<IFormatter>();
+
         #endregion
 
         #region vlastnosti (properties)
@@ -67,6 +70,18 @@ namespace DunaGrid
                 this.dataSource = value;
                 this.setDataReader();
                 this.generateColumns();
+            }
+        }
+
+        public List<IFormatter> RowConditionedFormatters
+        {
+            get
+            {
+                return this.formatters;
+            }
+            set
+            {
+                this.formatters = value;
             }
         }
 

@@ -19,6 +19,7 @@ namespace DunaGrid.columns
         protected DunaGrid parent = null;
         protected int datasource_column_index = 0;
         protected bool fill_column = false;
+        protected string name = "";
 
         public int Width
         {
@@ -49,6 +50,23 @@ namespace DunaGrid.columns
             set
             {
                 this.fill_column = value;
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                if (this.name == "")
+                {
+                    return this.HeadText;
+                }
+                return this.name;
+            }
+
+            set
+            {
+                this.name = value;
             }
         }
 

@@ -57,6 +57,7 @@ namespace DunaGridFormTest
 
             dunaGrid1.Columns[4].Elastic = true;
             dunaGrid1.Columns[4].MinimalWidth = 100;
+
         }
 
         private void dunaGrid1_Click(object sender, EventArgs e)

@@ -11,6 +11,19 @@ namespace DunaGrid.columns
     /// </summary>
     public class ColumnCollection : List<IColumn>
     {
+        public IColumn this[string columnname]
+        {
+            get
+            {
+                foreach (IColumn c in this)
+                {
+                    if (c.Name == columnname) return c;
+                }
+
+                throw new IndexOutOfRangeException("neexistujici sloupec");
+            }
+        }
+
         /// <summary>
         /// presune polozku na novou pozici
         /// </summary>
@@ -57,6 +70,16 @@ namespace DunaGrid.columns
             {
                 return false;
             }
+        }
+
+        public bool Contains(string columnname)
+        {
+            foreach (IColumn c in this)
+            {
+                if (c.Name == columnname) return true;
+            }
+
+            return false;
         }
     }
 }

@@ -71,7 +71,7 @@ namespace DunaGrid.dataReaders
                 DataRowView row = (DataRowView)this.data_source.List[index];
                 for (int i = 0; i < row.Row.Table.Columns.Count; i++)
                 {
-                    temp.addCell(row[i]);
+                    temp.addCell(row.Row.Table.Columns[i].ColumnName, row[i]);
                 }
             }
 

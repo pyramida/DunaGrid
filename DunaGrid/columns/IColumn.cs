@@ -11,6 +11,7 @@ namespace DunaGrid.columns
         int Width { get; set; } //sirka bunky
         int MinimalWidth { get; set; } //minimalni sirka bunky
         string HeadText { get; set; } //text, co se vypise v hlavicce sloupce
+        string Name { get; set; } //vnitrni pojmenovani sloupce
         bool Visible { get; set; } //je sloupec viditelny?
         bool ReadOnly { get; set; } //je sloupec jenom pro cteni?
         DunaGrid ParentGrid { get; set; } //odkaz na grid, ve kterem se sloupec nachazi

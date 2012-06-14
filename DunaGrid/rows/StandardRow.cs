@@ -10,37 +10,23 @@ namespace DunaGrid.rows
 {
     class StandardRow : IRow
     {
-        protected Dictionary<int, object> cells_values = new Dictionary<int, object>();
+        protected Dictionary<string, object> cells_values = new Dictionary<string, object>();
 
-        public object this[int cell_index]
+        public object this[string columnname]
         {
             get
             {
-                if (cells_values.ContainsKey(cell_index))
-                {
-                    return this.cells_values[cell_index];
-                }
-                else
-                {
-                    throw new IndexOutOfRangeException();
-                }
+                return "HOVNO";
             }
             set
             {
-                if (cells_values.ContainsKey(cell_index))
-                {
-                    this.cells_values[cell_index] = value;
-                }
-                else
-                {
-                    throw new IndexOutOfRangeException();
-                }
+
             }
         }
 
-        public void addCell(object value)
+        public void addCell(string columnname, object value)
         {
-            this.cells_values.Add(this.cells_values.Count, value);
+            this.cells_values.Add(columnname, value);
         }
 
 
@@ -57,7 +43,7 @@ namespace DunaGrid.rows
             foreach (IColumn c in visible_columns)
             {
                 c.renderCellBackground(g);
-                c.renderCell(g, this.cells_values[c.DataSourceColumnIndex]);
+                c.renderCell(g, this.cells_values[c.Name]);
                 g.Graphics.TranslateTransform(c.Width + 1, 0);
             }
 
