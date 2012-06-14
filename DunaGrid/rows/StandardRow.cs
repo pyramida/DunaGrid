@@ -16,11 +16,11 @@ namespace DunaGrid.rows
         {
             get
             {
-                return "HOVNO";
+                return this.cells_values[columnname];
             }
             set
             {
-
+                this.cells_values[columnname] = value;
             }
         }
 

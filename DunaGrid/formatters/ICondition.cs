@@ -6,7 +6,7 @@ using DunaGrid.rows;
 
 namespace DunaGrid.formatters
 {
-    interface ICondition
+    public interface ICondition
     {
         /// <summary>
         /// vraci vysledek podminky pro danou hodnota
