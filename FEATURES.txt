@@ -23,4 +23,5 @@ vlastnosti:
 	- validaèní pravidla
 	- (konfigurovatelné masky)
 	- mergetool - nastroj pro reseni konfliktu v databazi (kdyz dva lidi budou editovat stejnym zaznam)
+  - test klienta smartgit
 	
