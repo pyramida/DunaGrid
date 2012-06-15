@@ -26,6 +26,8 @@ namespace DunaGrid
         /// </summary>
         protected object dataSource=null;
 
+        protected RowsCollection rows;
+
         /// <summary>
         /// vertikalni scrollbar
         /// </summary>
@@ -66,6 +68,18 @@ namespace DunaGrid
         #endregion
 
         #region vlastnosti (properties)
+
+        public RowsCollection Rows
+        {
+            get
+            {
+                return this.rows;
+            }
+            set
+            {
+                this.rows = value;
+            }
+        }
 
         public object DataSource
         {
@@ -151,6 +165,7 @@ namespace DunaGrid
         public DunaGrid()
         {
             this.InicializeComponent();
+            rows = new RowsCollection(this);
         }
 
         #endregion
@@ -218,7 +233,11 @@ namespace DunaGrid
         protected void setDataReader()
         {
             this.actual_datareader = this.data_readers.GetByType(this.dataSource);
-            if (this.dataSource!=null) this.actual_datareader.DataSource = this.dataSource;
+            if (this.dataSource != null)
+            {
+                this.actual_datareader.DataSource = this.dataSource;
+                this.rows.DataReader = this.actual_datareader;
+            }
         }
 
         /// <summary>
@@ -299,13 +318,13 @@ namespace DunaGrid
 
             //vykresli jednotlive radky
             int y = 0;
-            for (int i = vscrollbar.Value; i < actual_datareader.GetRowsCount() && y<this.ClientSize.Height; i++)
+            for (int i = vscrollbar.Value; i < this.rows.Count && y<this.ClientSize.Height; i++)
             {
                 int row_height = this.getRowHeight(i);
 
                 y += row_height + 1;
                 gc.Graphics.SetClip(new Rectangle(0, 0, sirka_celeho_gridu, row_height));
-                IRow radek = this.actual_datareader.GetRow(i);
+                IRow radek = this.rows[i];
                 IFormatter formatter = this.formatters.getMatchFormatter(radek);
                 radek.Formatter = formatter;
                 radek.render(gc, this.columns);

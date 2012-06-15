@@ -12,9 +12,13 @@ namespace DunaGrid.rows
     /// </summary>
     public interface IRow
     {
+        int Height { get; set; }
+        
         object this[string columnname] { get; set; }
 
         IFormatter Formatter { get; set; }
+
+        RowsCollection parentRowCollection { set; }
 
         void addCell(string columnname, object value);
 
