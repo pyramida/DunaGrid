@@ -52,7 +52,7 @@ namespace DunaGrid
 
         protected ColumnCollection columns = new ColumnCollection();
 
-        protected List<IFormatter> formatters = new List<IFormatter>();
+        protected FormatterCollection formatters = new FormatterCollection();
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace DunaGrid
             }
         }
 
-        public List<IFormatter> RowConditionedFormatters
+        public FormatterCollection RowFormatters
         {
             get
             {
@@ -227,7 +227,7 @@ namespace DunaGrid
 
             gc.Graphics.Restore(gs);
 
-            //vykresli jednotlive polozky
+            //vykresli jednotlive radky
             int y = 0;
             for (int i = vscrollbar.Value; i < actual_datareader.GetRowsCount() && y<this.ClientSize.Height; i++)
             {
@@ -235,6 +235,8 @@ namespace DunaGrid
                 y += 21;
                 gc.Graphics.SetClip(new Rectangle(0, 0, sirka_celeho_gridu, 20));
                 IRow radek = this.actual_datareader.GetRow(i);
+                IFormatter formatter = this.formatters.getMatchFormatter(radek);
+                radek.Formatter = formatter;
                 radek.render(gc, this.columns);
             }
 

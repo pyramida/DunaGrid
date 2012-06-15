@@ -9,7 +9,7 @@ namespace DunaGrid.formatters
     /// <summary>
     /// kolekce formatteru, ktera umi vyhodnotit a vratit spravny formatter
     /// </summary>
-    class FormatterCollection : List<IFormatter>
+    public class FormatterCollection : List<IFormatter>
     {
         public IFormatter getMatchFormatter(IRow row)
         {

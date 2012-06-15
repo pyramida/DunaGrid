@@ -150,7 +150,7 @@ namespace DunaGrid.formatters
             object right = this.tryParseColumn(this.right_value, radek);
 
             //pokud se nerovnaji datove typy tak si hodnoty nemohou byt rovny
-            if (left.GetType() != right.GetType())
+            if (!this.IsComparable(left, right))
             {
                 return false;
             }
@@ -159,11 +159,11 @@ namespace DunaGrid.formatters
                 switch (compare_operator)
                 {
                     case Operators.equal:
-                        if (left == right) return true;
+                        if (left.Equals(right)) return true;       
                         break;
 
                     case Operators.not_equal:
-                        if (left != right) return true;
+                        if (!left.Equals(right)) return true;
                         break;
 
                     case Operators.greater_than:
@@ -195,14 +195,19 @@ namespace DunaGrid.formatters
 
         private object tryParseColumn(object data, IRow radek)
         {
-            if (data.GetType() == typeof(IColumn))
+            if (data is IColumn)
             {
                 return radek[((IColumn)data).Name];
             }
             else
             {
-                return this.left_value;
+                return data;
             }
+        }
+
+        private bool IsComparable(object firts, object second)
+        {
+            return true;
         }
     }
 }

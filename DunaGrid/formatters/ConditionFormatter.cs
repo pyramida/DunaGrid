@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace DunaGrid.formatters
 {
-    class ConditionFormatter : IFormatter
+    public class ConditionFormatter : IFormatter
     {
         protected ICondition condition = null;
         protected Font font = null;

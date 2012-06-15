@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DunaGrid.columns;
+using DunaGrid.formatters;
 using System.Drawing.Drawing2D;
 using System.Drawing;
 
 namespace DunaGrid.rows
 {
-    class StandardRow : IRow
+    public class StandardRow : IRow
     {
         protected Dictionary<string, object> cells_values = new Dictionary<string, object>();
+        protected IFormatter formatter = null;
 
         public object this[string columnname]
         {
@@ -34,7 +36,14 @@ namespace DunaGrid.rows
         {
             GraphicsState gs = g.Graphics.Save();
 
-            g.Graphics.Clear(Color.White);
+            if (this.formatter == null)
+            {
+                g.Graphics.Clear(Color.White);
+            }
+            else
+            {
+                g.Graphics.Clear(this.formatter.BackgroundColor);
+            }
 
             g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
 
@@ -48,6 +57,19 @@ namespace DunaGrid.rows
             }
 
             g.Graphics.Restore(gs);
+        }
+
+
+        public formatters.IFormatter Formatter
+        {
+            get
+            {
+                return this.formatter;
+            }
+            set
+            {
+                this.formatter = value;
+            }
         }
     }
 }

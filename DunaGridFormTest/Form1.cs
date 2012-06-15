@@ -22,7 +22,7 @@ namespace DunaGridFormTest
             //naplni dataset testovacimi daty
 
             DataTable dt = new DataTable("test_table");
-            dt.Columns.Add("Sloupec A");
+            dt.Columns.Add("Sloupec A", typeof(int));
             dt.Columns.Add("Sloupec B");
             dt.Columns.Add("Sloupec C");
             dt.Columns.Add("Sloupec D");
@@ -34,7 +34,8 @@ namespace DunaGridFormTest
             for (int i = 0; i < 500; i++)
             {
                 DataRow dr = dt.NewRow();
-                for (int ic = 0; ic < dt.Columns.Count; ic++)
+                dr[0] = i + 1;
+                for (int ic = 1; ic < dt.Columns.Count; ic++)
                 {
                     dr[ic] = rnd.Next(0, 999);
                 }
@@ -45,6 +46,12 @@ namespace DunaGridFormTest
             bs.DataSource = ds.Tables["test_table"];
 
             dunaGrid1.DataSource = bs;
+
+            DunaGrid.formatters.ConditionFormatter cf = new DunaGrid.formatters.ConditionFormatter();
+            cf.Condition = new DunaGrid.formatters.Condition(dunaGrid1.Columns[0], DunaGrid.formatters.Operators.equal, 35);
+            cf.BackgroundColor = Color.Red;
+
+            dunaGrid1.RowFormatters.Add(cf);
 
             dunaGrid1.Columns[2].Elastic = true; //sloupec se bude roztahovat 
             dunaGrid1.Columns[2].MinimalWidth = 150;
