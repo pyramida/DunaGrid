@@ -22,5 +22,5 @@ vlastnosti:
 	- evidence filtru/razeni (ukladani a nacitani)
 	- validaèní pravidla
 	- (konfigurovatelné masky)
-	- mergetool :)
-	- Protejnuv radek
+	- mergetool - nastroj pro reseni konfliktu v databazi (kdyz dva lidi budou editovat stejnym zaznam)
+	
