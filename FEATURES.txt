@@ -24,3 +24,5 @@ vlastnosti:
 	- (konfigurovatelné masky)
 	- mergetool :)
 	- Protejnuv radek
+	- tohle budeme undovat :-)
+	
