@@ -17,6 +17,8 @@ namespace DunaGrid
 {
     public partial class DunaGrid : Control
     {
+        protected static int MouseWheelScrollLines = SystemInformation.MouseWheelScrollLines;
+
         #region protected datove cleny
         /// <summary>
         /// Zdroj dat pro zobrazeni v gridu
@@ -154,6 +156,34 @@ namespace DunaGrid
 
             //prida datareadery do kolekce
             this.data_readers.Add(new BindingSourceDataReader(this.data_readers));
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            int nova_hodnota = this.vscrollbar.Value;
+
+            if (e.Delta > 0)
+            {
+                nova_hodnota -= MouseWheelScrollLines;
+            }
+            else
+            {
+                nova_hodnota += MouseWheelScrollLines;
+            }
+
+            if (nova_hodnota >= this.vscrollbar.Minimum && nova_hodnota <= this.vscrollbar.Maximum)
+            {
+                this.vscrollbar.Value = nova_hodnota;
+            }
+            else if (nova_hodnota < this.vscrollbar.Minimum)
+            {
+                this.vscrollbar.Value = 0;
+            }
+            else
+            {
+                this.vscrollbar.Value = this.vscrollbar.Maximum;
+            }
+            Invalidate();
         }
 
         private void DunaGrid_Load(object sender, EventArgs e)

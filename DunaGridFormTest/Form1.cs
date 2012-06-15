@@ -53,6 +53,12 @@ namespace DunaGridFormTest
 
             dunaGrid1.RowFormatters.Add(cf);
 
+            cf = new DunaGrid.formatters.ConditionFormatter();
+            cf.Condition = new DunaGrid.formatters.Condition(dunaGrid1.Columns[0], DunaGrid.formatters.Operators.not_equal, 25);
+            cf.BackgroundColor = Color.Green;
+
+            dunaGrid1.RowFormatters.Add(cf);
+
             dunaGrid1.Columns[2].Elastic = true; //sloupec se bude roztahovat 
             dunaGrid1.Columns[2].MinimalWidth = 150;
 
