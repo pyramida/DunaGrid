@@ -45,7 +45,9 @@ namespace DunaGrid.rows
                 g.Graphics.Clear(this.formatter.BackgroundColor);
             }
 
-            g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
+            int row_height = (int)Math.Floor(g.Graphics.ClipBounds.Height);
+
+            g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, row_height));
 
             g.Graphics.TranslateTransform(31,0);
 

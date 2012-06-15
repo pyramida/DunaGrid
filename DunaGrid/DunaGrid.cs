@@ -37,6 +37,11 @@ namespace DunaGrid
         protected DunaHScrollBar hscrollbar = new DunaHScrollBar();
 
         /// <summary>
+        /// zde se ukladaji vysky radku, ktere jsou jine nez defaultni velikost
+        /// </summary>
+        protected RowHeightCollection non_default_row_height = new RowHeightCollection();
+
+        /// <summary>
         /// obsahuje vsechny dostupne DataReadery
         /// z teto kolekce se vybira nejvhodnejsi
         /// </summary>
@@ -51,6 +56,8 @@ namespace DunaGrid
         protected bool autocolumn = true;
 
         protected Padding padding = new Padding(3);
+
+        protected int row_height = 20;
 
         protected ColumnCollection columns = new ColumnCollection();
 
@@ -85,6 +92,18 @@ namespace DunaGrid
             set
             {
                 this.formatters = value;
+            }
+        }
+
+        public int DefaultRowHeight
+        {
+            get
+            {
+                return this.row_height;
+            }
+            set
+            {
+                this.row_height = value;
             }
         }
 
@@ -184,7 +203,8 @@ namespace DunaGrid
             {
                 this.vscrollbar.Value = this.vscrollbar.Maximum;
             }
-            Invalidate();
+
+            Invalidate(); //TODO: volat nejak centralneji?
         }
 
         private void DunaGrid_Load(object sender, EventArgs e)
@@ -209,6 +229,23 @@ namespace DunaGrid
             if (this.autocolumn && this.actual_datareader!=null)
             {
                 this.columns = this.actual_datareader.GetColumns();
+            }
+        }
+
+        /// <summary>
+        /// vraci vysku radku pro dany index
+        /// </summary>
+        /// <param name="row_index"></param>
+        /// <returns></returns>
+        protected int getRowHeight(int row_index)
+        {
+            if (this.non_default_row_height.ContainsKey(row_index))
+            {
+                return this.non_default_row_height[row_index];
+            }
+            else
+            {
+                return this.row_height;
             }
         }
 
@@ -258,17 +295,21 @@ namespace DunaGrid
 
             gc.Graphics.Restore(gs);
 
+            gc.Graphics.TranslateTransform(0, 21);
+
             //vykresli jednotlive radky
             int y = 0;
             for (int i = vscrollbar.Value; i < actual_datareader.GetRowsCount() && y<this.ClientSize.Height; i++)
             {
-                gc.Graphics.TranslateTransform(0, 21);
-                y += 21;
-                gc.Graphics.SetClip(new Rectangle(0, 0, sirka_celeho_gridu, 20));
+                int row_height = this.getRowHeight(i);
+
+                y += row_height + 1;
+                gc.Graphics.SetClip(new Rectangle(0, 0, sirka_celeho_gridu, row_height));
                 IRow radek = this.actual_datareader.GetRow(i);
                 IFormatter formatter = this.formatters.getMatchFormatter(radek);
                 radek.Formatter = formatter;
                 radek.render(gc, this.columns);
+                gc.Graphics.TranslateTransform(0, row_height + 1);
             }
 
             base.OnPaint(e);
