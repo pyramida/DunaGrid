@@ -17,7 +17,7 @@ namespace DunaGrid
 {
     public partial class DunaGrid : Control
     {
-        protected static int MouseWheelScrollLines = SystemInformation.MouseWheelScrollLines;
+        protected static int MouseWheelScrollLines = SystemInformation.MouseWheelScrollLines; //vytahne z nastaveni windows o kolik radku se ma grid posunout pri posunuti kolecka mysi
 
         #region protected datove cleny
         /// <summary>
@@ -72,6 +72,7 @@ namespace DunaGrid
                 this.dataSource = value;
                 this.setDataReader();
                 this.generateColumns();
+                this.setScrollBars();
             }
         }
 
