@@ -13,6 +13,7 @@ namespace DunaGrid.rows
     {
         protected IDataReader data_reader = null;
         protected DunaGrid parent;
+        protected RowHeightCollection rows_height = new RowHeightCollection();
 
         public IDataReader DataReader
         {
@@ -44,7 +45,7 @@ namespace DunaGrid.rows
         /// <param name="row"></param>
         public void RowDataChange(IRow row)
         {
-
+            
         }
 
         /// <summary>
@@ -53,7 +54,19 @@ namespace DunaGrid.rows
         /// <param name="row"></param>
         public void RowSizeChange(IRow row)
         {
+            this.rows_height.setHeight(row.Index, row.Height);
+        }
 
+        protected int getHeight(int index)
+        {
+            if (this.rows_height.ContainsKey(index))
+            {
+                return this.rows_height[index];
+            }
+            else
+            {
+                return this.parent.DefaultRowHeight;
+            }
         }
 
         /*implementace IList*/
@@ -79,6 +92,7 @@ namespace DunaGrid.rows
             {
                 IRow temp = this.data_reader.GetRow(index);
                 temp.parentRowCollection = this;
+                temp.Height = this.getHeight(index);
                 return temp;
             }
             set

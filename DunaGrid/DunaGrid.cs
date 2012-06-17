@@ -39,11 +39,6 @@ namespace DunaGrid
         protected DunaHScrollBar hscrollbar = new DunaHScrollBar();
 
         /// <summary>
-        /// zde se ukladaji vysky radku, ktere jsou jine nez defaultni velikost
-        /// </summary>
-        protected RowHeightCollection non_default_row_height = new RowHeightCollection();
-
-        /// <summary>
         /// obsahuje vsechny dostupne DataReadery
         /// z teto kolekce se vybira nejvhodnejsi
         /// </summary>
@@ -251,23 +246,6 @@ namespace DunaGrid
             }
         }
 
-        /// <summary>
-        /// vraci vysku radku pro dany index
-        /// </summary>
-        /// <param name="row_index"></param>
-        /// <returns></returns>
-        protected int getRowHeight(int row_index)
-        {
-            if (this.non_default_row_height.ContainsKey(row_index))
-            {
-                return this.non_default_row_height[row_index];
-            }
-            else
-            {
-                return this.row_height;
-            }
-        }
-
         protected void setScrollBars()
         {
             if (this.actual_datareader != null)
@@ -320,11 +298,12 @@ namespace DunaGrid
             int y = 0;
             for (int i = vscrollbar.Value; i < this.rows.Count && y<this.ClientSize.Height; i++)
             {
-                int row_height = this.getRowHeight(i);
+                IRow radek = this.rows[i];
+                int row_height = radek.Height;
 
                 y += row_height + 1;
                 gc.Graphics.SetClip(new Rectangle(0, 0, sirka_celeho_gridu, row_height));
-                IRow radek = this.rows[i];
+
                 IFormatter formatter = this.formatters.getMatchFormatter(radek);
                 radek.Formatter = formatter;
                 radek.render(gc, this.columns);

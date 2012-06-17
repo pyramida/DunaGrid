@@ -14,7 +14,7 @@ namespace DunaGrid.rows
         protected Dictionary<string, object> cells_values = new Dictionary<string, object>();
         protected IFormatter formatter = null;
         protected RowsCollection parent_collection=null;
-        protected int height;
+        protected int height, index;
 
         public object this[string columnname]
         {
@@ -46,6 +46,10 @@ namespace DunaGrid.rows
             set
             {
                 this.height = value;
+                if (parent_collection != null)
+                {
+                    this.parent_collection.RowSizeChange(this);
+                }
             }
         }
 
@@ -94,6 +98,19 @@ namespace DunaGrid.rows
             set
             {
                 this.formatter = value;
+            }
+        }
+
+
+        public int Index
+        {
+            get
+            {
+                return this.index;
+            }
+            set
+            {
+                this.index = value;
             }
         }
     }

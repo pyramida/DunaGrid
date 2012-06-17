@@ -72,7 +72,7 @@ namespace DunaGridFormTest
             dunaGrid1.Columns[4].MinimalWidth = 100;
 
             //maly test s radkem
-            dunaGrid1.Rows[10].Formatter = null;
+            dunaGrid1.Rows[10].Height = 30;
 
         }
 

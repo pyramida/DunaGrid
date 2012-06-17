@@ -75,6 +75,8 @@ namespace DunaGrid.dataReaders
                 }
             }
 
+            temp.Index = index;
+
             return temp;
         }
 

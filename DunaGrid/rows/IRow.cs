@@ -13,6 +13,8 @@ namespace DunaGrid.rows
     public interface IRow
     {
         int Height { get; set; }
+
+        int Index { get; set; }
         
         object this[string columnname] { get; set; }
 
