@@ -60,6 +60,8 @@ namespace DunaGrid
 
         protected FormatterCollection formatters = new FormatterCollection();
 
+        protected Color line_color = Color.Black;
+
         #endregion
 
         #region vlastnosti (properties)
@@ -101,6 +103,18 @@ namespace DunaGrid
             set
             {
                 this.formatters = value;
+            }
+        }
+
+        public Color LineColor
+        {
+            get
+            {
+                return this.line_color;
+            }
+            set
+            {
+                this.line_color = value;
             }
         }
 
@@ -170,6 +184,7 @@ namespace DunaGrid
         /// </summary>
         protected void InicializeComponent()
         {
+            this.BackColor = Color.DarkGray;
             vscrollbar.Dock = DockStyle.Right;
             this.Controls.Add(vscrollbar);
             hscrollbar.Height = 17;
@@ -321,6 +336,8 @@ namespace DunaGrid
 
             gc.Graphics.Restore(gs);
 
+            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(0, 20), new Point(sirka_celeho_gridu, 20)); //TODO: konstanta (vyska hlavicky)
+
             gc.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(hscrollbar.Value, 0, 30, 20));
 
             gc.Graphics.TranslateTransform(0, 21);
@@ -349,7 +366,25 @@ namespace DunaGrid
 
                 gc.Graphics.TranslateTransform(-hscrollbar.Value, 0);
 
+                gc.Graphics.ResetClip();
+
+                gc.Graphics.DrawLine(new Pen(this.line_color), new Point(0, radek.Height), new Point(sirka_celeho_gridu, radek.Height));
+
                 gc.Graphics.TranslateTransform(0, row_height + 1);
+            }
+
+            gc.Graphics.ResetTransform();
+
+            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(30, 0), new Point(30, this.ClientSize.Height)); //TODO: znicit konstantu! 31 = sirka RowSelectoru
+
+            gc.Graphics.TranslateTransform(-hscrollbar.Value + 31, 0);
+
+            int x=0;
+
+            foreach (IColumn c in this.columns)
+            {
+                x += c.Width+1;
+                if (x - hscrollbar.Value > 0) gc.Graphics.DrawLine(new Pen(this.line_color), new Point(x, 0), new Point(x, this.ClientSize.Height));
             }
 
             base.OnPaint(e);
