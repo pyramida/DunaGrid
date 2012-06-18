@@ -307,8 +307,6 @@ namespace DunaGrid
 
             GraphicsState gs = gc.Graphics.Save();
 
-            gc.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
-
             gc.Graphics.TranslateTransform(31, 0);
 
             this.countWidthForElasticColumn();
@@ -322,6 +320,8 @@ namespace DunaGrid
             }
 
             gc.Graphics.Restore(gs);
+
+            gc.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(hscrollbar.Value, 0, 30, 20));
 
             gc.Graphics.TranslateTransform(0, 21);
 
@@ -337,7 +337,18 @@ namespace DunaGrid
 
                 IFormatter formatter = this.formatters.getMatchFormatter(radek);
                 radek.Formatter = formatter;
+
+                gc.Graphics.TranslateTransform(31, 0);
+
                 radek.render(gc, this.columns);
+
+                gc.Graphics.TranslateTransform(-31 + hscrollbar.Value, 0);
+
+                //vykresli RowSelector
+                radek.renderRowSelector(gc);
+
+                gc.Graphics.TranslateTransform(-hscrollbar.Value, 0);
+
                 gc.Graphics.TranslateTransform(0, row_height + 1);
             }
 

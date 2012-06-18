@@ -25,5 +25,7 @@ namespace DunaGrid.rows
         void addCell(string columnname, object value);
 
         void render(GraphicsContext g, ColumnCollection visible_columns);
+
+        void renderRowSelector(GraphicsContext g);
     }
 }

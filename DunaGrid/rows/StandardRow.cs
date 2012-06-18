@@ -74,9 +74,7 @@ namespace DunaGrid.rows
 
             int row_height = (int)Math.Floor(g.Graphics.ClipBounds.Height);
 
-            g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, row_height));
-
-            g.Graphics.TranslateTransform(31,0);
+            //g.Graphics.TranslateTransform(31,0);
 
             foreach (IColumn c in visible_columns)
             {
@@ -87,6 +85,7 @@ namespace DunaGrid.rows
 
             g.Graphics.Restore(gs);
         }
+
 
 
         public formatters.IFormatter Formatter
@@ -112,6 +111,12 @@ namespace DunaGrid.rows
             {
                 this.index = value;
             }
+        }
+
+
+        public void renderRowSelector(GraphicsContext g)
+        {
+            g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
         }
     }
 }
