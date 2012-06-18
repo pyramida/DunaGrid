@@ -250,7 +250,7 @@ namespace DunaGrid
         {
             if (this.actual_datareader != null)
             {
-                vscrollbar.Maximum = this.actual_datareader.GetRowsCount();
+                vscrollbar.Maximum = this.actual_datareader.GetRowsCount() - rows.getCountVisibleRowsFromBottom(this.ClientSize.Height - 21 - hscrollbar.Height);
             }
             else
             {

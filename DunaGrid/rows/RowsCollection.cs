@@ -69,6 +69,34 @@ namespace DunaGrid.rows
             }
         }
 
+        public int getCountVisibleRowsFromBottom(int height)
+        {
+            int i = this.Count-1;
+            int y = 0;
+            int ctr = 0;
+
+            while (y < height && i >= 0)
+            {
+                if (this.rows_height.ContainsKey(i))
+                {
+                    y += this.rows_height[i] + 1;
+                }
+                else
+                {
+                    y += this.parent.DefaultRowHeight + 1;
+                }
+
+                i--;
+
+                if (y < height)
+                {
+                    ctr++;
+                }
+            }
+
+            return ctr;
+        }
+
         /*implementace IList*/
 
         public int IndexOf(IRow item)
