@@ -52,6 +52,10 @@ namespace DunaGrid
 
         protected bool autocolumn = true;
 
+        protected int vyska_hlavicky = 20;
+
+        protected int sirka_rowselectoru = 30;
+
         protected Padding padding = new Padding(3);
 
         protected int row_height = 20;
@@ -276,7 +280,7 @@ namespace DunaGrid
 
             hscrollbar.MinimumValue = 0;
 
-            int sirka_gridu = 31; //=konstanta sirky sedych obdelniku
+            int sirka_gridu = this.sirka_rowselectoru + 1;
 
             foreach (IColumn c in this.columns)
             {
@@ -312,7 +316,7 @@ namespace DunaGrid
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
-            int sirka_celeho_gridu = 31; //31 = sirka sedych obdelniku pred radkem
+            int sirka_celeho_gridu = this.sirka_rowselectoru + 1;
 
             //vykresli hlavicky sloupcu
             GraphicsContext gc = new GraphicsContext();
@@ -322,25 +326,25 @@ namespace DunaGrid
 
             GraphicsState gs = gc.Graphics.Save();
 
-            gc.Graphics.TranslateTransform(31, 0);
+            gc.Graphics.TranslateTransform(this.sirka_rowselectoru + 1, 0);
 
             this.countWidthForElasticColumn();
 
             foreach (IColumn c in this.columns)
             {
-                gc.Graphics.SetClip(new Rectangle(0,0, c.Width, 20));
-                c.renderHead(gc, new ColumnContext(20, CellRenderState.Normal, new OrderRule())); // zatim pouze testovaci (velikost radku tu ve finale asi nebude)
+                gc.Graphics.SetClip(new Rectangle(0,0, c.Width, this.vyska_hlavicky));
+                c.renderHead(gc, new ColumnContext(this.vyska_hlavicky, CellRenderState.Normal, new OrderRule())); // zatim pouze testovaci (velikost radku tu ve finale asi nebude)
                 gc.Graphics.TranslateTransform(c.Width + 1, 0);
                 sirka_celeho_gridu += c.Width + 1;
             }
 
             gc.Graphics.Restore(gs);
 
-            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(0, 20), new Point(sirka_celeho_gridu, 20)); //TODO: konstanta (vyska hlavicky)
+            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(0, this.vyska_hlavicky), new Point(sirka_celeho_gridu, this.vyska_hlavicky)); //TODO: konstanta (vyska hlavicky)
 
-            gc.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(hscrollbar.Value, 0, 30, 20));
+            gc.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(hscrollbar.Value, 0, this.sirka_rowselectoru, this.vyska_hlavicky));
 
-            gc.Graphics.TranslateTransform(0, 21);
+            gc.Graphics.TranslateTransform(0, this.vyska_hlavicky + 1);
 
             //vykresli jednotlive radky
             int y = 0;
@@ -355,11 +359,11 @@ namespace DunaGrid
                 IFormatter formatter = this.formatters.getMatchFormatter(radek);
                 radek.Formatter = formatter;
 
-                gc.Graphics.TranslateTransform(31, 0);
+                gc.Graphics.TranslateTransform(this.sirka_rowselectoru + 1, 0);
 
                 radek.render(gc, this.columns);
 
-                gc.Graphics.TranslateTransform(-31 + hscrollbar.Value, 0);
+                gc.Graphics.TranslateTransform(-this.sirka_rowselectoru - 1 + hscrollbar.Value, 0);
 
                 //vykresli RowSelector
                 radek.renderRowSelector(gc);
@@ -375,9 +379,9 @@ namespace DunaGrid
 
             gc.Graphics.ResetTransform();
 
-            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(30, 0), new Point(30, this.ClientSize.Height)); //TODO: znicit konstantu! 31 = sirka RowSelectoru
+            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(this.sirka_rowselectoru, 0), new Point(this.sirka_rowselectoru, this.ClientSize.Height));
 
-            gc.Graphics.TranslateTransform(-hscrollbar.Value + 31, 0);
+            gc.Graphics.TranslateTransform(-hscrollbar.Value + this.sirka_rowselectoru + 1, 0);
 
             int x=0;
 
@@ -392,7 +396,7 @@ namespace DunaGrid
 
         protected void countWidthForElasticColumn()
         {
-            int sirka_neelastickych = 31; //31 = sirka sedych obdelniku pred radkem
+            int sirka_neelastickych = this.sirka_rowselectoru + 1; //sirka sedych obdelniku pred radkem
             int sirka_elastickych = 0;
             List<int> elasticke_sloupce = new List<int>(); //uchovava indexy elastickych sloupcu
 
@@ -425,6 +429,79 @@ namespace DunaGrid
                     }
                 }
             }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            const int x_tolerance = 4;
+            const int y_tolerance = 4;
+
+            base.OnMouseMove(e);
+
+            // resize kurzor u RowSelecturu
+            if (this.isBetween(e.Location.X, this.sirka_rowselectoru, x_tolerance))
+            {
+                this.Cursor = Cursors.SizeWE;
+                return;
+            }
+
+            // resize sloupcu
+            int x = this.sirka_rowselectoru;
+
+            if (e.Location.Y <= this.vyska_hlavicky)
+            {
+                foreach (IColumn c in this.columns)
+                {
+                    x += c.Width + 1;
+                    if (this.isBetween(e.Location.X, x - hscrollbar.Value, x_tolerance))
+                    {
+                        this.Cursor = Cursors.SizeWE;
+                        return;
+                    }
+                }
+            }
+
+            //resize radku
+            int y = this.vyska_hlavicky; ;
+            if (e.Location.X < this.sirka_rowselectoru)
+            {
+                for (int i = vscrollbar.Value; i < rows.Count && y<this.ClientSize.Height; i++)
+                {
+                    IRow row = Rows[i];
+                    y += row.Height + 1;
+                    if (this.isBetween(e.Location.Y, y, y_tolerance))
+                    {
+                        this.Cursor = Cursors.SizeNS;
+                        return;
+                    }
+                }
+            }
+
+            //defaultni kurzor
+            this.Cursor = Cursors.Arrow;
+
+        }
+
+        protected bool isBetween(int test_pos, int pos, int tolerance)
+        {
+            if (test_pos >= pos - tolerance && test_pos <= pos + tolerance)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
         }
 
         protected override void OnResize(EventArgs e)
