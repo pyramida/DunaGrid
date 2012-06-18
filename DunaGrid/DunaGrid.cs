@@ -250,7 +250,8 @@ namespace DunaGrid
         {
             if (this.actual_datareader != null)
             {
-                vscrollbar.Maximum = this.actual_datareader.GetRowsCount() - rows.getCountVisibleRowsFromBottom(this.ClientSize.Height - 21 - hscrollbar.Height);
+                vscrollbar.Maximum = this.rows.Count - rows.getCountVisibleRowsFromBottom(this.ClientSize.Height - 21 - hscrollbar.Height);
+                vscrollbar.LargeChange = 1;
             }
             else
             {
@@ -286,9 +287,7 @@ namespace DunaGrid
                 {
                     hscrollbar.Value = 0;
                 }
-            }
-            //Console.WriteLine("HS: " + hscrollbar.Value + " SCH: " + hscrollbar.SmallChange + " MAX: " + hscrollbar.MaximumValue);
-            
+            }            
         }
 
         #region Vykreslovani
