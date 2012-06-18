@@ -18,6 +18,8 @@ namespace DunaGrid.components
         protected int right_margin = 0; //odsazeni od prave strany
         protected int navigatebar_width = 100;
 
+        new public event ScrollEventHandler Scroll;
+
         public int RightMargin
         {
             get
@@ -84,6 +86,32 @@ namespace DunaGrid.components
             }
         }
 
+        public int SmallChange
+        {
+            get
+            {
+                return hScrollBar1.SmallChange;
+            }
+
+            set
+            {
+                hScrollBar1.SmallChange = value;
+            }
+        }
+
+        public int LargeChange
+        {
+            get
+            {
+                return hScrollBar1.LargeChange;
+            }
+
+            set
+            {
+                hScrollBar1.LargeChange = value;
+            }
+        }
+
         public Panel navigationPanel
         {
             get
@@ -142,6 +170,14 @@ namespace DunaGrid.components
         {
             setScrollBarWidth();
             setPosition();
+        }
+
+        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (Scroll != null)
+            {
+                Scroll(this, e);
+            }
         }
     }
 }

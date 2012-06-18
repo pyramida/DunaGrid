@@ -258,6 +258,36 @@ namespace DunaGrid
             }
             vscrollbar.Minimum = 0;
 
+            hscrollbar.MinimumValue = 0;
+
+            int sirka_gridu = 31; //=konstanta sirky sedych obdelniku
+
+            foreach (IColumn c in this.columns)
+            {
+                sirka_gridu += c.Width + 1;
+            }
+
+            hscrollbar.MaximumValue = sirka_gridu;
+            int viditelna_sirka = this.Width - vscrollbar.Width;
+            if (viditelna_sirka > 0)
+            {
+                hscrollbar.LargeChange = this.Width - vscrollbar.Width;
+                hscrollbar.SmallChange = this.Width - vscrollbar.Width;
+            }
+
+            if (hscrollbar.Value + hscrollbar.SmallChange > hscrollbar.MaximumValue)
+            {
+                int nova_hodnota = hscrollbar.MaximumValue - hscrollbar.SmallChange;
+                if (nova_hodnota > 0)
+                {
+                    hscrollbar.Value = nova_hodnota;
+                }
+                else
+                {
+                    hscrollbar.Value = 0;
+                }
+            }
+            //Console.WriteLine("HS: " + hscrollbar.Value + " SCH: " + hscrollbar.SmallChange + " MAX: " + hscrollbar.MaximumValue);
             
         }
 
@@ -273,6 +303,8 @@ namespace DunaGrid
             //vykresli hlavicky sloupcu
             GraphicsContext gc = new GraphicsContext();
             gc.Graphics = e.Graphics;
+
+            gc.Graphics.TranslateTransform(-hscrollbar.Value, 0);
 
             GraphicsState gs = gc.Graphics.Save();
 
@@ -336,7 +368,7 @@ namespace DunaGrid
             if (elasticke_sloupce.Count > 0)
             {
                 sirka_neelastickych += elasticke_sloupce.Count;
-                int zbyvajici_plocha = this.ClientSize.Width - sirka_neelastickych;
+                int zbyvajici_plocha = this.ClientSize.Width - vscrollbar.Width - sirka_neelastickych;
 
                 foreach (int index in elasticke_sloupce)
                 {
