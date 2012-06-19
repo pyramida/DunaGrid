@@ -28,6 +28,8 @@ namespace DunaGrid
 
         protected RowsCollection rows;
 
+        protected MouseState mouse_state = new MouseState();
+
         /// <summary>
         /// vertikalni scrollbar
         /// </summary>
@@ -168,6 +170,19 @@ namespace DunaGrid
             set
             {
                 this.padding = value;
+            }
+        }
+
+        public int RowSelectorWidth
+        {
+            get
+            {
+                return this.sirka_rowselectoru;
+            }
+
+            set
+            {
+                if (value>2) this.sirka_rowselectoru = value;
             }
         }
 
@@ -366,6 +381,7 @@ namespace DunaGrid
                 gc.Graphics.TranslateTransform(-this.sirka_rowselectoru - 1 + hscrollbar.Value, 0);
 
                 //vykresli RowSelector
+                gc.Graphics.SetClip(new Rectangle(0,0, this.sirka_rowselectoru, radek.Height));
                 radek.renderRowSelector(gc);
 
                 gc.Graphics.TranslateTransform(-hscrollbar.Value, 0);
@@ -436,49 +452,102 @@ namespace DunaGrid
             const int x_tolerance = 4;
             const int y_tolerance = 4;
 
+            this.mouse_state.setLastLocation(e.Location);
+
             base.OnMouseMove(e);
 
-            // resize kurzor u RowSelecturu
-            if (this.isBetween(e.Location.X, this.sirka_rowselectoru, x_tolerance))
+            if (!this.mouse_state.left_down)
             {
-                this.Cursor = Cursors.SizeWE;
-                return;
-            }
-
-            // resize sloupcu
-            int x = this.sirka_rowselectoru;
-
-            if (e.Location.Y <= this.vyska_hlavicky)
-            {
-                foreach (IColumn c in this.columns)
+                // resize kurzor u RowSelecturu
+                if (this.isBetween(e.Location.X, this.sirka_rowselectoru, x_tolerance))
                 {
-                    x += c.Width + 1;
-                    if (this.isBetween(e.Location.X, x - hscrollbar.Value, x_tolerance))
+                    this.Cursor = Cursors.SizeWE;
+                    this.mouse_state.mouse_action = MouseAction.changeRowSelectorWidth;
+                    return;
+                }
+
+                // resize sloupcu
+                int x = this.sirka_rowselectoru;
+
+                if (e.Location.Y <= this.vyska_hlavicky)
+                {
+                    foreach (IColumn c in this.columns)
                     {
-                        this.Cursor = Cursors.SizeWE;
-                        return;
+                        x += c.Width + 1;
+                        if (this.isBetween(e.Location.X, x - hscrollbar.Value, x_tolerance))
+                        {
+                            this.Cursor = Cursors.SizeWE;
+                            this.mouse_state.mouse_action = MouseAction.changeColumnWidth;
+                            this.mouse_state.parameters = c;
+                            return;
+                        }
                     }
                 }
-            }
 
-            //resize radku
-            int y = this.vyska_hlavicky; ;
-            if (e.Location.X < this.sirka_rowselectoru)
-            {
-                for (int i = vscrollbar.Value; i < rows.Count && y<this.ClientSize.Height; i++)
+                //resize radku
+                int y = this.vyska_hlavicky; ;
+                if (e.Location.X < this.sirka_rowselectoru)
                 {
-                    IRow row = Rows[i];
-                    y += row.Height + 1;
-                    if (this.isBetween(e.Location.Y, y, y_tolerance))
+                    for (int i = vscrollbar.Value; i < rows.Count && y < this.ClientSize.Height; i++)
                     {
-                        this.Cursor = Cursors.SizeNS;
-                        return;
+                        IRow row = Rows[i];
+                        y += row.Height + 1;
+                        if (this.isBetween(e.Location.Y, y, y_tolerance))
+                        {
+                            this.Cursor = Cursors.SizeNS;
+                            this.mouse_state.mouse_action = MouseAction.changeRowHeight;
+                            this.mouse_state.parameters = i;
+                            return;
+                        }
                     }
                 }
-            }
 
-            //defaultni kurzor
-            this.Cursor = Cursors.Arrow;
+                //defaultni kurzor
+                this.Cursor = Cursors.Arrow;
+                this.mouse_state.mouse_action = MouseAction.none;
+            }
+            else
+            {
+                //leve tlacitko mysi je stisknuto
+                switch (this.mouse_state.mouse_action)
+                {
+                    case MouseAction.changeRowSelectorWidth:
+                        this.RowSelectorWidth += this.mouse_state.getDeltaX();
+                        this.countWidthForElasticColumn();
+                        this.setScrollBars();
+                        Refresh();
+                        break;
+                    case MouseAction.changeRowHeight:
+                        int row_index = (int)this.mouse_state.parameters;
+                        this.Rows[row_index].Height += this.mouse_state.getDeltaY();
+                        Refresh();
+                        break;
+                    case MouseAction.changeColumnWidth:
+                        IColumn c = (IColumn)this.mouse_state.parameters;
+                        if (c.Elastic)
+                        {
+                            int index_c = this.columns.IndexOf(c);
+                            if (this.columns.Count > index_c + 1)
+                            {
+                                //neni to posledni sloupec
+                                IColumn next_col = this.columns[index_c + 1];
+                                int delta = this.mouse_state.getDeltaX();
+                                float pomer = (float)c.MinimalWidth / c.Width;
+                                delta = (int)Math.Round(pomer * delta);
+                                c.MinimalWidth += delta;
+                                next_col.MinimalWidth -= delta;
+                            }
+                        }
+                        else
+                        {
+                            c.Width += this.mouse_state.getDeltaX();
+                        }
+                        this.countWidthForElasticColumn();
+                        this.setScrollBars();
+                        Refresh();
+                        break;
+                }
+            }
 
         }
 
@@ -496,11 +565,13 @@ namespace DunaGrid
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
+            this.mouse_state.left_down = true;
             base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
+            this.mouse_state.left_down = false;
             base.OnMouseUp(e);
         }
 

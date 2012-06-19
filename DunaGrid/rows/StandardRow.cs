@@ -45,10 +45,13 @@ namespace DunaGrid.rows
 
             set
             {
-                this.height = value;
-                if (parent_collection != null)
+                if (value > 0)
                 {
-                    this.parent_collection.RowSizeChange(this);
+                    this.height = value;
+                    if (parent_collection != null)
+                    {
+                        this.parent_collection.RowSizeChange(this);
+                    }
                 }
             }
         }
@@ -116,7 +119,8 @@ namespace DunaGrid.rows
 
         public void renderRowSelector(GraphicsContext g)
         {
-            g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
+            //g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
+            g.Graphics.Clear(Color.DarkGray);
         }
     }
 }

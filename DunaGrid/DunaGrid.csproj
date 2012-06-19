@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="dataReaders\BindingSourceDataReader.cs" />
     <Compile Include="dataReaders\DataReaderCollection.cs" />
+    <Compile Include="MouseState.cs" />
     <Compile Include="rows\IRow.cs" />
     <Compile Include="OrderRule.cs" />
     <Compile Include="dataReaders\IDataReader.cs" />
