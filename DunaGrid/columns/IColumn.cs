@@ -10,6 +10,7 @@ namespace DunaGrid.columns
     {
         int Width { get; set; } //sirka bunky
         int MinimalWidth { get; set; } //minimalni sirka bunky
+        float RatioWidth { get; set; } 
         string HeadText { get; set; } //text, co se vypise v hlavicce sloupce
         string Name { get; set; } //vnitrni pojmenovani sloupce
         bool Visible { get; set; } //je sloupec viditelny?

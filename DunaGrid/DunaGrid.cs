@@ -30,6 +30,8 @@ namespace DunaGrid
 
         protected MouseState mouse_state = new MouseState();
 
+        protected bool disable_elastics = false;
+
         /// <summary>
         /// vertikalni scrollbar
         /// </summary>
@@ -343,7 +345,7 @@ namespace DunaGrid
 
             gc.Graphics.TranslateTransform(this.sirka_rowselectoru + 1, 0);
 
-            this.countWidthForElasticColumn();
+            if (!this.disable_elastics) this.countWidthForElasticColumn();
 
             foreach (IColumn c in this.columns)
             {
@@ -413,7 +415,7 @@ namespace DunaGrid
         protected void countWidthForElasticColumn()
         {
             int sirka_neelastickych = this.sirka_rowselectoru + 1; //sirka sedych obdelniku pred radkem
-            int sirka_elastickych = 0;
+            float sirka_elastickych = 0;
             List<int> elasticke_sloupce = new List<int>(); //uchovava indexy elastickych sloupcu
 
             for (int i = 0; i < this.columns.Count; i++)
@@ -422,7 +424,7 @@ namespace DunaGrid
                 if (c.Elastic)
                 {
                     elasticke_sloupce.Add(i);
-                    sirka_elastickych += c.MinimalWidth;
+                    sirka_elastickych += c.RatioWidth;
                 }
                 else
                 {
@@ -437,11 +439,15 @@ namespace DunaGrid
 
                 foreach (int index in elasticke_sloupce)
                 {
-                    float pomer = (float)this.columns[index].MinimalWidth / sirka_elastickych;
+                    float pomer = (float)this.columns[index].RatioWidth / sirka_elastickych;
                     int nova_sirka = (int)Math.Floor((float)zbyvajici_plocha * pomer);
                     if (nova_sirka > this.columns[index].MinimalWidth)
                     {
                         this.columns[index].Width = nova_sirka;
+                    }
+                    else
+                    {
+                        this.columns[index].Width = this.columns[index].MinimalWidth;
                     }
                 }
             }
@@ -449,8 +455,8 @@ namespace DunaGrid
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            const int x_tolerance = 4;
-            const int y_tolerance = 4;
+            const int x_tolerance = 2;
+            const int y_tolerance = 2;
 
             this.mouse_state.setLastLocation(e.Location);
 
@@ -461,7 +467,7 @@ namespace DunaGrid
                 // resize kurzor u RowSelecturu
                 if (this.isBetween(e.Location.X, this.sirka_rowselectoru, x_tolerance))
                 {
-                    this.Cursor = Cursors.SizeWE;
+                    this.Cursor = Cursors.VSplit;
                     this.mouse_state.mouse_action = MouseAction.changeRowSelectorWidth;
                     return;
                 }
@@ -476,7 +482,7 @@ namespace DunaGrid
                         x += c.Width + 1;
                         if (this.isBetween(e.Location.X, x - hscrollbar.Value, x_tolerance))
                         {
-                            this.Cursor = Cursors.SizeWE;
+                            this.Cursor = Cursors.VSplit;//puvodne: Cursors.SizeWE;
                             this.mouse_state.mouse_action = MouseAction.changeColumnWidth;
                             this.mouse_state.parameters = c;
                             return;
@@ -494,7 +500,7 @@ namespace DunaGrid
                         y += row.Height + 1;
                         if (this.isBetween(e.Location.Y, y, y_tolerance))
                         {
-                            this.Cursor = Cursors.SizeNS;
+                            this.Cursor = Cursors.HSplit;//Cursors.SizeNS;
                             this.mouse_state.mouse_action = MouseAction.changeRowHeight;
                             this.mouse_state.parameters = i;
                             return;
@@ -513,7 +519,6 @@ namespace DunaGrid
                 {
                     case MouseAction.changeRowSelectorWidth:
                         this.RowSelectorWidth += this.mouse_state.getDeltaX();
-                        this.countWidthForElasticColumn();
                         this.setScrollBars();
                         Refresh();
                         break;
@@ -531,18 +536,22 @@ namespace DunaGrid
                             {
                                 //neni to posledni sloupec
                                 IColumn next_col = this.columns[index_c + 1];
+
                                 int delta = this.mouse_state.getDeltaX();
-                                float pomer = (float)c.MinimalWidth / c.Width;
-                                delta = (int)Math.Round(pomer * delta);
-                                c.MinimalWidth += delta;
-                                next_col.MinimalWidth -= delta;
+
+                                this.disable_elastics = true;
+                                if (c.Width + delta >= c.MinimalWidth && next_col.Width - delta >= next_col.MinimalWidth)
+                                {
+                                    c.Width += delta;
+                                    next_col.Width -= delta;
+                                }
                             }
                         }
                         else
                         {
                             c.Width += this.mouse_state.getDeltaX();
                         }
-                        this.countWidthForElasticColumn();
+                        
                         this.setScrollBars();
                         Refresh();
                         break;
@@ -572,6 +581,33 @@ namespace DunaGrid
         protected override void OnMouseUp(MouseEventArgs e)
         {
             this.mouse_state.left_down = false;
+
+            if (this.disable_elastics)
+            {
+                this.disable_elastics = false;
+                //prepocita pomery
+                List<int> elasticke_sloupce = new List<int>();
+                int sirka_elastickych = 0;
+                for (int i = 0; i < this.columns.Count; i++)
+                {
+                    IColumn c = this.columns[i];
+                    if (c.Elastic)
+                    {
+                        elasticke_sloupce.Add(i);
+                        sirka_elastickych += c.Width;
+                    }
+                }
+
+                foreach (int index in elasticke_sloupce)
+                {
+                    IColumn c = this.columns[index];
+
+                    c.RatioWidth = (float)c.Width / sirka_elastickych;
+                }
+
+                Refresh();
+            }
+
             base.OnMouseUp(e);
         }
 
@@ -593,6 +629,11 @@ namespace DunaGrid
         protected void hscrollbar_Scroll(object sender, ScrollEventArgs e)
         {
             Refresh();
+        }
+
+        protected override void OnDoubleClick(EventArgs e)
+        {
+            base.OnDoubleClick(e);
         }
 
         #endregion

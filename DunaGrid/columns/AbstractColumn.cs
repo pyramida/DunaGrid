@@ -20,6 +20,7 @@ namespace DunaGrid.columns
         protected int datasource_column_index = 0;
         protected bool fill_column = false;
         protected string name = "";
+        protected float ratio_width = 1;
 
         public int Width
         {
@@ -33,10 +34,10 @@ namespace DunaGrid.columns
                 {
                     this.width = value;
                 }
-                else
+                /*else
                 {
                     throw new ArgumentOutOfRangeException("Zadana hodnota je nizsi nez minimalni povolena sirka");
-                }
+                }*/
             }
         }
 
@@ -182,12 +183,25 @@ namespace DunaGrid.columns
             {
                 if (value > 0)
                 {
-                    minwidth = value;
+                    this.minwidth = value;
                     if (this.width < this.minwidth)
                     {
                         this.width = value;
                     }
                 }
+            }
+        }
+
+
+        public float RatioWidth
+        {
+            get
+            {
+                return this.ratio_width;
+            }
+            set
+            {
+                this.ratio_width = value;
             }
         }
     }
