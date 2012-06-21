@@ -529,6 +529,46 @@ namespace DunaGrid
                         break;
                     case MouseAction.changeColumnWidth:
                         IColumn c = (IColumn)this.mouse_state.parameters;
+                        //spocita pozici
+                        int x_pos = this.sirka_rowselectoru+1;
+                        foreach (IColumn col in this.columns)
+                        {
+                            x_pos += col.Width;
+                            if (col == c)
+                            {
+                                break;
+                            }
+                        }
+
+                        //overi, zda by nemel odblokovat
+                        if (this.mouse_state.block_left)
+                        {
+                            if (this.mouse_state.last_location.X > x_pos)
+                            {
+                                this.mouse_state.block_left = false;
+                                this.mouse_state.last_last_location.X = x_pos;
+                            }
+                        }
+
+                        if (this.mouse_state.block_right)
+                        {
+                            if (this.mouse_state.last_location.X < x_pos)
+                            {
+                                this.mouse_state.block_right = false;
+                                this.mouse_state.last_last_location.X = x_pos;
+                            }
+                        }
+
+                        if (this.mouse_state.block_left || this.mouse_state.block_right)
+                        {
+                            return;
+                        }
+
+                        /*if (!this.isBetween(this.mouse_state.last_location.X - this.mouse_state.getDeltaX(), x_pos, x_tolerance))
+                        {
+                            return;
+                        }*/
+
                         if (c.Elastic)
                         {
                             int index_c = this.columns.IndexOf(c);
@@ -545,11 +585,29 @@ namespace DunaGrid
                                     c.Width += delta;
                                     next_col.Width -= delta;
                                 }
+                                else
+                                {
+                                    //je treba zapnout jeden z bloku
+                                    if (c.Width + delta >= c.MinimalWidth)
+                                    {
+                                        this.mouse_state.block_right = true;
+                                    }
+                                    else
+                                    {
+                                        this.mouse_state.block_left = true;
+                                    }
+                                }
                             }
                         }
                         else
                         {
-                            c.Width += this.mouse_state.getDeltaX();
+                            int delta = this.mouse_state.getDeltaX();
+                            if (c.Width + delta < c.MinimalWidth)
+                            {
+                                this.mouse_state.block_left = true;
+                            }
+
+                            c.Width += delta;
                         }
                         
                         this.setScrollBars();

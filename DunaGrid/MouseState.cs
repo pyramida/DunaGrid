@@ -11,8 +11,11 @@ namespace DunaGrid
         public bool left_down;
         public MouseAction mouse_action;
         public Point last_location;
-        private Point last_last_location;
+        public Point last_last_location;
         public object parameters;
+        public bool block_left;
+        public bool block_right;
+
 
         public MouseState(bool left_down=false, MouseAction mouse_action = MouseAction.none)
         {
@@ -21,6 +24,8 @@ namespace DunaGrid
             this.last_location = Point.Empty;
             this.last_last_location = this.last_location;
             this.parameters = null;
+            this.block_left = false;
+            this.block_right = false;
         }
 
         public void setLastLocation(Point mouse_position)
