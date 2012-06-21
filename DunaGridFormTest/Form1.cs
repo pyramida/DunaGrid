@@ -64,6 +64,10 @@ namespace DunaGridFormTest
 
             dunaGrid1.Columns[4].Elastic = true;
 
+            dunaGridHeaderRow1.RowSelectorWidth = 31;
+            dunaGridHeaderRow1.Columns = dunaGrid1.Columns;
+            
+
             //maly test s radkem
             //dunaGrid1.Rows[10].Height = 30;
 
@@ -72,6 +76,11 @@ namespace DunaGridFormTest
         private void dunaGrid1_Click(object sender, EventArgs e)
         {
            
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

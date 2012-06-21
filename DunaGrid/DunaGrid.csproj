@@ -49,6 +49,18 @@
     <Compile Include="columns\ColumnContext.cs" />
     <Compile Include="columns\ColumnTypeDelegator.cs" />
     <Compile Include="columns\TextColumn.cs" />
+    <Compile Include="components\DunaGridHeaderCell.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DunaGridHeaderCell.Designer.cs">
+      <DependentUpon>DunaGridHeaderCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\DunaGridHeaderRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DunaGridHeaderRow.Designer.cs">
+      <DependentUpon>DunaGridHeaderRow.cs</DependentUpon>
+    </Compile>
     <Compile Include="formatters\Condition.cs" />
     <Compile Include="formatters\ConditionFormatter.cs" />
     <Compile Include="formatters\FormatterCollection.cs" />
@@ -79,6 +91,12 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="components\DunaGridHeaderCell.resx">
+      <DependentUpon>DunaGridHeaderCell.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\DunaGridHeaderRow.resx">
+      <DependentUpon>DunaGridHeaderRow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="components\DunaHScrollBar.resx">
       <DependentUpon>DunaHScrollBar.cs</DependentUpon>
     </EmbeddedResource>
