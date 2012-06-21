@@ -26,11 +26,21 @@ vlastnosti:
   
 inspirace:
 
-free c#   http://www.codeproject.com/Articles/14674/Generic-DataGridView-V2-0  
-free c++  http://www.codeproject.com/Articles/459/Smart-Grid
-free c#   http://sourcegrid.codeplex.com/
-comm $899 http://www.devexpress.com/Products/NET/Controls/WinForms/Grid/
-comm $995 http://www.infragistics.com/dotnet/netadvantage/winforms/wingrid.aspx#Overview
+free c#    http://www.codeproject.com/Articles/14674/Generic-DataGridView-V2-0  
+free c++   http://www.codeproject.com/Articles/459/Smart-Grid
+free c#    http://sourcegrid.codeplex.com/
+comm $899  http://www.devexpress.com/Products/NET/Controls/WinForms/Grid/  XtraGrid
+comm $995  http://www.infragistics.com/dotnet/netadvantage/winforms/wingrid.aspx#Overview
+comm $179  http://www.9rays.net/Tour.aspx?TourID=8 FlyGrid.Net
+comm $1029 http://xceed.com/Grid_WinForms_Demo.html
 
 comm $000 why not use excel? its like datagridview, third party though, i use it and it works out like a charm.. just put Microsoft.office.Interop.Excel
+
+alternativy:
+http://grid-vb-net.suggestsoft.com/
+
+
+googlit:
+datagridview sourcegrid wingrid XtraGrid
+
 	
