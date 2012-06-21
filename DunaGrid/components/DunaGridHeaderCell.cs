@@ -102,7 +102,7 @@ namespace DunaGrid.components
         {
             if (this.visual_state != state.Normal && e.Button == MouseButtons.Left)
             {
-                this.visual_state = state.Normal;
+                this.visual_state = state.Hot;
                 Refresh();
             }
             base.OnMouseUp(e);
@@ -113,6 +113,11 @@ namespace DunaGrid.components
             Normal,
             Hot,
             Pressed
+        }
+
+        private void DunaGridHeaderCell_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
