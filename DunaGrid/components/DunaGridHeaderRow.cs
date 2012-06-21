@@ -34,6 +34,7 @@ namespace DunaGrid.components
         {
             InitializeComponent();
             CreateCells();
+            this.ResizeRedraw = true;
         }
 
         protected void CreateCells()
@@ -56,6 +57,7 @@ namespace DunaGrid.components
                     DunaGridHeaderCell col = new DunaGridHeaderCell();
                     col.Height = this.Height;
                     col.Width = c.Width;
+                    Console.WriteLine(c.Width.ToString());
                     col.Text = c.HeadText;
                     col.Location = new Point(x, 0);
                     this.Controls.Add(col);
@@ -67,6 +69,11 @@ namespace DunaGrid.components
         private void DunaGridHeaderRow_Load(object sender, EventArgs e)
         {
             
+        }
+
+        private void DunaGridHeaderRow_Resize(object sender, EventArgs e)
+        {
+
         }
     }
 }

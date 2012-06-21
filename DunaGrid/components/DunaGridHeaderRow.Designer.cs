@@ -37,6 +37,7 @@
             this.Name = "DunaGridHeaderRow";
             this.Size = new System.Drawing.Size(452, 38);
             this.Load += new System.EventHandler(this.DunaGridHeaderRow_Load);
+            this.Resize += new System.EventHandler(this.DunaGridHeaderRow_Resize);
             this.ResumeLayout(false);
 
         }
