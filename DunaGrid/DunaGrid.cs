@@ -15,7 +15,7 @@ using DunaGrid.formatters;
 
 namespace DunaGrid
 {
-    public partial class DunaGrid : Control
+    public partial class DunaGrid : UserControl
     {
         protected static int MouseWheelScrollLines = SystemInformation.MouseWheelScrollLines; //vytahne z nastaveni windows o kolik radku se ma grid posunout pri posunuti kolecka mysi
 

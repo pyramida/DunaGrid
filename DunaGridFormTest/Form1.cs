@@ -45,7 +45,7 @@ namespace DunaGridFormTest
 
             bs.DataSource = ds.Tables["test_table"];
 
-            /*dunaGrid1.DataSource = bs;
+            dunaGrid1.DataSource = bs;
 
             DunaGrid.formatters.ConditionFormatter cf = new DunaGrid.formatters.ConditionFormatter();
             cf.Condition = new DunaGrid.formatters.Condition(dunaGrid1.Columns[0], DunaGrid.formatters.Operators.equal, 35);
@@ -63,34 +63,7 @@ namespace DunaGridFormTest
             dunaGrid1.Columns[3].Elastic = true;
 
             dunaGrid1.Columns[4].Elastic = true;
-            */
-
-            DunaGrid.columns.ColumnCollection cc = new DunaGrid.columns.ColumnCollection();
-            cc.Add(new DunaGrid.columns.TextColumn("Test"));
-            cc.Add(new DunaGrid.columns.TextColumn("Test B"));
-            cc.Add(new DunaGrid.columns.TextColumn("Test C"));
-            cc.Add(new DunaGrid.columns.TextColumn("Pokus"));
-
-            //cc[2].Elastic = true; //sloupec se bude roztahovat 
-            //cc[2].RatioWidth = 1;
-
-            //cc[1].Elastic = true;
-            //cc[1].MinimalWidth = 50;
-            //cc[1].RatioWidth = 2;
-
-            //cc[3].Elastic = true;
-            //cc[3].RatioWidth = 1;
-
-            cc[0].Width = 150;
-            cc[1].Width = 230;
-            cc[2].Width = 50;
-            cc[3].Width = 110;
-
-            dunaGridHeaderRow1.Columns = cc;
             
-
-            //maly test s radkem
-            //dunaGrid1.Rows[10].Height = 30;
 
         }
 
@@ -106,7 +79,7 @@ namespace DunaGridFormTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dunaGridHeaderRow1.test();
+
         }
     }
 }

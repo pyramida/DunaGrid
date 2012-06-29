@@ -45,6 +45,20 @@ namespace DunaGrid.components
             }
         }
 
+        public bool IsPrevColElastic
+        {
+            get;
+            set;
+        }
+
+        public bool IsElastic
+        {
+            get
+            {
+                return this.linked_column.Elastic;
+            }
+        }
+
         public new int Width
         {
             get
@@ -233,7 +247,7 @@ namespace DunaGrid.components
                         this.mouse_state.setLastLocation(new Point(e.X - delta, e.Y));
                     }
                     //this.Width -= delta;
-                    //this.addWidth(-delta);
+                    if (this.IsPrevColElastic) this.addWidth(-delta);
                 }
                 else
                 {

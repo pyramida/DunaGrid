@@ -13,7 +13,6 @@ namespace DunaGrid.components
     public partial class DunaGridHeaderRow : UserControl
     {
         protected ColumnCollection columns;
-        private MouseState mouse_state = new MouseState();
         private bool disable_elastics=false;
 
         public ColumnCollection Columns 
@@ -65,9 +64,11 @@ namespace DunaGrid.components
             this.Controls.Clear();
 
             int x = 0;
+            int ctr = 0;
 
             if (this.columns != null)
             {
+                bool prev_elastic = false;
                 foreach (IColumn c in this.columns)
                 {
                     DunaGridHeaderCell col = new DunaGridHeaderCell(c);
@@ -76,25 +77,47 @@ namespace DunaGrid.components
                     col.CellResize += new CellResizeEventHandler(col_CellResize);
                     col.CellResizeStart += new CellResizeEventHandler(col_CellResizeStart);
                     col.CellResizeEnd += new CellResizeEventHandler(col_CellResizeEnd);
-                    if (x == 0)
+                    if (ctr == 0)
                     {
                         col.EnableLeftResize = false;
                     }
+                    if (ctr == this.columns.Count - 1 && col.IsElastic)
+                    {
+                        col.EnableRightResize = false;
+                    }
+                    if (prev_elastic)
+                    {
+                        prev_elastic = false;
+                        col.IsPrevColElastic = true;
+                    }
+                    if (col.IsElastic)
+                    {
+                        prev_elastic = true;
+                    }
                     this.Controls.Add(col);
                     x += c.Width;
+                    ctr++;
                 }
             }
         }
 
         void col_CellResizeEnd(object sender, CellResizeEventArgs e)
         {
-            
+            if (this.disable_elastics)
+            {
+                this.disable_elastics = false;
+
+                //spocita nove pomery
+            }
         }
 
         void col_CellResizeStart(object sender, CellResizeEventArgs e)
         {
-            //this.mouse_state.setLastLocation(e.Location);
-            //this.mouse_state.parameters = sender; //preda informaci ktereho sloupce se o tyka
+            DunaGridHeaderCell cell = (DunaGridHeaderCell)sender;
+            if (cell.IsElastic)
+            {
+                this.disable_elastics = true; //tady to tak jednoduchy nebude
+            }
         }
 
         void col_CellResize(object sender, CellResizeEventArgs e)
@@ -117,7 +140,7 @@ namespace DunaGrid.components
 
             DunaGridHeaderCell resized_col = (DunaGridHeaderCell)sender;
 
-            if (e.CellResizeSide == CellResizeEventArgs.ResizeSide.Left) //left je to vzdycky, asi chyba!!!
+            if (e.CellResizeSide == CellResizeEventArgs.ResizeSide.Left)
             {
                 DunaGridHeaderCell prev_resized_col = null; //predchozi
 
@@ -127,13 +150,21 @@ namespace DunaGrid.components
                 {
                     prev_resized_col = (DunaGridHeaderCell)this.Controls[index - 1];
                 }
-                 
-                prev_resized_col.Width -= prev_resized_col.Location.X + prev_resized_col.Width - resized_col.Location.X;
+
+                if (prev_resized_col.IsElastic)
+                {
+
+                }
+                else
+                {
+                    prev_resized_col.Width -= prev_resized_col.Location.X + prev_resized_col.Width - resized_col.Location.X;
+                }
             }
             else
             {
 
             }
+            if (!this.disable_elastics) this.countElasticColumnsWidth();
             this.DeleteColumnGaps();
         }
 
@@ -153,7 +184,7 @@ namespace DunaGrid.components
 
         protected void countElasticColumnsWidth()
         {
-            /*if (this.columns != null)
+            if (this.columns != null)
             {
                 if (this.columns.Count > 0)
                 {
@@ -195,7 +226,7 @@ namespace DunaGrid.components
                         }
                     }
                 }
-            }*/
+            }
         }
 
 
@@ -203,7 +234,7 @@ namespace DunaGrid.components
         protected override void OnResize(EventArgs e)
         {
             countElasticColumnsWidth();
-            setWidthToControls();
+            this.DeleteColumnGaps();
             base.OnResize(e);
         }
 

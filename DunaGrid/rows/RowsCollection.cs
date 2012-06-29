@@ -159,7 +159,17 @@ namespace DunaGrid.rows
 
         public int Count
         {
-            get { return this.data_reader.GetRowsCount(); }
+            get 
+            {
+                if (this.data_reader != null)
+                {
+                    return this.data_reader.GetRowsCount();
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
 
         public bool IsReadOnly //co tohle vlastne dela?
