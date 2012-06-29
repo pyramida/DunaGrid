@@ -49,6 +49,7 @@
     <Compile Include="columns\ColumnContext.cs" />
     <Compile Include="columns\ColumnTypeDelegator.cs" />
     <Compile Include="columns\TextColumn.cs" />
+    <Compile Include="components\CellResizeEventArgs.cs" />
     <Compile Include="components\DunaGridHeaderCell.cs">
       <SubType>UserControl</SubType>
     </Compile>

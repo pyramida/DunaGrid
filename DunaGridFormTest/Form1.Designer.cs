@@ -28,42 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.button1 = new System.Windows.Forms.Button();
             this.dunaGridHeaderRow1 = new DunaGrid.components.DunaGridHeaderRow();
-            this.dunaGrid1 = new DunaGrid.DunaGrid();
             this.SuspendLayout();
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(165, 236);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // dunaGridHeaderRow1
             // 
+            this.dunaGridHeaderRow1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.dunaGridHeaderRow1.Columns = null;
             this.dunaGridHeaderRow1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dunaGridHeaderRow1.Location = new System.Drawing.Point(12, 79);
+            this.dunaGridHeaderRow1.Location = new System.Drawing.Point(0, 0);
             this.dunaGridHeaderRow1.Name = "dunaGridHeaderRow1";
-            this.dunaGridHeaderRow1.RowSelectorWidth = 0;
-            this.dunaGridHeaderRow1.Size = new System.Drawing.Size(452, 28);
-            this.dunaGridHeaderRow1.TabIndex = 1;
-            // 
-            // dunaGrid1
-            // 
-            this.dunaGrid1.AutoColumnGenerator = true;
-            this.dunaGrid1.BackColor = System.Drawing.Color.DarkGray;
-            this.dunaGrid1.CellPadding = new System.Windows.Forms.Padding(3);
-            this.dunaGrid1.DataSource = null;
-            this.dunaGrid1.DefaultRowHeight = 20;
-            this.dunaGrid1.LineColor = System.Drawing.Color.Black;
-            this.dunaGrid1.Location = new System.Drawing.Point(102, 271);
-            this.dunaGrid1.Name = "dunaGrid1";
-            this.dunaGrid1.RowSelectorWidth = 30;
-            this.dunaGrid1.Size = new System.Drawing.Size(302, 223);
-            this.dunaGrid1.TabIndex = 0;
-            this.dunaGrid1.Click += new System.EventHandler(this.dunaGrid1_Click);
+            this.dunaGridHeaderRow1.Size = new System.Drawing.Size(477, 21);
+            this.dunaGridHeaderRow1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(477, 530);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.dunaGridHeaderRow1);
-            this.Controls.Add(this.dunaGrid1);
             this.Name = "Form1";
             this.Text = "DunaGrid Test Form";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -73,8 +68,9 @@
 
         #endregion
 
-        private DunaGrid.DunaGrid dunaGrid1;
         private DunaGrid.components.DunaGridHeaderRow dunaGridHeaderRow1;
+        private System.Windows.Forms.Button button1;
+
 
     }
 }

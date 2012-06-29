@@ -33,6 +33,7 @@ namespace DunaGrid.columns
                 if (value >= this.minwidth)
                 {
                     this.width = value;
+                    OnWidthChange(new EventArgs());
                 }
                 /*else
                 {
@@ -202,6 +203,16 @@ namespace DunaGrid.columns
             set
             {
                 this.ratio_width = value;
+            }
+        }
+
+        public event EventHandler WidthChanged;
+
+        protected virtual void OnWidthChange(EventArgs e)
+        {
+            if (WidthChanged != null)
+            {
+                WidthChanged(this, e);
             }
         }
     }

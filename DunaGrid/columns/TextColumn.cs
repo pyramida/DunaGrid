@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace DunaGrid.columns
 {
-    class TextColumn : AbstractColumn
+    public class TextColumn : AbstractColumn
     {
         /// <summary>
         /// prazdny konstruktor

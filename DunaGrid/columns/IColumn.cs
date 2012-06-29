@@ -8,6 +8,8 @@ namespace DunaGrid.columns
 {
     public interface IColumn
     {
+        event EventHandler WidthChanged;
+
         int Width { get; set; } //sirka bunky
         int MinimalWidth { get; set; } //minimalni sirka bunky
         float RatioWidth { get; set; } 

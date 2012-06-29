@@ -34,6 +34,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.DoubleBuffered = true;
             this.Name = "DunaGridHeaderRow";
             this.Size = new System.Drawing.Size(452, 38);
             this.Load += new System.EventHandler(this.DunaGridHeaderRow_Load);
@@ -42,5 +44,6 @@
         }
 
         #endregion
+
     }
 }
