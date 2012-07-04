@@ -108,7 +108,16 @@ namespace DunaGrid.components
             }
             else
             {
-                Rectangle r = new Rectangle(this.ClientRectangle.Location.X-2, this.ClientRectangle.Location.Y, this.ClientRectangle.Width + 4, this.Height);
+                Rectangle r;
+                if (this.Orientation == Orientation.Horizontal)
+                {
+                    r = new Rectangle(this.ClientRectangle.Location.X - 2, this.ClientRectangle.Location.Y, this.ClientRectangle.Width + 4, this.Height);
+                }
+                else
+                {
+                    r = new Rectangle(this.ClientRectangle.Location.X, this.ClientRectangle.Location.Y - 2, this.ClientRectangle.Width, this.Height + 4);
+                }
+                
                 switch (this.visual_state)
                 {
                     case state.Pressed:
@@ -118,12 +127,22 @@ namespace DunaGrid.components
                         ControlPaint.DrawButton(e.Graphics, r, ButtonState.Inactive);
                         if (this.PositionInRow != cellPosition.first)
                         {
-                            ControlPaint.DrawBorder3D(e.Graphics, 0, 3, 1, this.Height - 6, Border3DStyle.Etched, Border3DSide.Right);
+                            if (this.Orientation == Orientation.Horizontal)
+                            {
+                                ControlPaint.DrawBorder3D(e.Graphics, 0, 3, 1, this.Height - 6, Border3DStyle.Etched, Border3DSide.Right);
+                            }
                         }
 
                         if (this.PositionInRow != cellPosition.last)
                         {
-                            ControlPaint.DrawBorder3D(e.Graphics, this.Width, 3, 1, this.Height - 6, Border3DStyle.Etched, Border3DSide.Right);
+                            if (this.Orientation == Orientation.Horizontal)
+                            {
+                                ControlPaint.DrawBorder3D(e.Graphics, this.Width, 3, 1, this.Height - 6, Border3DStyle.Etched, Border3DSide.Right);
+                            }
+                            else
+                            {
+                                ControlPaint.DrawBorder3D(e.Graphics, 3, this.Height-1, this.Width - 6, 1, Border3DStyle.Etched, Border3DSide.Bottom);
+                            }
                         }
 
                         break;

@@ -56,6 +56,12 @@
       <DependentUpon>BaseGrid.cs</DependentUpon>
     </Compile>
     <Compile Include="components\CellResizeEventArgs.cs" />
+    <Compile Include="components\DunaGridAllSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DunaGridAllSelector.Designer.cs">
+      <DependentUpon>DunaGridAllSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\DunaGridHeaderCell.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -119,8 +125,8 @@
     <EmbeddedResource Include="components\AbstractSystemHeader.resx">
       <DependentUpon>AbstractSystemHeader.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="components\BaseGrid.resx">
-      <DependentUpon>BaseGrid.cs</DependentUpon>
+    <EmbeddedResource Include="components\DunaGridAllSelector.resx">
+      <DependentUpon>DunaGridAllSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="components\DunaGridHeaderCell.resx">
       <DependentUpon>DunaGridHeaderCell.cs</DependentUpon>

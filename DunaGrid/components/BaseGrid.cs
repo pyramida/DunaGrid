@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -41,15 +41,14 @@ namespace DunaGrid.components
             //vykresli bunky
             GraphicsContext gc = new GraphicsContext();
             gc.Graphics = e.Graphics;
-
             int y = 0;
             for (int i = 0; i < this.Rows.Count && y < this.ClientSize.Height; i++)
             {
                 IRow radek = this.Rows[i];
                 int row_height = radek.Height;
 
-                y += row_height;
-                gc.Graphics.SetClip(new Rectangle(0, 0, this.Width, row_height));
+                y += row_height + 1;
+                gc.Graphics.SetClip(new Rectangle(0, 0, this.Width, row_height + 1));
 
                 /*IFormatter formatter = this.formatters.getMatchFormatter(radek);
                 radek.Formatter = formatter;*/
@@ -58,9 +57,9 @@ namespace DunaGrid.components
 
                 gc.Graphics.ResetClip();
 
-                gc.Graphics.DrawLine(new Pen(Color.DarkGray), new Point(0, radek.Height-2), new Point(this.Width, radek.Height-2));
+                gc.Graphics.DrawLine(new Pen(Color.DarkGray), new Point(0, radek.Height - 1), new Point(this.Width, radek.Height - 1));
 
-                gc.Graphics.TranslateTransform(0, row_height);
+                gc.Graphics.TranslateTransform(0, row_height + 1);
             }
 
             gc.Graphics.ResetTransform();

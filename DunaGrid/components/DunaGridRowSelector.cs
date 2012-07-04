@@ -39,7 +39,7 @@ namespace DunaGrid.components
             }
             else
             {
-                base.SetBoundsCore(x, y, width, this.Row.Height, specified);
+                base.SetBoundsCore(x, y, width, this.Row.Height + 1, specified);
             }
         }
         

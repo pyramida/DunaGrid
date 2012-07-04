@@ -104,6 +104,7 @@ namespace DunaGrid.components
                     {
                         prev_elastic = true;
                     }
+                    col.Orientation = Orientation.Horizontal;
                     this.Controls.Add(col);
                     x += c.Width;
                     ctr++;

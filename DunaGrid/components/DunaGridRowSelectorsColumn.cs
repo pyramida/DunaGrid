@@ -44,16 +44,30 @@ namespace DunaGrid.components
 
             int y = 0;
 
+            int ctr = 0;
+
             for (int i=0; i<this.Rows.Count; i++)
             {
                 IRow r = this.Rows[i];
                 DunaGridRowSelector sel = new DunaGridRowSelector(r);
                 sel.Location = new Point(0, y);
                 sel.Width = this.Width;
+                sel.Orientation = Orientation.Vertical;
+
+                if (ctr >= 0)
+                {
+                    sel.PositionInRow = AbstractSystemHeader.cellPosition.middle;
+                }
+                else
+                {
+                    sel.PositionInRow = AbstractSystemHeader.cellPosition.first;
+                }
 
                 this.Controls.Add(sel);
 
-                y += r.Height;
+                y += r.Height + 1;
+
+                ctr++;
 
                 if (y > this.Height) break;
             }

@@ -70,6 +70,7 @@ namespace DunaGrid
         private DunaGridHeaderRow dunaGridHeaderRow1;
         private DunaGridRowSelectorsColumn dunaGridRowSelectorsColumn1;
         private BaseGrid baseGrid1;
+        private DunaGridAllSelector dunaGridAllSelector1;
 
         protected Color line_color = Color.Black;
 
@@ -219,10 +220,11 @@ namespace DunaGrid
         private void InitializeComponent()
         {
             this.vscrollbar = new System.Windows.Forms.VScrollBar();
+            this.dunaGridAllSelector1 = new DunaGrid.components.DunaGridAllSelector();
+            this.baseGrid1 = new DunaGrid.components.BaseGrid();
             this.dunaGridRowSelectorsColumn1 = new DunaGrid.components.DunaGridRowSelectorsColumn();
             this.dunaGridHeaderRow1 = new DunaGrid.components.DunaGridHeaderRow();
             this.hscrollbar = new DunaGrid.components.DunaHScrollBar();
-            this.baseGrid1 = new DunaGrid.components.BaseGrid();
             this.SuspendLayout();
             // 
             // vscrollbar
@@ -233,6 +235,24 @@ namespace DunaGrid
             this.vscrollbar.Size = new System.Drawing.Size(17, 377);
             this.vscrollbar.TabIndex = 0;
             this.vscrollbar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrollbar_Scroll);
+            // 
+            // dunaGridAllSelector1
+            // 
+            this.dunaGridAllSelector1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dunaGridAllSelector1.Location = new System.Drawing.Point(0, 0);
+            this.dunaGridAllSelector1.Name = "dunaGridAllSelector1";
+            this.dunaGridAllSelector1.Size = new System.Drawing.Size(27, 28);
+            this.dunaGridAllSelector1.TabIndex = 5;
+            // 
+            // baseGrid1
+            // 
+            this.baseGrid1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.baseGrid1.Columns = null;
+            this.baseGrid1.Location = new System.Drawing.Point(89, 63);
+            this.baseGrid1.Name = "baseGrid1";
+            this.baseGrid1.Rows = null;
+            this.baseGrid1.Size = new System.Drawing.Size(429, 265);
+            this.baseGrid1.TabIndex = 4;
             // 
             // dunaGridRowSelectorsColumn1
             // 
@@ -250,6 +270,7 @@ namespace DunaGrid
             this.dunaGridHeaderRow1.Name = "dunaGridHeaderRow1";
             this.dunaGridHeaderRow1.Size = new System.Drawing.Size(575, 25);
             this.dunaGridHeaderRow1.TabIndex = 2;
+            this.dunaGridHeaderRow1.Visible = false;
             // 
             // hscrollbar
             // 
@@ -267,17 +288,10 @@ namespace DunaGrid
             this.hscrollbar.Value = 0;
             this.hscrollbar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrollbar_Scroll);
             // 
-            // baseGrid1
-            // 
-            this.baseGrid1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.baseGrid1.Location = new System.Drawing.Point(89, 63);
-            this.baseGrid1.Name = "baseGrid1";
-            this.baseGrid1.Size = new System.Drawing.Size(429, 265);
-            this.baseGrid1.TabIndex = 4;
-            // 
             // DunaGridView
             // 
             this.BackColor = System.Drawing.Color.DarkGray;
+            this.Controls.Add(this.dunaGridAllSelector1);
             this.Controls.Add(this.baseGrid1);
             this.Controls.Add(this.dunaGridRowSelectorsColumn1);
             this.Controls.Add(this.dunaGridHeaderRow1);
@@ -285,6 +299,7 @@ namespace DunaGrid
             this.Controls.Add(this.hscrollbar);
             this.Name = "DunaGridView";
             this.Size = new System.Drawing.Size(612, 394);
+            this.Load += new System.EventHandler(this.DunaGridView_Load);
             this.ResumeLayout(false);
 
         }
@@ -394,93 +409,6 @@ namespace DunaGrid
         }
 
         #region Vykreslovani
-        /// <summary>
-        /// Vykresleni gridu
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            return;
-            int sirka_celeho_gridu = this.sirka_rowselectoru + 1;
-
-            //vykresli hlavicky sloupcu
-            GraphicsContext gc = new GraphicsContext();
-            gc.Graphics = e.Graphics;
-
-            gc.Graphics.TranslateTransform(-hscrollbar.Value, 0);
-
-            GraphicsState gs = gc.Graphics.Save();
-
-            gc.Graphics.TranslateTransform(this.sirka_rowselectoru + 1, 0);
-
-            if (!this.disable_elastics) this.countWidthForElasticColumn();
-
-            foreach (IColumn c in this.columns)
-            {
-                gc.Graphics.SetClip(new Rectangle(0,0, c.Width, this.vyska_hlavicky));
-                c.renderHead(gc, new ColumnContext(this.vyska_hlavicky, CellRenderState.Normal, new OrderRule())); // zatim pouze testovaci (velikost radku tu ve finale asi nebude)
-                gc.Graphics.TranslateTransform(c.Width + 1, 0);
-                sirka_celeho_gridu += c.Width + 1;
-            }
-
-            gc.Graphics.Restore(gs);
-
-            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(0, this.vyska_hlavicky), new Point(sirka_celeho_gridu, this.vyska_hlavicky)); //TODO: konstanta (vyska hlavicky)
-
-            gc.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(hscrollbar.Value, 0, this.sirka_rowselectoru, this.vyska_hlavicky));
-
-            gc.Graphics.TranslateTransform(0, this.vyska_hlavicky + 1);
-
-            //vykresli jednotlive radky
-            int y = 0;
-            for (int i = vscrollbar.Value; i < this.rows.Count && y<this.ClientSize.Height; i++)
-            {
-                IRow radek = this.rows[i];
-                int row_height = radek.Height;
-
-                y += row_height + 1;
-                gc.Graphics.SetClip(new Rectangle(0, 0, sirka_celeho_gridu, row_height));
-
-                /*IFormatter formatter = this.formatters.getMatchFormatter(radek);
-                radek.Formatter = formatter;*/
-
-                gc.Graphics.TranslateTransform(this.sirka_rowselectoru + 1, 0);
-
-                radek.render(gc, this.columns);
-
-                gc.Graphics.TranslateTransform(-this.sirka_rowselectoru - 1 + hscrollbar.Value, 0);
-
-                //vykresli RowSelector
-                gc.Graphics.SetClip(new Rectangle(0,0, this.sirka_rowselectoru, radek.Height));
-                radek.renderRowSelector(gc);
-
-                gc.Graphics.TranslateTransform(-hscrollbar.Value, 0);
-
-                gc.Graphics.ResetClip();
-
-                gc.Graphics.DrawLine(new Pen(this.line_color), new Point(0, radek.Height), new Point(sirka_celeho_gridu, radek.Height));
-
-                gc.Graphics.TranslateTransform(0, row_height + 1);
-            }
-
-            gc.Graphics.ResetTransform();
-
-            gc.Graphics.DrawLine(new Pen(this.line_color), new Point(this.sirka_rowselectoru, 0), new Point(this.sirka_rowselectoru, this.ClientSize.Height));
-
-            gc.Graphics.TranslateTransform(-hscrollbar.Value + this.sirka_rowselectoru + 1, 0);
-
-            int x=0;
-
-            foreach (IColumn c in this.columns)
-            {
-                x += c.Width+1;
-                if (x - hscrollbar.Value > 0) gc.Graphics.DrawLine(new Pen(this.line_color), new Point(x, 0), new Point(x, this.ClientSize.Height));
-            }
-
-            base.OnPaint(e);
-        }
-
         protected void countWidthForElasticColumn()
         {
             int sirka_neelastickych = this.sirka_rowselectoru + 1; //sirka sedych obdelniku pred radkem
@@ -747,6 +675,10 @@ namespace DunaGrid
             dunaGridRowSelectorsColumn1.Location = new Point(0, dunaGridHeaderRow1.Height);
             dunaGridRowSelectorsColumn1.Height = this.ClientSize.Height - dunaGridHeaderRow1.Height - hscrollbar.Height;
 
+            dunaGridAllSelector1.Width = dunaGridRowSelectorsColumn1.Width;
+            dunaGridAllSelector1.Height = dunaGridHeaderRow1.Height;
+            dunaGridAllSelector1.Location = new Point(0, 0);
+
             //resize basegridu
             baseGrid1.Location = new Point(dunaGridRowSelectorsColumn1.Width, dunaGridHeaderRow1.Height);
             baseGrid1.Size = new Size(this.ClientSize.Width - dunaGridRowSelectorsColumn1.Width - vscrollbar.Width, this.ClientSize.Height - dunaGridHeaderRow1.Height - hscrollbar.Height);
@@ -754,15 +686,6 @@ namespace DunaGrid
             base.OnResize(e);
         }
         
-        /// <summary>
-        /// vykresleni pozadi
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            base.OnPaintBackground(e);
-        }
-
         protected void hscrollbar_Scroll(object sender, ScrollEventArgs e)
         {
             Refresh();
@@ -782,5 +705,10 @@ namespace DunaGrid
         }
 
         #endregion
+
+        private void DunaGridView_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
