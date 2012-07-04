@@ -63,6 +63,7 @@ namespace DunaGridFormTest
             dunaGrid1.Columns[3].Elastic = true;
 
             dunaGrid1.Columns[4].Elastic = true;
+           
             
 
         }

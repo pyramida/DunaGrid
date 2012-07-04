@@ -17,7 +17,7 @@ namespace DunaGrid.columns
         string Name { get; set; } //vnitrni pojmenovani sloupce
         bool Visible { get; set; } //je sloupec viditelny?
         bool ReadOnly { get; set; } //je sloupec jenom pro cteni?
-        DunaGrid ParentGrid { get; set; } //odkaz na grid, ve kterem se sloupec nachazi
+        DunaGridView ParentGrid { get; set; } //odkaz na grid, ve kterem se sloupec nachazi
         int DataSourceColumnIndex { set; get; } //cislo sloupce v datovem zdroji (od nuly)
         bool Elastic { set; get; }
 

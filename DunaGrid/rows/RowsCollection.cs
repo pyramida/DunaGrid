@@ -12,7 +12,7 @@ namespace DunaGrid.rows
     public class RowsCollection : IList<IRow>
     {
         protected IDataReader data_reader = null;
-        protected DunaGrid parent;
+        protected DunaGridView parent;
         protected RowHeightCollection rows_height = new RowHeightCollection();
 
         public IDataReader DataReader
@@ -27,13 +27,13 @@ namespace DunaGrid.rows
             }
         }
 
-        public RowsCollection(DunaGrid parent_grid, IDataReader dr)
+        public RowsCollection(DunaGridView parent_grid, IDataReader dr)
         {
             this.data_reader = dr;
             this.parent = parent_grid;
         }
 
-        public RowsCollection(DunaGrid parent_grid)
+        public RowsCollection(DunaGridView parent_grid)
         {
             this.parent = parent_grid;
         }
@@ -129,7 +129,7 @@ namespace DunaGrid.rows
             }
         }
 
-        public DunaGrid Parent
+        public DunaGridView Parent
         {
             get
             {

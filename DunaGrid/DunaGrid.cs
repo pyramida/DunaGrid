@@ -15,7 +15,7 @@ using DunaGrid.formatters;
 
 namespace DunaGrid
 {
-    public partial class DunaGrid : UserControl
+    public class DunaGridView : UserControl
     {
         protected static int MouseWheelScrollLines = SystemInformation.MouseWheelScrollLines; //vytahne z nastaveni windows o kolik radku se ma grid posunout pri posunuti kolecka mysi
 
@@ -35,12 +35,12 @@ namespace DunaGrid
         /// <summary>
         /// vertikalni scrollbar
         /// </summary>
-        protected VScrollBar vscrollbar = new VScrollBar();
+        protected VScrollBar vscrollbar;
 
         /// <summary>
         /// horizontalni scrollbar
         /// </summary>
-        protected DunaHScrollBar hscrollbar = new DunaHScrollBar();
+        protected DunaHScrollBar hscrollbar;
 
         /// <summary>
         /// obsahuje vsechny dostupne DataReadery
@@ -67,6 +67,9 @@ namespace DunaGrid
         protected ColumnCollection columns = new ColumnCollection();
 
         protected FormatterCollection formatters = new FormatterCollection();
+        private DunaGridHeaderRow dunaGridHeaderRow1;
+        private DunaGridRowSelectorsColumn dunaGridRowSelectorsColumn1;
+        private BaseGrid baseGrid1;
 
         protected Color line_color = Color.Black;
 
@@ -99,6 +102,10 @@ namespace DunaGrid
                 this.setDataReader();
                 this.generateColumns();
                 this.setScrollBars();
+
+                //vhodne misto?
+                baseGrid1.Columns = this.Columns;
+                baseGrid1.Rows = this.Rows;
             }
         }
 
@@ -192,9 +199,15 @@ namespace DunaGrid
 
         #region Kontruktory
 
-        public DunaGrid()
+        public DunaGridView()
         {
-            this.InicializeComponent();
+            this.InitializeComponent();
+            this.DoubleBuffered = true;
+            this.ResizeRedraw = true;
+
+            //prida datareadery do kolekce
+            this.data_readers.Add(new BindingSourceDataReader(this.data_readers));
+
             rows = new RowsCollection(this);
         }
 
@@ -203,25 +216,77 @@ namespace DunaGrid
         /// <summary>
         /// prida scrollbary eventuelne dalsi potrebne komponenty
         /// </summary>
-        protected void InicializeComponent()
+        private void InitializeComponent()
         {
-            this.BackColor = Color.DarkGray;
-            vscrollbar.Dock = DockStyle.Right;
-            this.Controls.Add(vscrollbar);
-            hscrollbar.Height = 17;
-            hscrollbar.NavigateBarWidth = 120;
-            hscrollbar.RightMargin = vscrollbar.Width;
-            hscrollbar.Dock = DockStyle.Bottom;
-            hscrollbar.Scroll +=new ScrollEventHandler(hscrollbar_Scroll);
-            vscrollbar.Scroll += new ScrollEventHandler(hscrollbar_Scroll);
+            this.vscrollbar = new System.Windows.Forms.VScrollBar();
+            this.dunaGridRowSelectorsColumn1 = new DunaGrid.components.DunaGridRowSelectorsColumn();
+            this.dunaGridHeaderRow1 = new DunaGrid.components.DunaGridHeaderRow();
+            this.hscrollbar = new DunaGrid.components.DunaHScrollBar();
+            this.baseGrid1 = new DunaGrid.components.BaseGrid();
+            this.SuspendLayout();
+            // 
+            // vscrollbar
+            // 
+            this.vscrollbar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vscrollbar.Location = new System.Drawing.Point(595, 0);
+            this.vscrollbar.Name = "vscrollbar";
+            this.vscrollbar.Size = new System.Drawing.Size(17, 377);
+            this.vscrollbar.TabIndex = 0;
+            this.vscrollbar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrollbar_Scroll);
+            // 
+            // dunaGridRowSelectorsColumn1
+            // 
+            this.dunaGridRowSelectorsColumn1.Location = new System.Drawing.Point(0, 17);
+            this.dunaGridRowSelectorsColumn1.Name = "dunaGridRowSelectorsColumn1";
+            this.dunaGridRowSelectorsColumn1.Rows = null;
+            this.dunaGridRowSelectorsColumn1.Size = new System.Drawing.Size(27, 360);
+            this.dunaGridRowSelectorsColumn1.TabIndex = 3;
+            // 
+            // dunaGridHeaderRow1
+            // 
+            this.dunaGridHeaderRow1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.dunaGridHeaderRow1.Columns = null;
+            this.dunaGridHeaderRow1.Location = new System.Drawing.Point(33, 3);
+            this.dunaGridHeaderRow1.Name = "dunaGridHeaderRow1";
+            this.dunaGridHeaderRow1.Size = new System.Drawing.Size(575, 25);
+            this.dunaGridHeaderRow1.TabIndex = 2;
+            // 
+            // hscrollbar
+            // 
+            this.hscrollbar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.hscrollbar.LargeChange = 10;
+            this.hscrollbar.Location = new System.Drawing.Point(0, 377);
+            this.hscrollbar.MaximumValue = 100;
+            this.hscrollbar.MinimumValue = 0;
+            this.hscrollbar.Name = "hscrollbar";
+            this.hscrollbar.NavigateBarWidth = 120;
+            this.hscrollbar.RightMargin = 17;
+            this.hscrollbar.Size = new System.Drawing.Size(612, 17);
+            this.hscrollbar.SmallChange = 1;
+            this.hscrollbar.TabIndex = 1;
+            this.hscrollbar.Value = 0;
+            this.hscrollbar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrollbar_Scroll);
+            // 
+            // baseGrid1
+            // 
+            this.baseGrid1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.baseGrid1.Location = new System.Drawing.Point(89, 63);
+            this.baseGrid1.Name = "baseGrid1";
+            this.baseGrid1.Size = new System.Drawing.Size(429, 265);
+            this.baseGrid1.TabIndex = 4;
+            // 
+            // DunaGridView
+            // 
+            this.BackColor = System.Drawing.Color.DarkGray;
+            this.Controls.Add(this.baseGrid1);
+            this.Controls.Add(this.dunaGridRowSelectorsColumn1);
+            this.Controls.Add(this.dunaGridHeaderRow1);
+            this.Controls.Add(this.vscrollbar);
+            this.Controls.Add(this.hscrollbar);
+            this.Name = "DunaGridView";
+            this.Size = new System.Drawing.Size(612, 394);
+            this.ResumeLayout(false);
 
-            this.DoubleBuffered = true;
-            this.ResizeRedraw = true;
-
-            this.Controls.Add(hscrollbar);
-
-            //prida datareadery do kolekce
-            this.data_readers.Add(new BindingSourceDataReader(this.data_readers));
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -279,7 +344,9 @@ namespace DunaGrid
             if (this.autocolumn && this.actual_datareader!=null)
             {
                 this.columns = this.actual_datareader.GetColumns();
+                this.dunaGridHeaderRow1.Columns = this.columns;
             }
+            
         }
 
         protected void setScrollBars()
@@ -333,6 +400,8 @@ namespace DunaGrid
         /// <param name="e"></param>
         protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
+            return;
             int sirka_celeho_gridu = this.sirka_rowselectoru + 1;
 
             //vykresli hlavicky sloupcu
@@ -373,8 +442,8 @@ namespace DunaGrid
                 y += row_height + 1;
                 gc.Graphics.SetClip(new Rectangle(0, 0, sirka_celeho_gridu, row_height));
 
-                IFormatter formatter = this.formatters.getMatchFormatter(radek);
-                radek.Formatter = formatter;
+                /*IFormatter formatter = this.formatters.getMatchFormatter(radek);
+                radek.Formatter = formatter;*/
 
                 gc.Graphics.TranslateTransform(this.sirka_rowselectoru + 1, 0);
 
@@ -455,14 +524,14 @@ namespace DunaGrid
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            const int x_tolerance = 2;
+            /*const int x_tolerance = 2;
             const int y_tolerance = 2;
 
-            this.mouse_state.setLastLocation(e.Location);
+            this.mouse_state.setLastLocation(e.Location);*/
 
             base.OnMouseMove(e);
 
-            if (!this.mouse_state.left_down)
+            /*if (!this.mouse_state.left_down)
             {
                 // resize kurzor u RowSelecturu
                 if (this.isBetween(e.Location.X, this.sirka_rowselectoru, x_tolerance))
@@ -562,14 +631,14 @@ namespace DunaGrid
                         if (this.mouse_state.block_left || this.mouse_state.block_right)
                         {
                             return;
-                        }
+                        }*/
 
                         /*if (!this.isBetween(this.mouse_state.last_location.X - this.mouse_state.getDeltaX(), x_pos, x_tolerance))
                         {
                             return;
                         }*/
 
-                        if (c.Elastic)
+                        /*if (c.Elastic)
                         {
                             int index_c = this.columns.IndexOf(c);
                             if (this.columns.Count > index_c + 1)
@@ -614,7 +683,7 @@ namespace DunaGrid
                         Refresh();
                         break;
                 }
-            }
+            }*/
 
         }
 
@@ -632,13 +701,13 @@ namespace DunaGrid
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            this.mouse_state.left_down = true;
+            //this.mouse_state.left_down = true;
             base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            this.mouse_state.left_down = false;
+            /*this.mouse_state.left_down = false;
 
             if (this.disable_elastics)
             {
@@ -664,7 +733,7 @@ namespace DunaGrid
                 }
 
                 Refresh();
-            }
+            }*/
 
             base.OnMouseUp(e);
         }
@@ -672,6 +741,16 @@ namespace DunaGrid
         protected override void OnResize(EventArgs e)
         {
             setScrollBars();
+            dunaGridHeaderRow1.Location = new Point(dunaGridRowSelectorsColumn1.Width, 0);
+            dunaGridHeaderRow1.Width = this.ClientSize.Width - dunaGridRowSelectorsColumn1.Width - vscrollbar.Width;
+
+            dunaGridRowSelectorsColumn1.Location = new Point(0, dunaGridHeaderRow1.Height);
+            dunaGridRowSelectorsColumn1.Height = this.ClientSize.Height - dunaGridHeaderRow1.Height - hscrollbar.Height;
+
+            //resize basegridu
+            baseGrid1.Location = new Point(dunaGridRowSelectorsColumn1.Width, dunaGridHeaderRow1.Height);
+            baseGrid1.Size = new Size(this.ClientSize.Width - dunaGridRowSelectorsColumn1.Width - vscrollbar.Width, this.ClientSize.Height - dunaGridHeaderRow1.Height - hscrollbar.Height);
+
             base.OnResize(e);
         }
         
@@ -687,11 +766,19 @@ namespace DunaGrid
         protected void hscrollbar_Scroll(object sender, ScrollEventArgs e)
         {
             Refresh();
+            SetRowSelectors();
         }
 
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
+        }
+
+        protected void SetRowSelectors()
+        {
+            dunaGridRowSelectorsColumn1.Rows = this.Rows;
+
+
         }
 
         #endregion

@@ -30,7 +30,7 @@ namespace DunaGrid.columns
         /// </summary>
         /// <param name="name">jmeno sloupce</param>
         /// <param name="parent">grid, ve kterem se nachazi</param>
-        public TextColumn(string name, DunaGrid parent)
+        public TextColumn(string name, DunaGridView parent)
         {
             this.column_name = name;
             this.parent = parent;

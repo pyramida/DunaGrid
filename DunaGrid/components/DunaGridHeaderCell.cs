@@ -14,13 +14,12 @@ namespace DunaGrid.components
 {
     public delegate void CellResizeEventHandler(object sender, CellResizeEventArgs e);
 
-    public partial class DunaGridHeaderCell : UserControl
+    public partial class DunaGridHeaderCell : AbstractSystemHeader
     {
         public event CellResizeEventHandler CellResize;
         public event CellResizeEventHandler CellResizeStart;
         public event CellResizeEventHandler CellResizeEnd;
 
-        private state visual_state = state.Normal;
         private bool resize_active = false;
         private IColumn linked_column = null;
         private CellResizeEventArgs.ResizeSide resize_side = 0;
@@ -82,7 +81,7 @@ namespace DunaGrid.components
 
             set
             {
-                this.linked_column.Name = value;
+                //this.linked_column.Name = value; - tohle asi neni dobra myslenka
             }
         }
 
@@ -121,52 +120,29 @@ namespace DunaGrid.components
             EnableRightResize = true;
             ResizeTolerance = 5;
             this.ResizeRedraw = true;
+
+            this.HoverAreaPadding = new Padding(this.ResizeTolerance, 0, this.ResizeTolerance, 0);
         }
 
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         {
-            base.SetBoundsCore(x, y, this.linked_column.Width, height, specified);
+            if (this.linked_column == null)
+            {
+                base.SetBoundsCore(x, y, width, height, specified);
+            }
+            else
+            {
+                base.SetBoundsCore(x, y, this.Width, height, specified);
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (Application.RenderWithVisualStyles)
-            {
-                VisualStyleRenderer vsr;
-
-                switch (this.visual_state)
-                {
-                    case state.Hot:
-                        vsr = new VisualStyleRenderer(VisualStyleElement.Header.Item.Hot);
-                        break;
-                    case state.Pressed:
-                        vsr = new VisualStyleRenderer(VisualStyleElement.Header.Item.Pressed);
-                        break;
-                    default:
-                        vsr = new VisualStyleRenderer(VisualStyleElement.Header.Item.Normal);
-                        break;
-                }
-
-
-                vsr.DrawBackground(e.Graphics, this.ClientRectangle);
-
-            }
-            else
-            {
-                switch (this.visual_state)
-                {
-                    case state.Pressed:
-                        ControlPaint.DrawButton(e.Graphics, this.ClientRectangle, ButtonState.Pushed | ButtonState.Flat);
-                        break;
-                    default:
-                        ControlPaint.DrawButton(e.Graphics, this.ClientRectangle, ButtonState.Inactive);
-                        break;
-                }
-            }
-
-            //vykresli text
-            TextRenderer.DrawText(e.Graphics, this.Text, this.Font, this.ClientRectangle, Color.Black, TextFormatFlags.LeftAndRightPadding | TextFormatFlags.VerticalCenter);
             base.OnPaint(e);
+
+             //vykresli text
+            TextRenderer.DrawText(e.Graphics, this.Text, this.Font, this.ClientRectangle, Color.Black, TextFormatFlags.LeftAndRightPadding | TextFormatFlags.VerticalCenter);
+            
             
         }
 
@@ -256,25 +232,15 @@ namespace DunaGrid.components
                 }
                 OnCellResize(new CellResizeEventArgs(e, this.resize_side)); //vyvola udalost
             }
-            else
-            {
-                if (IsInResizeArea(e.Location))
-                {
-                    this.visual_state = state.Normal;
-                    Refresh();
-                    this.Cursor = Cursors.VSplit;
-                }
-                else
-                {
-                    this.visual_state = state.Hot;
-                    Refresh();
-                    this.Cursor = Cursors.Arrow;
-                }
-            }
 
             base.OnMouseMove(e);
         }
 
+        /// <summary>
+        /// URCENO NA SMAZANI
+        /// </summary>
+        /// <param name="mouse_position"></param>
+        /// <returns></returns>
         protected bool IsInResizeArea(Point mouse_position)
         {
             if (this.EnableLeftResize && mouse_position.X < this.ResizeTolerance)
@@ -291,22 +257,11 @@ namespace DunaGrid.components
             }
         }
 
-        protected override void OnMouseLeave(EventArgs e)
-        {
-            if (this.visual_state != state.Normal)
-            {
-                this.visual_state = state.Normal;
-                Refresh();
-            }
-            this.Cursor = Cursors.Arrow;
-            base.OnMouseLeave(e);
-        }
-
         protected override void OnMouseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                if (this.IsInResizeArea(e.Location))
+                if (!this.IsInHoverArea(e.Location))
                 {
                     this.resize_active = true;
                     //zjisti stranu
@@ -320,23 +275,12 @@ namespace DunaGrid.components
                     }
                     this.OnCellResizeStart(new CellResizeEventArgs(e, this.resize_side));
                 }
-                else if (this.visual_state != state.Pressed)
-                {
-                    this.visual_state = state.Pressed;
-                    Refresh();
-                }
             }
             base.OnMouseDown(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            if (this.visual_state != state.Normal && e.Button == MouseButtons.Left)
-            {
-                this.visual_state = state.Normal;
-                Refresh();
-            }
-
             if (this.resize_active)
             {
                 this.OnCellResizeEnd(new CellResizeEventArgs(e, this.resize_side));
@@ -351,13 +295,6 @@ namespace DunaGrid.components
             this.SetBoundsCore(this.Location.X, this.Location.Y, this.Width, this.Height, BoundsSpecified.Width | BoundsSpecified.Height);
 
             base.Refresh();
-        }
-
-        enum state
-        {
-            Normal,
-            Hot,
-            Pressed
         }
 
         private void DunaGridHeaderCell_Load(object sender, EventArgs e)

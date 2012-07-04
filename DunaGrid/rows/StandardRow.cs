@@ -83,7 +83,7 @@ namespace DunaGrid.rows
             {
                 c.renderCellBackground(g);
                 c.renderCell(g, this.cells_values[c.Name]);
-                g.Graphics.TranslateTransform(c.Width + 1, 0);
+                g.Graphics.TranslateTransform(c.Width, 0);
             }
 
             g.Graphics.Restore(gs);

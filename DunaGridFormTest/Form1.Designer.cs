@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dunaGrid1 = new DunaGrid.DunaGrid();
+            this.dunaGrid1 = new DunaGrid.DunaGridView();
             this.SuspendLayout();
             // 
             // dunaGrid1
@@ -61,7 +61,7 @@
 
         #endregion
 
-        private DunaGrid.DunaGrid dunaGrid1;
+        private DunaGrid.DunaGridView dunaGrid1;
 
 
 

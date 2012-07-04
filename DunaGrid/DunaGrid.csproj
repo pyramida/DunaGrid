@@ -49,6 +49,12 @@
     <Compile Include="columns\ColumnContext.cs" />
     <Compile Include="columns\ColumnTypeDelegator.cs" />
     <Compile Include="columns\TextColumn.cs" />
+    <Compile Include="components\BaseGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\BaseGrid.Designer.cs">
+      <DependentUpon>BaseGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\CellResizeEventArgs.cs" />
     <Compile Include="components\DunaGridHeaderCell.cs">
       <SubType>UserControl</SubType>
@@ -61,6 +67,24 @@
     </Compile>
     <Compile Include="components\DunaGridHeaderRow.Designer.cs">
       <DependentUpon>DunaGridHeaderRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\AbstractSystemHeader.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\AbstractSystemHeader.Designer.cs">
+      <DependentUpon>AbstractSystemHeader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\DunaGridRowSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DunaGridRowSelector.Designer.cs">
+      <DependentUpon>DunaGridRowSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\DunaGridRowSelectorsColumn.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\DunaGridRowSelectorsColumn.Designer.cs">
+      <DependentUpon>DunaGridRowSelectorsColumn.cs</DependentUpon>
     </Compile>
     <Compile Include="formatters\Condition.cs" />
     <Compile Include="formatters\ConditionFormatter.cs" />
@@ -92,14 +116,29 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="components\AbstractSystemHeader.resx">
+      <DependentUpon>AbstractSystemHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\BaseGrid.resx">
+      <DependentUpon>BaseGrid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="components\DunaGridHeaderCell.resx">
       <DependentUpon>DunaGridHeaderCell.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="components\DunaGridHeaderRow.resx">
       <DependentUpon>DunaGridHeaderRow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="components\DunaGridRowSelector.resx">
+      <DependentUpon>DunaGridRowSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\DunaGridRowSelectorsColumn.resx">
+      <DependentUpon>DunaGridRowSelectorsColumn.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="components\DunaHScrollBar.resx">
       <DependentUpon>DunaHScrollBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DunaGrid.resx">
+      <DependentUpon>DunaGrid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

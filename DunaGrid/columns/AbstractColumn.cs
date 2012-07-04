@@ -16,7 +16,7 @@ namespace DunaGrid.columns
         protected string column_name = null;
         protected bool visible = true;
         protected bool read_only = false;
-        protected DunaGrid parent = null;
+        protected DunaGridView parent = null;
         protected int datasource_column_index = 0;
         protected bool fill_column = false;
         protected string name = "";
@@ -72,7 +72,7 @@ namespace DunaGrid.columns
             }
         }
 
-        public DunaGrid ParentGrid
+        public DunaGridView ParentGrid
         {
             get
             {

@@ -80,11 +80,21 @@ namespace DunaGrid.components
                     if (ctr == 0)
                     {
                         col.EnableLeftResize = false;
+                        col.PositionInRow = AbstractSystemHeader.cellPosition.first;
                     }
-                    if (ctr == this.columns.Count - 1 && col.IsElastic)
+                    else if (ctr == this.columns.Count - 1)
                     {
-                        col.EnableRightResize = false;
+                        col.PositionInRow = AbstractSystemHeader.cellPosition.last;
+                        if (col.IsElastic)
+                        {
+                            col.EnableRightResize = false;
+                        }
                     }
+                    else
+                    {
+                        col.PositionInRow = AbstractSystemHeader.cellPosition.middle;
+                    }
+
                     if (prev_elastic)
                     {
                         prev_elastic = false;
