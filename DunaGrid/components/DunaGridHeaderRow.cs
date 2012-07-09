@@ -57,6 +57,7 @@ namespace DunaGrid.components
             InitializeComponent();
             countElasticColumnsWidth();
             CreateCells();
+            this.ResizeRedraw = true;
         }
 
         protected void CreateCells()
@@ -73,6 +74,7 @@ namespace DunaGrid.components
                 {
                     DunaGridHeaderCell col = new DunaGridHeaderCell(c);
                     col.Height = this.Height;
+                    Console.WriteLine(c.Width.ToString());
                     col.Location = new Point(x, 0);
                     col.CellResize += new CellResizeEventHandler(col_CellResize);
                     col.CellResizeStart += new CellResizeEventHandler(col_CellResizeStart);
@@ -283,6 +285,11 @@ namespace DunaGrid.components
         private void DunaGridHeaderRow_Load(object sender, EventArgs e)
         {
             
+        }
+
+        private void DunaGridHeaderRow_Resize(object sender, EventArgs e)
+        {
+
         }
     }
 }
