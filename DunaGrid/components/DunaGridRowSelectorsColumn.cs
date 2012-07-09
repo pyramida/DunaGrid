@@ -54,7 +54,7 @@ namespace DunaGrid.components
                 sel.Width = this.Width;
                 sel.Orientation = Orientation.Vertical;
 
-                if (ctr >= 0)
+                if (ctr > 0)
                 {
                     sel.PositionInRow = AbstractSystemHeader.cellPosition.middle;
                 }

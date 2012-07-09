@@ -48,11 +48,19 @@ namespace DunaGrid.components
         {
             this.Row = row;
             InitializeComponent();
+            DoubleBuffered = true;
         }
 
         private void DunaGridRowSelector_Load(object sender, EventArgs e)
         {
 
+        }
+
+        protected override void OnClick(EventArgs e)
+        {
+            MessageBox.Show(this.Bounds.ToString());
+            MessageBox.Show(this.Location.ToString());
+            base.OnClick(e);
         }
     }
 }

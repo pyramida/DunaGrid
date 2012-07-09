@@ -270,7 +270,6 @@ namespace DunaGrid
             this.dunaGridHeaderRow1.Name = "dunaGridHeaderRow1";
             this.dunaGridHeaderRow1.Size = new System.Drawing.Size(575, 25);
             this.dunaGridHeaderRow1.TabIndex = 2;
-            this.dunaGridHeaderRow1.Visible = false;
             // 
             // hscrollbar
             // 

@@ -102,8 +102,21 @@ namespace DunaGrid.components
                         break;
                 }
 
+                if (this.Orientation == System.Windows.Forms.Orientation.Horizontal)
+                {
+                    vsr.DrawBackground(e.Graphics, this.ClientRectangle);
+                }
+                else
+                {
+                    Bitmap temp = new Bitmap(this.ClientSize.Height, this.ClientSize.Width); //nebyla by lepsi nejaka cache?
+                    Graphics g = Graphics.FromImage(temp);
 
-                vsr.DrawBackground(e.Graphics, this.ClientRectangle);
+                    vsr.DrawBackground(g, new Rectangle(0, 0, temp.Width, temp.Height));
+
+                    temp.RotateFlip(RotateFlipType.Rotate90FlipX);
+                    
+                    e.Graphics.DrawImage(temp, this.ClientRectangle);
+                }
 
             }
             else
@@ -131,6 +144,10 @@ namespace DunaGrid.components
                             {
                                 ControlPaint.DrawBorder3D(e.Graphics, 0, 3, 1, this.Height - 6, Border3DStyle.Etched, Border3DSide.Right);
                             }
+                            else
+                            {
+                                ControlPaint.DrawBorder3D(e.Graphics, 3, 0, this.Width - 6, 1, Border3DStyle.Etched, Border3DSide.Bottom);
+                            }
                         }
 
                         if (this.PositionInRow != cellPosition.last)
@@ -141,7 +158,7 @@ namespace DunaGrid.components
                             }
                             else
                             {
-                                ControlPaint.DrawBorder3D(e.Graphics, 3, this.Height-1, this.Width - 6, 1, Border3DStyle.Etched, Border3DSide.Bottom);
+                                ControlPaint.DrawBorder3D(e.Graphics, 3, this.Height, this.Width - 6, 1, Border3DStyle.Etched, Border3DSide.Bottom);
                             }
                         }
 

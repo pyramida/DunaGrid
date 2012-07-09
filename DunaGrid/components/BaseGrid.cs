@@ -48,7 +48,7 @@ namespace DunaGrid.components
                 int row_height = radek.Height;
 
                 y += row_height + 1;
-                gc.Graphics.SetClip(new Rectangle(0, 0, this.Width, row_height + 1));
+                gc.Graphics.SetClip(new Rectangle(0, 0, this.Width, row_height));
 
                 /*IFormatter formatter = this.formatters.getMatchFormatter(radek);
                 radek.Formatter = formatter;*/
@@ -57,7 +57,7 @@ namespace DunaGrid.components
 
                 gc.Graphics.ResetClip();
 
-                gc.Graphics.DrawLine(new Pen(Color.DarkGray), new Point(0, radek.Height - 1), new Point(this.Width, radek.Height - 1));
+                gc.Graphics.DrawLine(new Pen(Color.DarkGray), new Point(0, radek.Height), new Point(this.Width, radek.Height));
 
                 gc.Graphics.TranslateTransform(0, row_height + 1);
             }
