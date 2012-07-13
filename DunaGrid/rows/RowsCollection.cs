@@ -14,6 +14,7 @@ namespace DunaGrid.rows
         protected IDataReader data_reader = null;
         protected DunaGridView parent;
         protected RowHeightCollection rows_height = new RowHeightCollection();
+        protected List<int> pinned_rows = new List<int>();
 
         public IDataReader DataReader
         {
@@ -31,11 +32,35 @@ namespace DunaGrid.rows
         {
             this.data_reader = dr;
             this.parent = parent_grid;
+            pripichni();
         }
 
         public RowsCollection(DunaGridView parent_grid)
         {
             this.parent = parent_grid;
+            pripichni();
+        }
+
+        private void pripichni()
+        {
+            pinned_rows.Add(10);
+            pinned_rows.Add(16);
+        }
+
+        /// <summary>
+        /// vraci prispendlene radky!
+        /// </summary>
+        /// <returns></returns>
+        public List<IRow> GetPinnedRows()
+        {
+            List<IRow> rows = new List<IRow>();
+
+            foreach (int index in pinned_rows)
+            {
+                rows.Add(this[index]);
+            }
+
+            return rows;
         }
 
 
@@ -121,6 +146,14 @@ namespace DunaGrid.rows
                 IRow temp = this.data_reader.GetRow(index);
                 temp.parentRowCollection = this;
                 temp.Height = this.getHeight(index);
+                if (this.pinned_rows.Contains(index))
+                {
+                    temp.Pinned = true;
+                }
+                else
+                {
+                    temp.Pinned = false;
+                }
                 return temp;
             }
             set

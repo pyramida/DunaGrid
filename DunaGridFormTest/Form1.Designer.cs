@@ -35,6 +35,7 @@
             // 
             this.dunaGrid1.AutoColumnGenerator = true;
             this.dunaGrid1.BackColor = System.Drawing.Color.DarkGray;
+            this.dunaGrid1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dunaGrid1.CellPadding = new System.Windows.Forms.Padding(3);
             this.dunaGrid1.DataSource = null;
             this.dunaGrid1.DefaultRowHeight = 20;
@@ -43,14 +44,14 @@
             this.dunaGrid1.Location = new System.Drawing.Point(0, 0);
             this.dunaGrid1.Name = "dunaGrid1";
             this.dunaGrid1.RowSelectorWidth = 30;
-            this.dunaGrid1.Size = new System.Drawing.Size(477, 530);
+            this.dunaGrid1.Size = new System.Drawing.Size(675, 530);
             this.dunaGrid1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(477, 530);
+            this.ClientSize = new System.Drawing.Size(675, 530);
             this.Controls.Add(this.dunaGrid1);
             this.Name = "Form1";
             this.Text = "DunaGrid Test Form";

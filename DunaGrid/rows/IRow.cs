@@ -15,6 +15,8 @@ namespace DunaGrid.rows
         int Height { get; set; }
 
         int Index { get; set; }
+
+        bool Pinned { get; set; }
         
         object this[string columnname] { get; set; }
 

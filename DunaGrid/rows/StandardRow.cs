@@ -36,6 +36,12 @@ namespace DunaGrid.rows
             }
         }
 
+        public bool Pinned
+        {
+            get;
+            set;
+        }
+
         public int Height
         {
             get
@@ -54,6 +60,11 @@ namespace DunaGrid.rows
                     }
                 }
             }
+        }
+
+        public StandardRow()
+        {
+            this.Pinned = false;
         }
 
         public void addCell(string columnname, object value)

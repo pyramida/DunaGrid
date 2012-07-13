@@ -55,6 +55,12 @@
     <Compile Include="components\BaseGrid.Designer.cs">
       <DependentUpon>BaseGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="components\BaseGridsContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\BaseGridsContainer.Designer.cs">
+      <DependentUpon>BaseGridsContainer.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\CellResizeEventArgs.cs" />
     <Compile Include="components\DunaGridAllSelector.cs">
       <SubType>UserControl</SubType>
@@ -91,6 +97,21 @@
     </Compile>
     <Compile Include="components\DunaGridRowSelectorsColumn.Designer.cs">
       <DependentUpon>DunaGridRowSelectorsColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\AbstractGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\FilterRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\FilterRow.Designer.cs">
+      <DependentUpon>FilterRow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\PinnedRow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\PinnedRow.Designer.cs">
+      <DependentUpon>PinnedRow.cs</DependentUpon>
     </Compile>
     <Compile Include="formatters\Condition.cs" />
     <Compile Include="formatters\ConditionFormatter.cs" />
@@ -142,6 +163,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="components\DunaHScrollBar.resx">
       <DependentUpon>DunaHScrollBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\FilterRow.resx">
+      <DependentUpon>FilterRow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\PinnedRow.resx">
+      <DependentUpon>PinnedRow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DunaGrid.resx">
       <DependentUpon>DunaGrid.cs</DependentUpon>

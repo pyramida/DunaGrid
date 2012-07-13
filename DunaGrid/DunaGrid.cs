@@ -69,8 +69,8 @@ namespace DunaGrid
         protected FormatterCollection formatters = new FormatterCollection();
         private DunaGridHeaderRow dunaGridHeaderRow1;
         private DunaGridRowSelectorsColumn dunaGridRowSelectorsColumn1;
-        private BaseGrid baseGrid1;
         private DunaGridAllSelector dunaGridAllSelector1;
+        private BaseGridsContainer baseGridsContainer1;
 
         protected Color line_color = Color.Black;
 
@@ -103,10 +103,14 @@ namespace DunaGrid
                 this.setDataReader();
                 this.generateColumns();
                 this.setScrollBars();
+                dunaGridRowSelectorsColumn1.Rows = this.Rows;
 
                 //vhodne misto?
-                baseGrid1.Columns = this.Columns;
-                baseGrid1.Rows = this.Rows;
+                if (baseGridsContainer1.MainGrid.Count > 0)
+                {
+                    baseGridsContainer1.MainGrid[0].Columns = this.Columns;
+                    baseGridsContainer1.MainGrid[0].Rows = this.Rows;
+                }
             }
         }
 
@@ -203,13 +207,20 @@ namespace DunaGrid
         public DunaGridView()
         {
             this.InitializeComponent();
+
+            baseGridsContainer1.Items.Add(new BaseGrid());
+            PinnedRow nr = new PinnedRow();
+            baseGridsContainer1.Items.Add(nr);
+
             this.DoubleBuffered = true;
             this.ResizeRedraw = true;
 
             //prida datareadery do kolekce
             this.data_readers.Add(new BindingSourceDataReader(this.data_readers));
 
-            rows = new RowsCollection(this);
+            this.rows = new RowsCollection(this);
+
+            nr.Rows = rows;
         }
 
         #endregion
@@ -221,10 +232,10 @@ namespace DunaGrid
         {
             this.vscrollbar = new System.Windows.Forms.VScrollBar();
             this.dunaGridAllSelector1 = new DunaGrid.components.DunaGridAllSelector();
-            this.baseGrid1 = new DunaGrid.components.BaseGrid();
             this.dunaGridRowSelectorsColumn1 = new DunaGrid.components.DunaGridRowSelectorsColumn();
             this.dunaGridHeaderRow1 = new DunaGrid.components.DunaGridHeaderRow();
             this.hscrollbar = new DunaGrid.components.DunaHScrollBar();
+            this.baseGridsContainer1 = new DunaGrid.components.BaseGridsContainer();
             this.SuspendLayout();
             // 
             // vscrollbar
@@ -243,16 +254,6 @@ namespace DunaGrid
             this.dunaGridAllSelector1.Name = "dunaGridAllSelector1";
             this.dunaGridAllSelector1.Size = new System.Drawing.Size(27, 28);
             this.dunaGridAllSelector1.TabIndex = 5;
-            // 
-            // baseGrid1
-            // 
-            this.baseGrid1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.baseGrid1.Columns = null;
-            this.baseGrid1.Location = new System.Drawing.Point(89, 63);
-            this.baseGrid1.Name = "baseGrid1";
-            this.baseGrid1.Rows = null;
-            this.baseGrid1.Size = new System.Drawing.Size(429, 265);
-            this.baseGrid1.TabIndex = 4;
             // 
             // dunaGridRowSelectorsColumn1
             // 
@@ -287,11 +288,18 @@ namespace DunaGrid
             this.hscrollbar.Value = 0;
             this.hscrollbar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hscrollbar_Scroll);
             // 
+            // baseGridsContainer1
+            // 
+            this.baseGridsContainer1.Location = new System.Drawing.Point(213, 87);
+            this.baseGridsContainer1.Name = "baseGridsContainer1";
+            this.baseGridsContainer1.Size = new System.Drawing.Size(363, 284);
+            this.baseGridsContainer1.TabIndex = 6;
+            // 
             // DunaGridView
             // 
             this.BackColor = System.Drawing.Color.DarkGray;
+            this.Controls.Add(this.baseGridsContainer1);
             this.Controls.Add(this.dunaGridAllSelector1);
-            this.Controls.Add(this.baseGrid1);
             this.Controls.Add(this.dunaGridRowSelectorsColumn1);
             this.Controls.Add(this.dunaGridHeaderRow1);
             this.Controls.Add(this.vscrollbar);
@@ -359,6 +367,10 @@ namespace DunaGrid
             {
                 this.columns = this.actual_datareader.GetColumns();
                 this.dunaGridHeaderRow1.Columns = this.columns;
+                foreach (AbstractGrid ag in this.baseGridsContainer1.Items)
+                {
+                    ag.Columns = this.columns;
+                }
             }
             
         }
@@ -679,15 +691,16 @@ namespace DunaGrid
             dunaGridAllSelector1.Location = new Point(0, 0);
 
             //resize basegridu
-            baseGrid1.Location = new Point(dunaGridRowSelectorsColumn1.Width, dunaGridHeaderRow1.Height);
-            baseGrid1.Size = new Size(this.ClientSize.Width - dunaGridRowSelectorsColumn1.Width - vscrollbar.Width, this.ClientSize.Height - dunaGridHeaderRow1.Height - hscrollbar.Height);
+            baseGridsContainer1.Location = new Point(dunaGridRowSelectorsColumn1.Width, dunaGridHeaderRow1.Height);
+            baseGridsContainer1.Size = new Size(this.ClientSize.Width - dunaGridRowSelectorsColumn1.Width - vscrollbar.Width, this.ClientSize.Height - dunaGridHeaderRow1.Height - hscrollbar.Height);
 
             base.OnResize(e);
         }
         
         protected void hscrollbar_Scroll(object sender, ScrollEventArgs e)
         {
-            Refresh();
+            //Refresh();
+            this.baseGridsContainer1.MainGrid[0].StartIndex = vscrollbar.Value;
             SetRowSelectors();
         }
 
@@ -698,7 +711,7 @@ namespace DunaGrid
 
         protected void SetRowSelectors()
         {
-            dunaGridRowSelectorsColumn1.Rows = this.Rows;
+            
 
 
         }
