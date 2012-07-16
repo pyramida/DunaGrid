@@ -57,7 +57,7 @@ namespace DunaGrid.rows
 
             foreach (int index in pinned_rows)
             {
-                rows.Add(this[index]);
+                if (this[index]!=null) rows.Add(this[index]);
             }
 
             return rows;
@@ -143,18 +143,25 @@ namespace DunaGrid.rows
         {
             get
             {
-                IRow temp = this.data_reader.GetRow(index);
-                temp.parentRowCollection = this;
-                temp.Height = this.getHeight(index);
-                if (this.pinned_rows.Contains(index))
+                if (this.data_reader != null)
                 {
-                    temp.Pinned = true;
+                    IRow temp = this.data_reader.GetRow(index);
+                    temp.parentRowCollection = this;
+                    temp.Height = this.getHeight(index);
+                    if (this.pinned_rows.Contains(index))
+                    {
+                        temp.Pinned = true;
+                    }
+                    else
+                    {
+                        temp.Pinned = false;
+                    }
+                    return temp;
                 }
                 else
                 {
-                    temp.Pinned = false;
+                    return null;
                 }
-                return temp;
             }
             set
             {

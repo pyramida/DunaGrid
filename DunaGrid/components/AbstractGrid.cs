@@ -63,11 +63,11 @@ namespace DunaGrid.components
                 }
                 else if (this.Position == GridPosition.Top)
                 {
-                    return 1;
+                    return -1;
                 }
                 else
                 {
-                    return -1;
+                    return 1;
                 }
             }
             else
@@ -112,6 +112,25 @@ namespace DunaGrid.components
 
             gc.Graphics.TranslateTransform(0, row_height + 1);
         }
+
+        protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
+        {
+            if (this.AutoSizeMode == GridSizeMode.FullLenght)
+            {
+                base.SetBoundsCore(x, y, width, this.getHeight(), specified);
+            }
+            else
+            {
+                base.SetBoundsCore(x, y, width, height, specified);
+            }
+        }
+
+        protected virtual int getHeight()
+        {
+            return this.Height;
+        }
+
+        public abstract List<IRow> getVisibleRows();
     }
 
     public enum GridPosition

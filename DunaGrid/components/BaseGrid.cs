@@ -62,5 +62,26 @@ namespace DunaGrid.components
 
             RenderVerticalLines(gc);
         }
+
+        public override List<IRow> getVisibleRows()
+        {
+            List<IRow> output = new List<IRow>();
+
+            if (this.Rows!=null)
+            {
+                int y = 0;
+
+                for (int i = this.StartIndex; i < this.Rows.Count && y < this.ClientSize.Height; i++)
+                {
+                    IRow radek = this.Rows[i];
+
+                    y += radek.Height + 1;
+
+                    output.Add(radek);
+                }
+            }
+
+            return output;
+        }
     }
 }

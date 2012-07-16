@@ -9,13 +9,13 @@ using System.Windows.Forms;
 
 namespace DunaGrid.components
 {
-    public partial class FilterRow : AbstractGrid
+    public partial class FilterRow : UserControl// : AbstractGrid
     {
         public FilterRow()
         {
             InitializeComponent();
-            this.Position = GridPosition.Top;
-            this.AutoSizeMode = GridSizeMode.FullLenght;
+            /*this.Position = GridPosition.Top;
+            this.AutoSizeMode = GridSizeMode.FullLenght;*/
         }
     }
 }

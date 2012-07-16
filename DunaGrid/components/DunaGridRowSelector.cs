@@ -12,10 +12,19 @@ namespace DunaGrid.components
 {
     public partial class DunaGridRowSelector : AbstractSystemHeader
     {
+        private IRow linked_row = null;
+
         public IRow Row
         {
-            get;
-            set;
+            get
+            {
+                return this.linked_row;
+            }
+            set
+            {
+                this.linked_row = value;
+                this.Refresh();
+            }
         }
 
         public new int Height
@@ -28,6 +37,7 @@ namespace DunaGrid.components
             set
             {
                 this.Row.Height = value;
+                this.Refresh();
             }
         }
 
@@ -41,6 +51,13 @@ namespace DunaGrid.components
             {
                 base.SetBoundsCore(x, y, width, this.Row.Height + 1, specified);
             }
+        }
+
+        public new void Refresh()
+        {
+            this.SetBoundsCore(this.Location.X, this.Location.Y, this.Width, this.Height, BoundsSpecified.Width | BoundsSpecified.Height);
+
+            base.Refresh();
         }
         
 

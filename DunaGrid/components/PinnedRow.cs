@@ -45,5 +45,36 @@ namespace DunaGrid.components
             Console.WriteLine("pocet sloupcu: {0}", this.Columns.Count);
             base.OnClick(e);
         }
+
+        protected override int getHeight()
+        {
+            if (this.Rows != null)
+            {
+                List<IRow> pinned = this.Rows.GetPinnedRows();
+                if (pinned.Count > 0)
+                {
+                    int vyska = 0;
+                    foreach (IRow r in this.Rows.GetPinnedRows())
+                    {
+                        if (r!=null) vyska += r.Height + 1;
+                    }
+
+                    return vyska;
+                }
+                else
+                {
+                    return this.Height;
+                }
+            }
+            else
+            {
+                return this.Height;
+            }
+        }
+
+        public override List<IRow> getVisibleRows()
+        {
+            return this.Rows.GetPinnedRows();
+        }
     }
 }

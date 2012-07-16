@@ -12,9 +12,9 @@ namespace DunaGrid.components
 {
     public partial class DunaGridRowSelectorsColumn : UserControl
     {
-        private RowsCollection rows;
+        private List<IRow> rows;
 
-        public RowsCollection Rows 
+        public List<IRow> Rows 
         {
             get
             {
@@ -24,7 +24,7 @@ namespace DunaGrid.components
             set
             {
                 this.rows = value;
-                CreateControls();
+                CreateControlsNew();
             }
         }
 
@@ -33,6 +33,50 @@ namespace DunaGrid.components
         public DunaGridRowSelectorsColumn()
         {
             InitializeComponent();
+            DoubleBuffered = true;
+        }
+
+        protected void CreateControlsNew()
+        {
+            if (this.Rows == null) return;
+
+            this.SuspendLayout();
+
+            int pocet_selectoru = this.Controls.Count;
+
+            int y = 0;
+
+            for (int i = 0; i < this.Rows.Count; i++)
+            {
+                if (i < pocet_selectoru)
+                {
+
+                    DunaGridRowSelector sel = (DunaGridRowSelector)this.Controls[i];
+                    sel.Row = this.Rows[i];
+                    sel.Location = new Point(0, y);
+                    sel.Width = this.Width;
+                }
+                else
+                {
+                    DunaGridRowSelector sel = new DunaGridRowSelector(this.Rows[i]);
+                    sel.Location = new Point(0, y);
+                    sel.Orientation = Orientation.Vertical;
+                    sel.Width = this.Width;
+                    this.Controls.Add(sel);
+                    if (i>0)
+                    {
+                        sel.PositionInRow = AbstractSystemHeader.cellPosition.middle;
+                    }
+                    else
+                    {
+                        sel.PositionInRow = AbstractSystemHeader.cellPosition.first;
+                    }
+                }
+
+                y += this.Rows[i].Height + 1;
+            }
+
+            this.ResumeLayout();
         }
 
         protected void CreateControls()

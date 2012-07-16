@@ -53,18 +53,20 @@ namespace DunaGridFormTest
 
             dunaGrid1.RowFormatters.Add(cf);
 
-            dunaGrid1.Columns[2].Elastic = true; //sloupec se bude roztahovat 
-            dunaGrid1.Columns[2].RatioWidth = 1;
+            dunaGrid1.Rows[10].Height = 30;
 
-            dunaGrid1.Columns[1].Elastic = true;
-            dunaGrid1.Columns[1].MinimalWidth = 100;
-            dunaGrid1.Columns[1].RatioWidth = 2;
+            dunaGrid1.Rows[250].Height = 35;
 
-            dunaGrid1.Columns[3].Elastic = true;
 
-            dunaGrid1.Columns[4].Elastic = true;
-           
             dunaGrid1.Columns[0].Width = 200;
+            dunaGrid1.Columns[1].Width = 100;
+            dunaGrid1.Columns[2].Width = 300;
+            dunaGrid1.Columns[3].Width = 100;
+            dunaGrid1.Columns[4].Width = 260;
+           
+            
+
+           
 
             
 

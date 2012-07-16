@@ -103,7 +103,7 @@ namespace DunaGrid
                 this.setDataReader();
                 this.generateColumns();
                 this.setScrollBars();
-                dunaGridRowSelectorsColumn1.Rows = this.Rows;
+                SetRowSelectors();
 
                 //vhodne misto?
                 if (baseGridsContainer1.MainGrid.Count > 0)
@@ -337,7 +337,9 @@ namespace DunaGrid
                 this.vscrollbar.Value = this.vscrollbar.Maximum;
             }
 
-            Invalidate(); //TODO: volat nejak centralneji?
+            //Invalidate(); //TODO: volat nejak centralneji?
+            this.baseGridsContainer1.MainGrid[0].StartIndex = vscrollbar.Value;
+            SetRowSelectors();
         }
 
         private void DunaGrid_Load(object sender, EventArgs e)
@@ -711,9 +713,24 @@ namespace DunaGrid
 
         protected void SetRowSelectors()
         {
-            
+            List<IRow> rows = new List<IRow>();
+
+            List<AbstractGrid> grids = new List<AbstractGrid>();
+
+            foreach (AbstractGrid ag in baseGridsContainer1.Items)
+            {
+                grids.Add(ag);
+            }
+
+            grids.Sort();
+
+            foreach (AbstractGrid ag in grids)
+            {
+                rows.AddRange(ag.getVisibleRows());
+            }
 
 
+            dunaGridRowSelectorsColumn1.Rows = rows;
         }
 
         #endregion
