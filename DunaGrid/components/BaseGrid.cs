@@ -24,8 +24,11 @@ namespace DunaGrid.components
 
             set
             {
-                this.start_index = value;
-                Refresh();
+                if (this.start_index != value)
+                {
+                    this.start_index = value;
+                    Refresh();
+                }
             }
         }
 

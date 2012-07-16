@@ -24,6 +24,7 @@ namespace DunaGrid.components
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
             GraphicsContext gc = new GraphicsContext();
             gc.Graphics = e.Graphics;
 
@@ -35,8 +36,6 @@ namespace DunaGrid.components
 
 
             this.RenderVerticalLines(gc);
-
-            base.OnPaint(e);
         }
 
         protected override void OnClick(EventArgs e)

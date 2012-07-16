@@ -15,11 +15,25 @@ namespace DunaGrid.components
     public abstract class AbstractGrid : UserControl, IComparable
     {
         protected ColumnCollection columns;
+        protected int posun_x = 0;
 
         public GridPosition Position
         {
             get;
             set;
+        }
+
+        public int MoveX
+        {
+            get
+            {
+                return posun_x;
+            }
+            set
+            {
+                posun_x = value;
+                this.Refresh();
+            }
         }
 
         public GridSizeMode AutoSizeMode
@@ -52,6 +66,12 @@ namespace DunaGrid.components
             set;
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            e.Graphics.TranslateTransform(-posun_x, 0);
+            base.OnPaint(e);
+        }
+
         public int CompareTo(object obj)
         {
             if (obj is AbstractGrid)
@@ -78,7 +98,7 @@ namespace DunaGrid.components
 
         protected void RenderVerticalLines(GraphicsContext gc)
         {
-            int x = 0;
+            int x = -posun_x;
 
             gc.Graphics.ResetTransform();
 
@@ -91,7 +111,7 @@ namespace DunaGrid.components
 
         protected void RenderHorizontalLine(GraphicsContext gc, IRow radek)
         {
-            gc.Graphics.DrawLine(new Pen(Color.DarkGray), new Point(0, radek.Height), new Point(this.Width, radek.Height));
+            gc.Graphics.DrawLine(new Pen(Color.DarkGray), new Point(posun_x, radek.Height), new Point(this.Width + posun_x, radek.Height));
         }
 
 
@@ -99,7 +119,7 @@ namespace DunaGrid.components
         {
             int row_height = row.Height;
 
-            gc.Graphics.SetClip(new Rectangle(0, 0, this.Width, row_height));
+            gc.Graphics.SetClip(new Rectangle(posun_x, 0, this.Width + posun_x, row_height));
 
             /*IFormatter formatter = this.formatters.getMatchFormatter(radek);
             radek.Formatter = formatter;*/

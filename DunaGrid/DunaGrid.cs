@@ -703,6 +703,7 @@ namespace DunaGrid
         {
             //Refresh();
             this.baseGridsContainer1.MainGrid[0].StartIndex = vscrollbar.Value;
+            this.baseGridsContainer1.MoveX = hscrollbar.Value;
             SetRowSelectors();
         }
 

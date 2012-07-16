@@ -17,6 +17,27 @@ namespace DunaGrid.components
     {
         protected ObservableCollection<AbstractGrid> items = new ObservableCollection<AbstractGrid>();
 
+        protected int posun_x = 0;
+
+        public int MoveX
+        {
+            get
+            {
+                return posun_x;
+            }
+            set
+            {
+                posun_x = value;
+                this.SuspendLayout();
+                foreach (AbstractGrid ag in this.Items)
+                {
+                    ag.MoveX = value;
+                }
+                //this.Refresh();
+                this.ResumeLayout();
+            }
+        }
+
         public ObservableCollection<AbstractGrid> Items
         {
             get
