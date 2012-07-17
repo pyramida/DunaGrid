@@ -90,6 +90,15 @@ namespace DunaGrid.rows
 
             //g.Graphics.TranslateTransform(31,0);
 
+            //vykresli prispendlene sloupce
+
+            int pinned_width = 0;
+
+            foreach (IColumn c in visible_columns.getPinnedColumns())
+            {
+                pinned_width += c.Width;
+            }
+
             foreach (IColumn c in visible_columns)
             {
                 c.renderCellBackground(g);

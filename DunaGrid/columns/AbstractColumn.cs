@@ -215,5 +215,12 @@ namespace DunaGrid.columns
                 WidthChanged(this, e);
             }
         }
+
+
+        public bool Pinned
+        {
+            get;
+            set;
+        }
     }
 }

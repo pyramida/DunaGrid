@@ -20,6 +20,7 @@ namespace DunaGrid.columns
         DunaGridView ParentGrid { get; set; } //odkaz na grid, ve kterem se sloupec nachazi
         int DataSourceColumnIndex { set; get; } //cislo sloupce v datovem zdroji (od nuly)
         bool Elastic { set; get; }
+        bool Pinned { set; get; }
 
         void renderHead(GraphicsContext g, ColumnContext context);
         void renderCell(GraphicsContext g, object value, CellRenderState render_state = CellRenderState.Normal);

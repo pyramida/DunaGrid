@@ -55,6 +55,21 @@ namespace DunaGrid.columns
             }
         }
 
+        public List<IColumn> getPinnedColumns()
+        {
+            List<IColumn> output = new List<IColumn>();
+
+            foreach (IColumn c in this)
+            {
+                if (c.Pinned)
+                {
+                    output.Add(c);
+                }
+            }
+
+            return output;
+        }
+
         /// <summary>
         /// zjisti, jestli je index v realnem rozsahu
         /// </summary>
