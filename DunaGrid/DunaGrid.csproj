@@ -113,6 +113,7 @@
     <Compile Include="components\PinnedRow.Designer.cs">
       <DependentUpon>PinnedRow.cs</DependentUpon>
     </Compile>
+    <Compile Include="components\XScrollable.cs" />
     <Compile Include="formatters\Condition.cs" />
     <Compile Include="formatters\ConditionFormatter.cs" />
     <Compile Include="formatters\FormatterCollection.cs" />

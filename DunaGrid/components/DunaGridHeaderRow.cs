@@ -10,10 +10,11 @@ using DunaGrid.columns;
 
 namespace DunaGrid.components
 {
-    public partial class DunaGridHeaderRow : UserControl
+    public partial class DunaGridHeaderRow : UserControl, IXScrollable
     {
         protected ColumnCollection columns;
         private bool disable_elastics=false;
+        private int movex = 0;
 
         public ColumnCollection Columns 
         {
@@ -183,7 +184,8 @@ namespace DunaGrid.components
 
         protected void DeleteColumnGaps()
         {
-            int x = 0;
+            int x = -this.movex;
+            this.SuspendLayout();
             foreach (object o in this.Controls)
             {
                 if (o is DunaGridHeaderCell)
@@ -191,8 +193,10 @@ namespace DunaGrid.components
                     DunaGridHeaderCell col = (DunaGridHeaderCell)o;
                     col.Location = new Point(x, 0);
                     x += col.Width;
+                    col.Refresh();
                 }
             }
+            this.ResumeLayout();
         }
 
         protected void countElasticColumnsWidth()
@@ -290,6 +294,19 @@ namespace DunaGrid.components
         private void DunaGridHeaderRow_Resize(object sender, EventArgs e)
         {
 
+        }
+
+        public int MoveX
+        {
+            get
+            {
+                return this.movex;
+            }
+            set
+            {
+                this.movex = value;
+                this.DeleteColumnGaps();
+            }
         }
     }
 }

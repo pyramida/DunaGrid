@@ -12,7 +12,7 @@ namespace DunaGrid.components
     /// <summary>
     /// popisuje vlastnosti vsech gridu ktere jdou umistit do BaseGridsContainers
     /// </summary>
-    public abstract class AbstractGrid : UserControl, IComparable
+    public abstract class AbstractGrid : UserControl, IComparable, IXScrollable
     {
         protected ColumnCollection columns;
         protected int posun_x = 0;

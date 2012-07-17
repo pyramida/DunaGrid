@@ -13,7 +13,7 @@ namespace DunaGrid.components
     /// <summary>
     /// Zobrazuje gridy z kolekce - klasicky grid, filterrow atd...
     /// </summary>
-    public partial class BaseGridsContainer : UserControl
+    public partial class BaseGridsContainer : UserControl, IXScrollable
     {
         protected ObservableCollection<AbstractGrid> items = new ObservableCollection<AbstractGrid>();
 
