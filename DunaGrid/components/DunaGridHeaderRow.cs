@@ -70,16 +70,18 @@ namespace DunaGrid.components
 
             if (this.columns != null)
             {
+                int pinned_width = GetPinnedColsWidth();
+
+                x += pinned_width;
+
                 bool prev_elastic = false;
+
+                //vytvori nepripinovane
+
                 foreach (IColumn c in this.columns)
                 {
-                    DunaGridHeaderCell col = new DunaGridHeaderCell(c);
-                    col.Height = this.Height;
-                    Console.WriteLine(c.Width.ToString());
-                    col.Location = new Point(x, 0);
-                    col.CellResize += new CellResizeEventHandler(col_CellResize);
-                    col.CellResizeStart += new CellResizeEventHandler(col_CellResizeStart);
-                    col.CellResizeEnd += new CellResizeEventHandler(col_CellResizeEnd);
+                    DunaGridHeaderCell col = CreateCell(x, c);
+
                     if (ctr == 0)
                     {
                         col.EnableLeftResize = false;
@@ -107,12 +109,52 @@ namespace DunaGrid.components
                     {
                         prev_elastic = true;
                     }
-                    col.Orientation = Orientation.Horizontal;
                     this.Controls.Add(col);
                     x += c.Width;
                     ctr++;
+                    col.Pinned = false;
+                }
+
+                //vytvori pripinovane
+                foreach (IColumn c in this.columns.getPinnedColumns())
+                {
+                    x = 0;
+                    DunaGridHeaderCell col = CreateCell(x, c);
+                    col.PositionInRow = AbstractSystemHeader.cellPosition.middle;
+                    this.Controls.Add(col);
+                    col.Pinned = true;
+                    col.BringToFront();
+                    x += col.Width;
                 }
             }
+        }
+
+        private DunaGridHeaderCell CreateCell(int x, IColumn c)
+        {
+            DunaGridHeaderCell col = new DunaGridHeaderCell(c);
+            col.Height = this.Height;
+            col.Location = new Point(x, 0);
+            col.CellResize += new CellResizeEventHandler(col_CellResize);
+            col.CellResizeStart += new CellResizeEventHandler(col_CellResizeStart);
+            col.CellResizeEnd += new CellResizeEventHandler(col_CellResizeEnd);
+            col.Orientation = Orientation.Horizontal;
+            return col;
+        }
+
+        private int GetPinnedColsWidth()
+        {
+            int pinned_width = 0;
+            if (this.columns != null)
+            {
+                foreach (IColumn c in this.columns)
+                {
+                    if (c.Pinned)
+                    {
+                        pinned_width += c.Width;
+                    }
+                }
+            }
+            return pinned_width;
         }
 
         void col_CellResizeEnd(object sender, CellResizeEventArgs e)
@@ -185,15 +227,22 @@ namespace DunaGrid.components
         protected void DeleteColumnGaps()
         {
             int x = -this.movex;
+
+            int pinned_width = GetPinnedColsWidth();
+
+            x += pinned_width;
             this.SuspendLayout();
             foreach (object o in this.Controls)
             {
                 if (o is DunaGridHeaderCell)
                 {
                     DunaGridHeaderCell col = (DunaGridHeaderCell)o;
-                    col.Location = new Point(x, 0);
-                    x += col.Width;
-                    col.Refresh();
+                    if (!col.Pinned)
+                    {
+                        col.Location = new Point(x, 0);
+                        x += col.Width;
+                        col.Refresh();
+                    }
                 }
             }
             this.ResumeLayout();

@@ -29,6 +29,8 @@ namespace DunaGrid.components
 
         public bool EnableRightResize { get; set; }
 
+        public bool Pinned { get; set; }
+
         public int ResizeTolerance { get; set; }
 
         public IColumn LinkedColumn 

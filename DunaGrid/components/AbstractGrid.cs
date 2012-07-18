@@ -17,6 +17,10 @@ namespace DunaGrid.components
         protected ColumnCollection columns;
         protected int posun_x = 0;
 
+        public delegate void EventHandler();
+
+        public event EventHandler NeedResize;
+
         public GridPosition Position
         {
             get;
@@ -93,6 +97,14 @@ namespace DunaGrid.components
             else
             {
                 return 0;
+            }
+        }
+
+        protected virtual void onNeedResize()
+        {
+            if (NeedResize != null)
+            {
+                NeedResize();
             }
         }
 

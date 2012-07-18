@@ -55,9 +55,9 @@ namespace DunaGrid.columns
             }
         }
 
-        public List<IColumn> getPinnedColumns()
+        public ColumnCollection getPinnedColumns()
         {
-            List<IColumn> output = new List<IColumn>();
+            ColumnCollection output = new ColumnCollection();
 
             foreach (IColumn c in this)
             {

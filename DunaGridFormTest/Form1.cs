@@ -62,15 +62,8 @@ namespace DunaGridFormTest
             dunaGrid1.Columns[1].Width = 100;
             dunaGrid1.Columns[2].Width = 300;
             dunaGrid1.Columns[3].Width = 100;
-            dunaGrid1.Columns[3].Pinned = true;
+            //dunaGrid1.Columns[3].Pinned = true;
             dunaGrid1.Columns[4].Width = 260;
-           
-            
-
-           
-
-            
-
         }
 
         private void dunaGrid1_Click(object sender, EventArgs e)
