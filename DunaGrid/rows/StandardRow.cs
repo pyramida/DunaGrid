@@ -11,7 +11,10 @@ namespace DunaGrid.rows
 {
     public class StandardRow : IRow
     {
+        public event RowEventHandler CellSelectionChange;
+
         protected Dictionary<string, object> cells_values = new Dictionary<string, object>();
+        protected List<string> cells_selects = new List<string>();
         protected IFormatter formatter = null;
         protected RowsCollection parent_collection=null;
         protected int height, index;
@@ -56,7 +59,7 @@ namespace DunaGrid.rows
                     this.height = value;
                     if (parent_collection != null)
                     {
-                        this.parent_collection.RowSizeChange(this);
+                        this.parent_collection.RowSizeChange(this); //TODO: nahradit udalosti
                     }
                 }
             }
@@ -90,14 +93,56 @@ namespace DunaGrid.rows
 
             foreach (IColumn c in visible_columns)
             {
+                g.Graphics.SetClip(new Rectangle(0, 0, c.Width, this.height));
+                CellRenderState rs;
+                if (this.IsSelectedCell(c.Name))
+                {
+                    rs = CellRenderState.Selected;
+                }
+                else
+                {
+                    rs = CellRenderState.Normal;
+                }
+
                 c.renderCellBackground(g);
-                c.renderCell(g, this.cells_values[c.Name]);
+                c.renderCell(g, this.cells_values[c.Name], rs);
                 g.Graphics.TranslateTransform(c.Width, 0);
             }
 
             g.Graphics.Restore(gs);
         }
 
+        protected virtual void OnCellSelectionChange()
+        {
+            if (this.CellSelectionChange != null)
+            {
+                CellSelectionChange(this, this.GetEventArgs());
+            }
+        }
+
+        protected RowEventArgs GetEventArgs()
+        {
+            RowEventArgs output = new RowEventArgs();
+
+            output.SelectedCells = this.cells_selects;
+
+            return output;
+        }
+
+        public bool IsSelectedCell(string col_name)
+        {
+            return this.cells_selects.Contains(col_name);
+        }
+
+        public void SelectCell(string col_name)
+        {
+            if (!this.IsSelectedCell(col_name))
+            {
+                this.cells_selects.Add(col_name);
+            }
+
+            OnCellSelectionChange();
+        }
 
 
         public formatters.IFormatter Formatter
@@ -126,10 +171,20 @@ namespace DunaGrid.rows
         }
 
 
+        /// <summary>
+        /// na smazani
+        /// </summary>
+        /// <param name="g"></param>
         public void renderRowSelector(GraphicsContext g)
         {
             //g.Graphics.FillRectangle(Brushes.DarkGray, new Rectangle(0, 0, 30, 20));
             g.Graphics.Clear(Color.DarkGray);
+        }
+
+
+        public void SelectCells(List<string> column_names)
+        {
+            this.cells_selects = column_names;
         }
     }
 }

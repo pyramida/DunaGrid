@@ -12,6 +12,8 @@ namespace DunaGrid.rows
     /// </summary>
     public interface IRow
     {
+        event RowEventHandler CellSelectionChange;
+
         int Height { get; set; }
 
         int Index { get; set; }
@@ -29,5 +31,9 @@ namespace DunaGrid.rows
         void render(GraphicsContext g, ColumnCollection visible_columns);
 
         void renderRowSelector(GraphicsContext g);
+
+        void SelectCell(string column_name);
+
+        void SelectCells(List<string> column_names);
     }
 }

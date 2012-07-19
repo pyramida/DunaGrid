@@ -80,7 +80,16 @@ namespace DunaGrid.components
             this.Controls.Clear();
             foreach (AbstractGrid g in this.Items)
             {
+                g.NeedResize += new AbstractGrid.EventHandler(g_NeedResize);
                 this.Controls.Add(g);
+            }
+        }
+
+        private void g_NeedResize()
+        {
+            foreach (Control c in this.Controls)
+            {
+                c.Refresh();
             }
         }
 

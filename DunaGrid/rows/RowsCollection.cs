@@ -15,6 +15,7 @@ namespace DunaGrid.rows
         protected DunaGridView parent;
         protected RowHeightCollection rows_height = new RowHeightCollection();
         protected List<int> pinned_rows = new List<int>();
+        protected Dictionary<int, List<string>> selected_cells = new Dictionary<int, List<string>>();
 
         public IDataReader DataReader
         {
@@ -156,6 +157,14 @@ namespace DunaGrid.rows
                     {
                         temp.Pinned = false;
                     }
+
+                    if (this.selected_cells.ContainsKey(index))
+                    {
+                        temp.SelectCells(this.selected_cells[index]);
+                    }
+
+                    temp.CellSelectionChange += new RowEventHandler(temp_CellSelectionChange);
+
                     return temp;
                 }
                 else
@@ -166,6 +175,19 @@ namespace DunaGrid.rows
             set
             {
                 throw new NotImplementedException();  //bude vyzadovat zasah do DataReaderu
+            }
+        }
+
+        private void temp_CellSelectionChange(object sender, RowEventArgs e)
+        {
+            IRow r = (IRow)sender;
+            if (this.selected_cells.ContainsKey(r.Index))
+            {
+                this.selected_cells[r.Index] = e.SelectedCells;
+            }
+            else
+            {
+                this.selected_cells.Add(r.Index, e.SelectedCells);
             }
         }
 

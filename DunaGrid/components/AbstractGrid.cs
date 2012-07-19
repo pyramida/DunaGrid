@@ -164,7 +164,9 @@ namespace DunaGrid.components
             base.OnMouseDown(e);
             if (e.Button == MouseButtons.Left)
             {
-                MessageBox.Show(GetCell(e.Location).ToString());
+                CellPosition position = GetCell(e.Location);
+                position.row.SelectCell(position.col.Name);
+                onNeedResize();
             }
         }
 
@@ -209,16 +211,6 @@ namespace DunaGrid.components
             // vrati vysledek ;)
             return new CellPosition(row, col);
         }
-
-        /*protected virtual IRow GetRow(int poradi)
-        {
-            return 
-        }
-
-        protected virtual IColumn GetColumn(int poradi)
-        {
-
-        }*/
 
         protected virtual int getHeight()
         {

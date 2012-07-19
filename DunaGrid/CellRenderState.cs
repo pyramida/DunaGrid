@@ -11,7 +11,7 @@ namespace DunaGrid
     public enum CellRenderState
     {
         Normal,
-        Edit,
+        Selected,
         Disable
     }
 }

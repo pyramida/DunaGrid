@@ -140,7 +140,14 @@ namespace DunaGrid.columns
             }
         }
 
-        abstract public void renderCell(GraphicsContext g, object value, CellRenderState render_state = CellRenderState.Normal);
+        public virtual void renderCell(GraphicsContext g, object value, CellRenderState render_state = CellRenderState.Normal)
+        {
+            if (render_state == CellRenderState.Selected)
+            {
+                Pen p = new Pen(Brushes.Black, 3);
+                g.Graphics.DrawRectangle(p, 0, 0, g.Graphics.ClipBounds.Width - p.Width, g.Graphics.ClipBounds.Height - p.Width);
+            }
+        }
 
         /// <summary>
         /// standardni vykresleni hlavicky sloupce
