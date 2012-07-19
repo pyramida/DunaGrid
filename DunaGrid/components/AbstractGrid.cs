@@ -17,6 +17,8 @@ namespace DunaGrid.components
         protected ColumnCollection columns;
         protected int posun_x = 0;
 
+        protected int start_index = 0;
+
         public delegate void EventHandler();
 
         public event EventHandler NeedResize;
@@ -156,6 +158,67 @@ namespace DunaGrid.components
                 base.SetBoundsCore(x, y, width, height, specified);
             }
         }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (e.Button == MouseButtons.Left)
+            {
+                MessageBox.Show(GetCell(e.Location).ToString());
+            }
+        }
+
+        protected virtual CellPosition GetCell(Point click_position)
+        {
+            // urci radek
+            int r_index = this.start_index;
+            int r_height = 0;
+            List<IRow> visible_rows = this.getVisibleRows();
+
+            for (int i = r_index; i < visible_rows.Count; i++)
+            {
+                r_height += visible_rows[i].Height + 1;
+                if (r_height > click_position.Y)
+                {
+                    break;
+                }
+
+                r_index++;
+            }
+
+            IRow row = visible_rows[r_index - this.start_index];
+
+            // urci sloupec
+
+            int c_width = -this.MoveX;
+            int c_index = 0;
+
+            for (int i = c_index; c_index < this.Columns.Count; i++)
+            {
+                c_width += this.Columns[c_index].Width;
+
+                if (c_width > click_position.X)
+                {
+                    break;
+                }
+
+                c_index++;
+            }
+
+            IColumn col = this.columns[c_index];
+            // vrati vysledek ;)
+            return new CellPosition(row, col);
+        }
+
+        /*protected virtual IRow GetRow(int poradi)
+        {
+            return 
+        }
+
+        protected virtual IColumn GetColumn(int poradi)
+        {
+
+        }*/
 
         protected virtual int getHeight()
         {

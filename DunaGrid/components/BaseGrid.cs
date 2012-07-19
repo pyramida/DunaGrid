@@ -13,8 +13,6 @@ namespace DunaGrid.components
 {
     public partial class BaseGrid : AbstractGrid
     {
-        private int start_index = 0;
-
         public int StartIndex
         {
             get

@@ -61,6 +61,7 @@
     <Compile Include="components\BaseGridsContainer.Designer.cs">
       <DependentUpon>BaseGridsContainer.cs</DependentUpon>
     </Compile>
+    <Compile Include="components\CellPosition.cs" />
     <Compile Include="components\CellResizeEventArgs.cs" />
     <Compile Include="components\DunaGridAllSelector.cs">
       <SubType>UserControl</SubType>
