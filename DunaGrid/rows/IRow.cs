@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DunaGrid.columns;
 using DunaGrid.formatters;
+using System.Windows.Forms;
 
 namespace DunaGrid.rows
 {
@@ -35,5 +36,9 @@ namespace DunaGrid.rows
         void SelectCell(string column_name);
 
         void SelectCells(List<string> column_names);
+
+        bool IsSelectedCell(string col_name);
+
+        Control Edit(IColumn col);
     }
 }

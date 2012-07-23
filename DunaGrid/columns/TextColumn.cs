@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace DunaGrid.columns
 {
@@ -49,25 +50,17 @@ namespace DunaGrid.columns
             Brush color;
 
             font = g.Font;
-            color = Brushes.Black;
-
-            switch (render_state)
-            {
-                case CellRenderState.Disable:
-
-                    break;
-
-                case CellRenderState.Selected:
-
-                    break;
-
-                default:
-                    //normal
-
-                    break;
-            }
+            color = new SolidBrush(this.GetFontColor(render_state));
 
             g.Graphics.DrawString(hodnota, font, color, new PointF(3, 3));
+        }
+
+        public override Control GetEditControl()
+        {
+            TextBox t = new TextBox();
+            t.BorderStyle = BorderStyle.Fixed3D;
+            t.Multiline = true;
+            return t;
         }
     }
 }

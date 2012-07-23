@@ -17,9 +17,11 @@ namespace DunaGrid.components
         protected ColumnCollection columns;
         protected int posun_x = 0;
 
+        protected CellPosition first_selected = CellPosition.Empty;
+
         protected int start_index = 0;
 
-        public delegate void EventHandler();
+        public delegate void EventHandler();//TODO: je treba se tohodle zbavit
 
         public event EventHandler NeedResize;
 
@@ -164,9 +166,63 @@ namespace DunaGrid.components
             base.OnMouseDown(e);
             if (e.Button == MouseButtons.Left)
             {
+                if (Control.ModifierKeys != Keys.Control)
+                {
+                    this.Rows.UnselectAllCells();
+                }
                 CellPosition position = GetCell(e.Location);
                 position.row.SelectCell(position.col.Name);
+                this.first_selected = position;
                 onNeedResize();
+            }
+        }
+
+        protected override void OnDoubleClick(EventArgs e)
+        {
+            base.OnDoubleClick(e);
+
+            CellPosition pos = this.GetCell(this.PointToClient(MousePosition));
+
+            //this.Rows[pos.row.Index][pos.col.Name].
+            Control ctr = pos.row.Edit(pos.col);
+            int y = 0;
+            for (int row_index = this.start_index; row_index < this.Rows.Count; row_index++)
+            {
+                IRow r = this.Rows[row_index];
+                if (r.Index == pos.row.Index)
+                {
+                    break;
+                }
+                y += r.Height + 1;
+            }
+            int x = 0;
+
+            foreach (IColumn c in this.Columns)
+            {
+                if (c == pos.col)
+                {
+                    break;
+                }
+                x += c.Width;
+            }
+
+            ctr.Location = new Point(x,y);
+            Controls.Add(ctr);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            {
+                CellPosition position = GetCell(e.Location);
+                if (position != CellPosition.Empty && position != this.first_selected)
+                {
+
+                    this.Rows.UnselectAllCells();
+                    this.Rows.SelectRange(this.first_selected, position);
+                    onNeedResize();
+                }
             }
         }
 

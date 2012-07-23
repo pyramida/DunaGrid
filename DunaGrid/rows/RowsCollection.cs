@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DunaGrid.dataReaders;
+using DunaGrid.components;
+using DunaGrid.columns;
 
 namespace DunaGrid.rows
 {
@@ -188,6 +190,57 @@ namespace DunaGrid.rows
             else
             {
                 this.selected_cells.Add(r.Index, e.SelectedCells);
+            }
+        }
+
+        public void UnselectAllCells()
+        {
+            this.selected_cells.Clear();
+        }
+
+        private void increment(ref int i)
+        {
+            i++;
+        }
+
+        private void decrement(ref int i)
+        {
+            i--;
+        }
+
+        public void SelectRange(CellPosition start, CellPosition end)
+        {
+            ColumnCollection cols = this.parent.Columns;
+
+            int col_s=0, col_e=0;
+            this.SetStartAndStop(cols.IndexOf(start.col), cols.IndexOf(end.col), ref col_s, ref col_e);
+
+            int row_s = 0, row_e = 0;
+            this.SetStartAndStop(start.row.Index, end.row.Index, ref row_s, ref row_e);
+
+            List<string> selected_cols = new List<string>();
+            for (int i = col_s; i <= col_e; i++)
+            {
+                selected_cols.Add(cols[i].Name);
+            }
+
+            for (int i = row_s; i <= row_e; i++)
+            {
+                this[i].SelectCells(selected_cols);
+            }
+        }
+
+        private void SetStartAndStop(int i1, int i2, ref int o1, ref int o2)
+        {
+            if (i1 <= i2)
+            {
+                o1 = i1;
+                o2 = i2;
+            }
+            else
+            {
+                o2 = i1;
+                o1 = i2;
             }
         }
 

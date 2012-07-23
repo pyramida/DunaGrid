@@ -13,11 +13,14 @@ namespace DunaGrid.components
     /// <summary>
     /// Zobrazuje gridy z kolekce - klasicky grid, filterrow atd...
     /// </summary>
+
     public partial class BaseGridsContainer : UserControl, IXScrollable
     {
         protected ObservableCollection<AbstractGrid> items = new ObservableCollection<AbstractGrid>();
 
         protected int posun_x = 0;
+
+        public event EventHandler NeedRefresh;
 
         public int MoveX
         {
@@ -87,9 +90,15 @@ namespace DunaGrid.components
 
         private void g_NeedResize()
         {
-            foreach (Control c in this.Controls)
+            this.Refresh();
+            this.OnNeedRefresh();
+        }
+
+        protected virtual void OnNeedRefresh()
+        {
+            if (NeedRefresh!=null)
             {
-                c.Refresh();
+                NeedRefresh(this, new EventArgs());
             }
         }
 

@@ -306,6 +306,7 @@ namespace DunaGrid
             this.baseGridsContainer1.Name = "baseGridsContainer1";
             this.baseGridsContainer1.Size = new System.Drawing.Size(363, 284);
             this.baseGridsContainer1.TabIndex = 6;
+            this.baseGridsContainer1.NeedRefresh += new EventHandler(baseGridsContainer1_NeedRefresh);
             // 
             // baseGridsPinnedCols
             // 
@@ -314,6 +315,7 @@ namespace DunaGrid
             this.baseGridsPinnedCols.Name = "baseGridsPinnedCols";
             this.baseGridsPinnedCols.Size = new System.Drawing.Size(150, 150);
             this.baseGridsPinnedCols.TabIndex = 0;
+            this.baseGridsPinnedCols.NeedRefresh += new EventHandler(baseGridsContainer1_NeedRefresh);
             // 
             // DunaGridView
             // 
@@ -330,6 +332,19 @@ namespace DunaGrid
             this.Load += new System.EventHandler(this.DunaGridView_Load);
             this.ResumeLayout(false);
 
+        }
+
+        void baseGridsContainer1_NeedRefresh(object sender, EventArgs e)
+        {
+            BaseGridsContainer sender_typed = (BaseGridsContainer)sender;
+            if (sender_typed.Name == "baseGridsContainer1")
+            {
+                this.baseGridsPinnedCols.Refresh();
+            }
+            else
+            {
+                this.baseGridsContainer1.Refresh();
+            }
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)

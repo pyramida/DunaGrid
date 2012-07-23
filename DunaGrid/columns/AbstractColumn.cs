@@ -144,10 +144,25 @@ namespace DunaGrid.columns
         {
             if (render_state == CellRenderState.Selected)
             {
-                Pen p = new Pen(Brushes.Black, 3);
-                g.Graphics.DrawRectangle(p, 0, 0, g.Graphics.ClipBounds.Width - p.Width, g.Graphics.ClipBounds.Height - p.Width);
+                Rectangle r = new Rectangle(0, 0, (int)g.Graphics.ClipBounds.Width, (int)g.Graphics.ClipBounds.Height);
+                g.Graphics.FillRectangle(SystemBrushes.Highlight, r);
             }
         }
+
+        // tohle reseni asi moc budoucnost nema
+        public virtual Color GetFontColor(CellRenderState rs)
+        {
+            if (rs == CellRenderState.Selected)
+            {
+                return Color.White;
+            }
+            else
+            {
+                return Color.Black;
+            }
+        }
+
+        public abstract System.Windows.Forms.Control GetEditControl();
 
         /// <summary>
         /// standardni vykresleni hlavicky sloupce
@@ -179,7 +194,6 @@ namespace DunaGrid.columns
         {
             return true; //soucasna implementace je jen zkusebni TODO: dodelat
         }
-
 
         public int MinimalWidth
         {

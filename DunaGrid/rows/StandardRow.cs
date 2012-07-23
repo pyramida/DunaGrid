@@ -6,6 +6,7 @@ using DunaGrid.columns;
 using DunaGrid.formatters;
 using System.Drawing.Drawing2D;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace DunaGrid.rows
 {
@@ -144,6 +145,15 @@ namespace DunaGrid.rows
             OnCellSelectionChange();
         }
 
+        public Control Edit(IColumn c)
+        {
+            Control ctr = c.GetEditControl();
+            ctr.Width = c.Width;
+            ctr.Height = this.Height;
+            ctr.Text = this[c.Name].ToString();
+
+            return ctr;
+        }
 
         public formatters.IFormatter Formatter
         {
@@ -185,6 +195,8 @@ namespace DunaGrid.rows
         public void SelectCells(List<string> column_names)
         {
             this.cells_selects = column_names;
+
+            OnCellSelectionChange();
         }
     }
 }
