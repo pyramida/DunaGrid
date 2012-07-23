@@ -43,6 +43,23 @@ namespace DunaGrid.components
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj is CellPosition)
+            {
+                return this.Equals((CellPosition)obj);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return row.GetHashCode() + col.GetHashCode(); //implementovano dobre?
+        }
+
         public static bool operator ==(CellPosition first, CellPosition second)
         {
             return first.Equals(second);
