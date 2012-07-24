@@ -102,6 +102,19 @@
     <Compile Include="components\AbstractGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="components\editors\AbstractGridEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\editors\AbstractGridEditor.Designer.cs">
+      <DependentUpon>AbstractGridEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="components\editors\IEditorControl.cs" />
+    <Compile Include="components\editors\TextBoxEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\editors\TextBoxEditor.Designer.cs">
+      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\FilterRow.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -131,6 +144,7 @@
     <Compile Include="dataReaders\BindingSourceDataReader.cs" />
     <Compile Include="dataReaders\DataReaderCollection.cs" />
     <Compile Include="MouseState.cs" />
+    <Compile Include="rows\CellEventArgs.cs" />
     <Compile Include="rows\IRow.cs" />
     <Compile Include="OrderRule.cs" />
     <Compile Include="dataReaders\IDataReader.cs" />
@@ -167,6 +181,9 @@
     <EmbeddedResource Include="components\DunaHScrollBar.resx">
       <DependentUpon>DunaHScrollBar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="components\editors\TextBoxEditor.resx">
+      <DependentUpon>TextBoxEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="components\FilterRow.resx">
       <DependentUpon>FilterRow.cs</DependentUpon>
     </EmbeddedResource>
@@ -177,6 +194,7 @@
       <DependentUpon>DunaGrid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

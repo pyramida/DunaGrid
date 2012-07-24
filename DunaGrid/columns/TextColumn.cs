@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using DunaGrid.components.editors;
 
 namespace DunaGrid.columns
 {
@@ -55,12 +56,9 @@ namespace DunaGrid.columns
             g.Graphics.DrawString(hodnota, font, color, new PointF(3, 3));
         }
 
-        public override Control GetEditControl()
+        public override AbstractGridEditor GetEditControl()
         {
-            TextBox t = new TextBox();
-            t.BorderStyle = BorderStyle.Fixed3D;
-            t.Multiline = true;
-            return t;
+            return new TextBoxEditor();
         }
     }
 }

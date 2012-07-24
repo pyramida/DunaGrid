@@ -7,12 +7,19 @@ using DunaGrid.formatters;
 using System.Drawing.Drawing2D;
 using System.Drawing;
 using System.Windows.Forms;
+using DunaGrid.components.editors;
+using DunaGrid.components;
 
 namespace DunaGrid.rows
 {
     public class StandardRow : IRow
     {
         public event RowEventHandler CellSelectionChange;
+        public event CellEventHandler CellValueChange;
+        public event CellEventHandler CellEditStart;
+        public event CellEventHandler CellEditEnd;
+        public event RowEventHandler RowEditStart;
+        public event RowEventHandler RowEditEnd;
 
         protected Dictionary<string, object> cells_values = new Dictionary<string, object>();
         protected List<string> cells_selects = new List<string>();
@@ -28,7 +35,15 @@ namespace DunaGrid.rows
             }
             set
             {
+                CellEventArgs args = new CellEventArgs();
+                args.OldValue = this.cells_values[columnname];
+
                 this.cells_values[columnname] = value;
+
+                args.Value = value;
+                args.Position = new CellPosition(this, parent_collection.Parent.Columns[columnname]);
+
+                OnCellValueChange(args);
             }
         }
 
@@ -121,11 +136,53 @@ namespace DunaGrid.rows
             }
         }
 
+        protected virtual void OnCellValueChange(CellEventArgs cell_args)
+        {
+            if (this.CellValueChange != null)
+            {
+                CellValueChange(this, cell_args);
+            }
+        }
+
+        protected virtual void OnCellEditStart(CellEventArgs cell_args)
+        {
+            if (this.CellEditStart != null)
+            {
+                CellEditStart(this, cell_args);
+            }
+        }
+
+        protected virtual void OnCellEditEnd(CellEventArgs cell_args)
+        {
+            if (this.CellEditEnd != null)
+            {
+                CellEditEnd(this, cell_args);
+            }
+        }
+
+        protected virtual void OnRowEditEnd()
+        {
+            if (this.RowEditEnd != null)
+            {
+                RowEditEnd(this, this.GetEventArgs());
+            }
+        }
+
+        protected virtual void OnRowEditStart()
+        {
+            Console.WriteLine("Zacala uprava radku " + this.index);
+            if (this.RowEditStart != null)
+            {
+                RowEditStart(this, this.GetEventArgs());
+            }
+        }
+
         protected RowEventArgs GetEventArgs()
         {
             RowEventArgs output = new RowEventArgs();
 
             output.SelectedCells = this.cells_selects;
+            output.Index = this.Index;
 
             return output;
         }
@@ -145,12 +202,19 @@ namespace DunaGrid.rows
             OnCellSelectionChange();
         }
 
-        public Control Edit(IColumn c)
+        public AbstractGridEditor Edit(IColumn c)
         {
-            Control ctr = c.GetEditControl();
-            ctr.Width = c.Width;
+            AbstractGridEditor ctr = c.GetEditControl();
+            ctr.Width = c.Width - 1; // minus jedna je prave ohraniceni ramecku
             ctr.Height = this.Height;
-            ctr.Text = this[c.Name].ToString();
+            ctr.Value = this[c.Name];
+            ctr.RowIndex = this.Index;
+            ctr.ColumnName = c.Name;
+
+            if (this.parent_collection.StartEditRow(this))
+            {
+                OnRowEditStart(); //zavola udalost
+            }
 
             return ctr;
         }

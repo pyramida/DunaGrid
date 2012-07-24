@@ -18,6 +18,15 @@ namespace DunaGrid.rows
         protected RowHeightCollection rows_height = new RowHeightCollection();
         protected List<int> pinned_rows = new List<int>();
         protected Dictionary<int, List<string>> selected_cells = new Dictionary<int, List<string>>();
+        protected IRow edited_row = null;
+
+        public IRow EditedRow
+        {
+            get
+            {
+                return this.edited_row;
+            }
+        }
 
         public IDataReader DataReader
         {
@@ -28,6 +37,24 @@ namespace DunaGrid.rows
             set
             {
                 this.data_reader = value;
+            }
+        }
+
+        /// <summary>
+        /// zahaji upravu daneho radku
+        /// </summary>
+        /// <param name="row_index"></param>
+        /// <returns>boolean podle toho jestli doslo ke zmene radku, ktery je upravovan</returns>
+        public bool StartEditRow(IRow row)
+        {
+            if (this.edited_row == row)
+            {
+                return false;
+            }
+            else
+            {
+                this.edited_row = row;
+                return true;
             }
         }
 
@@ -65,7 +92,6 @@ namespace DunaGrid.rows
 
             return rows;
         }
-
 
         /// <summary>
         /// zavola na sebe radek v pripade ze se v gridu zmenili hodnoty
@@ -166,6 +192,7 @@ namespace DunaGrid.rows
                     }
 
                     temp.CellSelectionChange += new RowEventHandler(temp_CellSelectionChange);
+                    temp.CellValueChange += new CellEventHandler(temp_CellValueChange);
 
                     return temp;
                 }
@@ -178,6 +205,16 @@ namespace DunaGrid.rows
             {
                 throw new NotImplementedException();  //bude vyzadovat zasah do DataReaderu
             }
+        }
+
+        /// <summary>
+        /// v pripade zmeny dat v radku
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void temp_CellValueChange(object sender, CellEventArgs e)
+        {
+            
         }
 
         private void temp_CellSelectionChange(object sender, RowEventArgs e)

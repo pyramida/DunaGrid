@@ -162,7 +162,7 @@ namespace DunaGrid.columns
             }
         }
 
-        public abstract System.Windows.Forms.Control GetEditControl();
+        public abstract DunaGrid.components.editors.AbstractGridEditor GetEditControl();
 
         /// <summary>
         /// standardni vykresleni hlavicky sloupce

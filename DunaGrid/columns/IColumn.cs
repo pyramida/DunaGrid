@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using DunaGrid.components.editors;
 
 namespace DunaGrid.columns
 {
@@ -26,6 +27,6 @@ namespace DunaGrid.columns
         void renderHead(GraphicsContext g, ColumnContext context);
         void renderCell(GraphicsContext g, object value, CellRenderState render_state = CellRenderState.Normal);
         void renderCellBackground(GraphicsContext g, CellRenderState render_state = CellRenderState.Normal);
-        Control GetEditControl();
+        AbstractGridEditor GetEditControl();
     }
 }

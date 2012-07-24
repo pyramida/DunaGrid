@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DunaGrid.columns;
 using DunaGrid.formatters;
+using DunaGrid.components.editors;
 using System.Windows.Forms;
 
 namespace DunaGrid.rows
@@ -14,6 +15,13 @@ namespace DunaGrid.rows
     public interface IRow
     {
         event RowEventHandler CellSelectionChange;
+
+        event CellEventHandler CellValueChange;
+        event CellEventHandler CellEditStart;
+        event CellEventHandler CellEditEnd;
+
+        event RowEventHandler RowEditStart;
+        event RowEventHandler RowEditEnd;
 
         int Height { get; set; }
 
@@ -39,6 +47,6 @@ namespace DunaGrid.rows
 
         bool IsSelectedCell(string col_name);
 
-        Control Edit(IColumn col);
+        AbstractGridEditor Edit(IColumn col);
     }
 }

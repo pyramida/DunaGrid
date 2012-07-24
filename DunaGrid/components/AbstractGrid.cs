@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using DunaGrid.rows;
 using DunaGrid.columns;
 using System.Drawing;
+using DunaGrid.components.editors;
 
 namespace DunaGrid.components
 {
@@ -112,6 +113,47 @@ namespace DunaGrid.components
             }
         }
 
+        public override void Refresh()
+        {
+            //prerovna eventualni ovladaci prvky
+            Dictionary<int, AbstractGridEditor> seznam = new Dictionary<int, AbstractGridEditor>();
+
+            for (int i = 0; i < this.Controls.Count; i++)
+            {
+                if (this.Controls[i] is AbstractGridEditor)
+                {
+                    AbstractGridEditor ctr = (AbstractGridEditor)this.Controls[i];
+
+                    seznam.Add(ctr.RowIndex, ctr);
+                }
+            }
+
+            int y = 0;
+            //TODO: zoptimalizovat
+            for (int row_index = 0; row_index < this.Rows.Count; row_index++)
+            {
+                if (seznam.ContainsKey(row_index))
+                {
+                    if (row_index >= this.start_index)
+                    {
+                        seznam[row_index].Visible = true;
+                        seznam[row_index].Location = new Point(GetXColPosition(this.Columns[seznam[row_index].ColumnName]) - this.MoveX, y);
+                    }
+                    else
+                    {
+                        seznam[row_index].Visible = false;
+                    }
+                }
+
+                if (row_index >= this.start_index)
+                {
+                    y += this.Rows[row_index].Height + 1;
+                }
+            }
+
+            base.Refresh();
+        }
+
         protected void RenderVerticalLines(GraphicsContext gc)
         {
             int x = -posun_x;
@@ -175,16 +217,21 @@ namespace DunaGrid.components
                 this.first_selected = position;
                 onNeedResize();
             }
+
+            this.Focus();
         }
 
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
 
+            //vzdy je editovatelna jen jedna bunka
+            this.Controls.Clear();
+
             CellPosition pos = this.GetCell(this.PointToClient(MousePosition));
 
             //this.Rows[pos.row.Index][pos.col.Name].
-            Control ctr = pos.row.Edit(pos.col);
+            AbstractGridEditor ctr = pos.row.Edit(pos.col);
             int y = 0;
             for (int row_index = this.start_index; row_index < this.Rows.Count; row_index++)
             {
@@ -195,19 +242,36 @@ namespace DunaGrid.components
                 }
                 y += r.Height + 1;
             }
+            int x = GetXColPosition(pos.col);
+
+            ctr.Location = new Point(x,y);
+
+            
+
+            Controls.Add(ctr);
+            ctr.Focus();
+
+            ctr.LostFocus += new System.EventHandler(ctr_LostFocus);
+        }
+
+        private void ctr_LostFocus(object sender, EventArgs e)
+        {
+            ((AbstractGridEditor)sender).Dispose();
+        }
+
+        private int GetXColPosition(IColumn column)
+        {
             int x = 0;
 
             foreach (IColumn c in this.Columns)
             {
-                if (c == pos.col)
+                if (c == column)
                 {
                     break;
                 }
                 x += c.Width;
             }
-
-            ctr.Location = new Point(x,y);
-            Controls.Add(ctr);
+            return x;
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
