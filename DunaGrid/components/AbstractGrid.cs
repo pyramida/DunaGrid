@@ -252,11 +252,19 @@ namespace DunaGrid.components
             ctr.Focus();
 
             ctr.LostFocus += new System.EventHandler(ctr_LostFocus);
+            ctr.EndEdit += new System.EventHandler(ctr_EndEdit);
+        }
+
+        void ctr_EndEdit(object sender, EventArgs e)
+        {
+            IEditorControl editor = (IEditorControl)sender;
+
+            this.Rows[editor.RowIndex][editor.ColumnName] = editor.Value;
         }
 
         private void ctr_LostFocus(object sender, EventArgs e)
         {
-            ((AbstractGridEditor)sender).Dispose();
+            ((AbstractGridEditor)sender).EndEditing();
         }
 
         private int GetXColPosition(IColumn column)

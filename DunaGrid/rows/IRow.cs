@@ -31,6 +31,8 @@ namespace DunaGrid.rows
         
         object this[string columnname] { get; set; }
 
+        List<string> ColumnNames { get; }
+
         IFormatter Formatter { get; set; }
 
         RowsCollection parentRowCollection { set; }

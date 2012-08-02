@@ -24,6 +24,12 @@ namespace DunaGrid.dataReaders
         ColumnCollection GetColumns();
 
         /// <summary>
+        /// Upravi radek v datasourcu
+        /// </summary>
+        /// <param name="row"></param>
+        void SetRow(IRow row);
+
+        /// <summary>
         /// zaridi serazeni polozek
         /// </summary>
         /// <param name="rule"></param>

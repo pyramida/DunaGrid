@@ -214,7 +214,7 @@ namespace DunaGrid.rows
         /// <param name="e"></param>
         private void temp_CellValueChange(object sender, CellEventArgs e)
         {
-            
+            this.data_reader.SetRow(e.Position.row);
         }
 
         private void temp_CellSelectionChange(object sender, RowEventArgs e)

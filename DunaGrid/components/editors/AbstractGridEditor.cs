@@ -12,6 +12,9 @@ namespace DunaGrid.components.editors
     public partial class AbstractGridEditor : UserControl, IEditorControl
     {
         protected object value;
+        protected bool valid = true;
+
+        public event EventHandler EndEdit;
 
         public AbstractGridEditor()
         {
@@ -41,6 +44,38 @@ namespace DunaGrid.components.editors
         {
             get;
             set;
+        }
+
+        protected virtual void OnEndEditing()
+        {
+            if (EndEdit != null)
+            {
+                EndEdit(this, EventArgs.Empty);
+            }
+        }
+
+        public void EndEditing()
+        {
+            if (this.valid)
+            {
+                this.OnEndEditing();
+            }
+
+            this.Dispose();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.valid = false;
+                this.Dispose();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                this.EndEditing();
+            }
+            base.OnKeyDown(e);
         }
     }
 }

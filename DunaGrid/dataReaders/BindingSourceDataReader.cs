@@ -103,5 +103,20 @@ namespace DunaGrid.dataReaders
                 }
             }
         }
+
+        public void SetRow(IRow row)
+        {
+            if (this.IsReadable(this.data_source))
+            {
+                BindingSource ds = (BindingSource)this.data_source;
+
+                DataRowView drow = (DataRowView)this.data_source.List[row.Index];
+
+                foreach (string colname in row.ColumnNames)
+                {
+                    drow[colname] = row[colname];
+                }
+            }
+        }
     }
 }

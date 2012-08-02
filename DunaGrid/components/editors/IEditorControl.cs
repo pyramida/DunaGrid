@@ -8,10 +8,14 @@ namespace DunaGrid.components.editors
 {
     interface IEditorControl
     {
+        event EventHandler EndEdit;
+
         object Value { get; set; }
 
         int RowIndex { get; set; }
 
         string ColumnName { get; set; }
+
+        void EndEditing();
     }
 }

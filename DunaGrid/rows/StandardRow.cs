@@ -27,6 +27,21 @@ namespace DunaGrid.rows
         protected RowsCollection parent_collection=null;
         protected int height, index;
 
+        public List<string> ColumnNames
+        {
+            get
+            {
+                List<string> names = new List<string>();
+
+                foreach (string name in cells_values.Keys)
+                {
+                    names.Add(name);
+                }
+
+                return names;
+            }
+        }
+
         public object this[string columnname]
         {
             get
@@ -35,15 +50,18 @@ namespace DunaGrid.rows
             }
             set
             {
-                CellEventArgs args = new CellEventArgs();
-                args.OldValue = this.cells_values[columnname];
+                if (!this.cells_values[columnname].Equals(value))
+                {
+                    CellEventArgs args = new CellEventArgs();
+                    args.OldValue = this.cells_values[columnname];
 
-                this.cells_values[columnname] = value;
+                    this.cells_values[columnname] = value;
 
-                args.Value = value;
-                args.Position = new CellPosition(this, parent_collection.Parent.Columns[columnname]);
+                    args.Value = value;
+                    args.Position = new CellPosition(this, parent_collection.Parent.Columns[columnname]);
 
-                OnCellValueChange(args);
+                    OnCellValueChange(args);
+                }
             }
         }
 

@@ -15,6 +15,12 @@ namespace DunaGrid.components.editors
         {
             InitializeComponent();
             textBox1.LostFocus += new EventHandler(textBox1_LostFocus);
+            textBox1.KeyDown += new KeyEventHandler(textBox1_KeyDown);
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            this.OnKeyDown(e);
         }
 
         private void textBox1_LostFocus(object sender, EventArgs e)
@@ -33,6 +39,11 @@ namespace DunaGrid.components.editors
             set
             {
                 textBox1.Text = value.ToString();
+            }
+
+            get
+            {
+                return textBox1.Text;
             }
         }
     }
