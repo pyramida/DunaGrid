@@ -260,6 +260,8 @@ namespace DunaGrid.components
             IEditorControl editor = (IEditorControl)sender;
 
             this.Rows[editor.RowIndex][editor.ColumnName] = editor.Value;
+
+            this.onNeedResize();
         }
 
         private void ctr_LostFocus(object sender, EventArgs e)
@@ -305,7 +307,7 @@ namespace DunaGrid.components
             int r_height = 0;
             List<IRow> visible_rows = this.getVisibleRows();
 
-            for (int i = r_index; i < visible_rows.Count; i++)
+            for (int i = 0; i < visible_rows.Count; i++)
             {
                 r_height += visible_rows[i].Height + 1;
                 if (r_height > click_position.Y)
