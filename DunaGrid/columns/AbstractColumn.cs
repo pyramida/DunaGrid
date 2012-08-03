@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using DunaGrid.columns.validators;
 
 namespace DunaGrid.columns
 {
@@ -21,6 +22,7 @@ namespace DunaGrid.columns
         protected bool fill_column = false;
         protected string name = "";
         protected float ratio_width = 1;
+        protected ValidatorCollection validators = new ValidatorCollection();
 
         public int Width
         {
@@ -242,6 +244,12 @@ namespace DunaGrid.columns
         {
             get;
             set;
+        }
+
+
+        public validators.ValidatorCollection Validators
+        {
+            get { return this.validators; }
         }
     }
 }

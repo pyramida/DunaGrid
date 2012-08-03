@@ -49,6 +49,9 @@
     <Compile Include="columns\ColumnContext.cs" />
     <Compile Include="columns\ColumnTypeDelegator.cs" />
     <Compile Include="columns\TextColumn.cs" />
+    <Compile Include="columns\validators\IValidator.cs" />
+    <Compile Include="columns\validators\NotNullValidator.cs" />
+    <Compile Include="columns\validators\ValidatorCollection.cs" />
     <Compile Include="components\BaseGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>

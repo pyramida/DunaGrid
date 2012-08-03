@@ -214,7 +214,17 @@ namespace DunaGrid.rows
         /// <param name="e"></param>
         private void temp_CellValueChange(object sender, CellEventArgs e)
         {
-            this.data_reader.SetRow(e.Position.row);
+            /*try
+            {*/
+                this.data_reader.SetRow(e.Position.row);
+            /*}
+            catch (Exception ex)
+            {
+                //provede revert
+                e.Position.row[e.Position.col.Name] = e.OldValue;
+
+                System.Windows.Forms.MessageBox.Show("Chyba při zápisu dat: " + ex.Message);
+            }*/
         }
 
         private void temp_CellSelectionChange(object sender, RowEventArgs e)

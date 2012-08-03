@@ -33,7 +33,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.BackColor = System.Drawing.Color.Yellow;
+            this.textBox1.BackColor = System.Drawing.Color.White;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox1.Location = new System.Drawing.Point(0, 0);
@@ -41,6 +41,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(192, 39);
             this.textBox1.TabIndex = 0;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // TextBoxEditor
             // 

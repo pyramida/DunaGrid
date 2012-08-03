@@ -246,7 +246,7 @@ namespace DunaGrid.components
 
             ctr.Location = new Point(x,y);
 
-            
+            ctr.Validators = pos.col.Validators;
 
             Controls.Add(ctr);
             ctr.Focus();
@@ -259,14 +259,26 @@ namespace DunaGrid.components
         {
             IEditorControl editor = (IEditorControl)sender;
 
-            this.Rows[editor.RowIndex][editor.ColumnName] = editor.Value;
+            if (!editor.EditCommited)
+            {
+                editor.EditCommited = true;
+
+                try
+                {
+                    this.Rows[editor.RowIndex][editor.ColumnName] = editor.Value;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Chyba při zápisu dat: " + ex.Message);
+                }
+            }
 
             this.onNeedResize();
         }
 
         private void ctr_LostFocus(object sender, EventArgs e)
         {
-            ((AbstractGridEditor)sender).EndEditing();
+            ((IEditorControl)sender).EndEditing();
         }
 
         private int GetXColPosition(IColumn column)

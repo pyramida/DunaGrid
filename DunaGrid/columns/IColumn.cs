@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using DunaGrid.components.editors;
+using DunaGrid.columns.validators;
 
 namespace DunaGrid.columns
 {
@@ -23,6 +24,7 @@ namespace DunaGrid.columns
         int DataSourceColumnIndex { set; get; } //cislo sloupce v datovem zdroji (od nuly)
         bool Elastic { set; get; }
         bool Pinned { set; get; }
+        ValidatorCollection Validators { get; }
 
         void renderHead(GraphicsContext g, ColumnContext context);
         void renderCell(GraphicsContext g, object value, CellRenderState render_state = CellRenderState.Normal);

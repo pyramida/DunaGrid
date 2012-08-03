@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using DunaGrid.columns.validators;
 
 namespace DunaGrid.components.editors
 {
@@ -13,6 +14,8 @@ namespace DunaGrid.components.editors
     {
         protected object value;
         protected bool valid = true;
+        protected ValidatorCollection validators;
+        protected bool commited = false;
 
         public event EventHandler EndEdit;
 
@@ -61,6 +64,8 @@ namespace DunaGrid.components.editors
                 this.OnEndEditing();
             }
 
+            this.valid = false;
+
             this.Dispose();
         }
 
@@ -76,6 +81,39 @@ namespace DunaGrid.components.editors
                 this.EndEditing();
             }
             base.OnKeyDown(e);
+        }
+
+
+        public ValidatorCollection Validators
+        {
+            get
+            {
+                if (this.validators == null)
+                {
+                    return new ValidatorCollection();
+                }
+                else
+                {
+                    return this.validators;
+                }
+            }
+
+            set
+            {
+                this.validators = value;
+            }
+        }
+
+        protected bool ValidateData()
+        {
+            return this.Validators.GetResult(this.Value);
+        }
+
+
+        public bool EditCommited
+        {
+            get { return this.commited; }
+            set { this.commited = value; }
         }
     }
 }

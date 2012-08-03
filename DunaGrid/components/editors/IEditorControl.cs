@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using DunaGrid.columns.validators;
 
 namespace DunaGrid.components.editors
 {
@@ -14,7 +15,11 @@ namespace DunaGrid.components.editors
 
         int RowIndex { get; set; }
 
+        bool EditCommited { get; set; }
+
         string ColumnName { get; set; }
+
+        ValidatorCollection Validators { get; set; }
 
         void EndEditing();
     }
