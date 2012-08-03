@@ -306,7 +306,7 @@ namespace DunaGrid
             this.baseGridsContainer1.Name = "baseGridsContainer1";
             this.baseGridsContainer1.Size = new System.Drawing.Size(363, 284);
             this.baseGridsContainer1.TabIndex = 6;
-            this.baseGridsContainer1.NeedRefresh += new EventHandler(baseGridsContainer1_NeedRefresh);
+            this.baseGridsContainer1.NeedRefresh += new System.EventHandler(this.baseGridsContainer1_NeedRefresh);
             // 
             // baseGridsPinnedCols
             // 
@@ -315,7 +315,8 @@ namespace DunaGrid
             this.baseGridsPinnedCols.Name = "baseGridsPinnedCols";
             this.baseGridsPinnedCols.Size = new System.Drawing.Size(150, 150);
             this.baseGridsPinnedCols.TabIndex = 0;
-            this.baseGridsPinnedCols.NeedRefresh += new EventHandler(baseGridsContainer1_NeedRefresh);
+            this.baseGridsPinnedCols.NeedRefresh += new System.EventHandler(this.baseGridsContainer1_NeedRefresh);
+            this.baseGridsPinnedCols.Load += new System.EventHandler(this.baseGridsPinnedCols_Load);
             // 
             // DunaGridView
             // 
@@ -373,7 +374,6 @@ namespace DunaGrid
                 this.vscrollbar.Value = this.vscrollbar.Maximum;
             }
 
-            //Invalidate(); //TODO: volat nejak centralneji?
             this.baseGridsContainer1.MainGrid[0].StartIndex = vscrollbar.Value;
             this.baseGridsPinnedCols.MainGrid[0].StartIndex = vscrollbar.Value;
             SetRowSelectors();
@@ -728,6 +728,13 @@ namespace DunaGrid
 
         protected override void OnResize(EventArgs e)
         {
+            PlaceControls();
+
+            base.OnResize(e);
+        }
+
+        private void PlaceControls()
+        {
             setScrollBars();
             dunaGridHeaderRow1.Location = new Point(dunaGridRowSelectorsColumn1.Width, 0);
             dunaGridHeaderRow1.Width = this.ClientSize.Width - dunaGridRowSelectorsColumn1.Width - vscrollbar.Width;
@@ -752,8 +759,6 @@ namespace DunaGrid
 
             baseGridsContainer1.Location = new Point(dunaGridRowSelectorsColumn1.Width + pinned_cols_width, dunaGridHeaderRow1.Height);
             baseGridsContainer1.Size = new Size(this.ClientSize.Width - dunaGridRowSelectorsColumn1.Width - vscrollbar.Width - pinned_cols_width, this.ClientSize.Height - dunaGridHeaderRow1.Height - hscrollbar.Height);
-
-            base.OnResize(e);
         }
         
         protected void hscrollbar_Scroll(object sender, ScrollEventArgs e)
@@ -796,6 +801,21 @@ namespace DunaGrid
         #endregion
 
         private void DunaGridView_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            PlaceControls();
+            SetRowSelectors();
+            baseGridsContainer1.Refresh();
+            baseGridsPinnedCols.Refresh();
+            dunaGridHeaderRow1.Refresh();
+            base.OnLoad(e);
+        }
+
+        private void baseGridsPinnedCols_Load(object sender, EventArgs e)
         {
 
         }

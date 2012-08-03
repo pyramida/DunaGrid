@@ -179,6 +179,12 @@ namespace DunaGrid.components
             }
         }
 
+        public override void Refresh()
+        {
+            setSizeToControl();
+            base.Refresh();
+        }
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);

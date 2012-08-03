@@ -16,6 +16,7 @@ namespace DunaGrid.components.editors
         protected bool valid = true;
         protected ValidatorCollection validators;
         protected bool commited = false;
+        protected bool valid_data = true;
 
         public event EventHandler EndEdit;
 
@@ -78,7 +79,14 @@ namespace DunaGrid.components.editors
             }
             else if (e.KeyCode == Keys.Enter)
             {
-                this.EndEditing();
+                if (this.valid_data)
+                {
+                    this.EndEditing();
+                }
+                else
+                {
+                    System.Media.SystemSounds.Beep.Play(); //tohle jeste uplne nefrci: pipa to, ale provede to zalomeni
+                }
             }
             base.OnKeyDown(e);
         }

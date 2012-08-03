@@ -49,7 +49,8 @@ namespace DunaGrid.components.editors
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (this.ValidateData())
+            this.valid_data = this.ValidateData();
+            if (this.valid_data)
             {
                 textBox1.BackColor = Color.White;
             }

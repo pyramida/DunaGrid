@@ -248,6 +248,12 @@ namespace DunaGrid.components
             this.ResumeLayout();
         }
 
+        public override void Refresh()
+        {
+            RefreshControls();
+            base.Refresh();
+        }
+
         protected void countElasticColumnsWidth()
         {
             if (this.columns != null)
@@ -299,9 +305,14 @@ namespace DunaGrid.components
 
         protected override void OnResize(EventArgs e)
         {
+            RefreshControls();
+            base.OnResize(e);
+        }
+
+        private void RefreshControls()
+        {
             countElasticColumnsWidth();
             this.DeleteColumnGaps();
-            base.OnResize(e);
         }
 
         public void test()
