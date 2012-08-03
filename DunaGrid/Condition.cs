@@ -5,7 +5,7 @@ using System.Text;
 using DunaGrid.columns;
 using DunaGrid.rows;
 
-namespace DunaGrid.formatters
+namespace DunaGrid
 {
     /// <summary>
     /// TODO: podpora pro datumy zatim chybi!

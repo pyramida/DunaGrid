@@ -128,12 +128,12 @@
       <DependentUpon>PinnedRow.cs</DependentUpon>
     </Compile>
     <Compile Include="components\XScrollable.cs" />
-    <Compile Include="formatters\Condition.cs" />
+    <Compile Include="Condition.cs" />
     <Compile Include="formatters\ConditionFormatter.cs" />
     <Compile Include="formatters\FormatterCollection.cs" />
-    <Compile Include="formatters\ICondition.cs" />
+    <Compile Include="ICondition.cs" />
     <Compile Include="formatters\IFormatter.cs" />
-    <Compile Include="formatters\Operators.cs" />
+    <Compile Include="Operators.cs" />
     <Compile Include="GraphicsContext.cs" />
     <Compile Include="components\DunaHScrollBar.cs">
       <SubType>UserControl</SubType>
