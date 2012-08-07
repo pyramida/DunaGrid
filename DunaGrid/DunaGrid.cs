@@ -229,6 +229,15 @@ namespace DunaGrid
 
             nr.Rows = rows;
             nr2.Rows = rows;
+
+            dunaGridHeaderRow1.NeedRefresh += new EventHandler(dunaGridHeaderRow1_NeedRefresh);
+        }
+
+        void dunaGridHeaderRow1_NeedRefresh(object sender, EventArgs e)
+        {
+            baseGridsContainer1.Refresh();
+            baseGridsPinnedCols.Refresh();
+            PlaceControls();
         }
 
         #endregion

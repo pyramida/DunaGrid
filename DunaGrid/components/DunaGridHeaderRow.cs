@@ -16,6 +16,8 @@ namespace DunaGrid.components
         private bool disable_elastics=false;
         private int movex = 0;
 
+        public event EventHandler NeedRefresh;
+
         public ColumnCollection Columns 
         {
             get
@@ -51,6 +53,8 @@ namespace DunaGrid.components
                     if (cell.Name == col.Name) cell.Refresh();
                 }
             }
+
+            OnNeedResize();
         }
 
         public DunaGridHeaderRow()
@@ -59,6 +63,14 @@ namespace DunaGrid.components
             countElasticColumnsWidth();
             CreateCells();
             this.ResizeRedraw = true;
+        }
+
+        protected virtual void OnNeedResize()
+        {
+            if (NeedRefresh != null)
+            {
+                NeedRefresh(this, EventArgs.Empty);
+            }
         }
 
         protected void CreateCells()
@@ -178,22 +190,6 @@ namespace DunaGrid.components
 
         void col_CellResize(object sender, CellResizeEventArgs e)
         {
-            /*this.mouse_state.setLastLocation(e.Location);
-            int delta = this.mouse_state.getDeltaX();
-            IColumn c = (IColumn)((DunaGridHeaderCell)this.mouse_state.parameters).LinkedColumn;
-
-            if (c.Elastic)
-            {
-
-            }
-            else
-            {
-                c.Width += delta;
-            }
-
-            this.countElasticColumnsWidth();
-            this.setWidthToControls();*/
-
             DunaGridHeaderCell resized_col = (DunaGridHeaderCell)sender;
 
             if (e.CellResizeSide == CellResizeEventArgs.ResizeSide.Left)
