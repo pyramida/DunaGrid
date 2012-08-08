@@ -219,6 +219,13 @@ namespace DunaGrid
             baseGridsContainer1.Items.Add(nr);
             baseGridsPinnedCols.Items.Add(nr2);
 
+            components.FilterRow fr = new components.FilterRow();
+            components.FilterRow fr2 = new components.FilterRow();
+
+            baseGridsContainer1.Items.Add(fr);
+
+            baseGridsPinnedCols.Items.Add(fr2);
+
             this.DoubleBuffered = true;
             this.ResizeRedraw = true;
 

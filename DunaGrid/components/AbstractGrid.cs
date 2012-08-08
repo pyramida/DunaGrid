@@ -51,7 +51,7 @@ namespace DunaGrid.components
             set;
         }
 
-        public ColumnCollection Columns
+        public virtual ColumnCollection Columns
         {
             get
             {
@@ -233,15 +233,16 @@ namespace DunaGrid.components
             //this.Rows[pos.row.Index][pos.col.Name].
             AbstractGridEditor ctr = pos.row.Edit(pos.col);
             int y = 0;
-            for (int row_index = this.start_index; row_index < this.Rows.Count; row_index++)
+            List<IRow> visible_rows = this.getVisibleRows();
+            foreach (IRow r in visible_rows)
             {
-                IRow r = this.Rows[row_index];
                 if (r.Index == pos.row.Index)
                 {
                     break;
                 }
                 y += r.Height + 1;
             }
+
             int x = GetXColPosition(pos.col);
 
             ctr.Location = new Point(x,y);

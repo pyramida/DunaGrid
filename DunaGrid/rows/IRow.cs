@@ -41,8 +41,6 @@ namespace DunaGrid.rows
 
         void render(GraphicsContext g, ColumnCollection visible_columns);
 
-        void renderRowSelector(GraphicsContext g);
-
         void SelectCell(string column_name);
 
         void SelectCells(List<string> column_names);

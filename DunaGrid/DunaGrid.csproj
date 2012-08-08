@@ -48,6 +48,7 @@
     <Compile Include="columns\ColumnCollection.cs" />
     <Compile Include="columns\ColumnContext.cs" />
     <Compile Include="columns\ColumnTypeDelegator.cs" />
+    <Compile Include="columns\NumberColumn.cs" />
     <Compile Include="columns\TextColumn.cs" />
     <Compile Include="columns\validators\IValidator.cs" />
     <Compile Include="columns\validators\NotNullValidator.cs" />
@@ -147,7 +148,13 @@
     <Compile Include="dataReaders\BindingSourceDataReader.cs" />
     <Compile Include="dataReaders\DataReaderCollection.cs" />
     <Compile Include="MouseState.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="rows\CellEventArgs.cs" />
+    <Compile Include="rows\FilterRow.cs" />
     <Compile Include="rows\IRow.cs" />
     <Compile Include="OrderRule.cs" />
     <Compile Include="dataReaders\IDataReader.cs" />
@@ -196,8 +203,14 @@
     <EmbeddedResource Include="DunaGrid.resx">
       <DependentUpon>DunaGrid.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\filter.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

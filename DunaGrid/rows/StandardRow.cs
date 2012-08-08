@@ -42,7 +42,7 @@ namespace DunaGrid.rows
             }
         }
 
-        public object this[string columnname]
+        public virtual object this[string columnname]
         {
             get
             {
@@ -79,7 +79,7 @@ namespace DunaGrid.rows
             set;
         }
 
-        public int Height
+        public virtual int Height
         {
             get
             {
@@ -127,7 +127,7 @@ namespace DunaGrid.rows
 
             foreach (IColumn c in visible_columns)
             {
-                g.Graphics.SetClip(new Rectangle(0, 0, c.Width, this.height));
+                g.Graphics.SetClip(new Rectangle(0, 0, c.Width, this.Height));
                 CellRenderState rs;
                 if (this.IsSelectedCell(c.Name))
                 {
@@ -138,12 +138,17 @@ namespace DunaGrid.rows
                     rs = CellRenderState.Normal;
                 }
 
-                c.renderCellBackground(g);
-                c.renderCell(g, this.cells_values[c.Name], rs);
+                this.renderCell(g, this.cells_values[c.Name], rs, c);
                 g.Graphics.TranslateTransform(c.Width, 0);
             }
 
             g.Graphics.Restore(gs);
+        }
+
+        protected virtual void renderCell(GraphicsContext g, object value, CellRenderState rs, IColumn c)
+        {
+            c.renderCellBackground(g);
+            c.renderCell(g, value, rs);
         }
 
         protected virtual void OnCellSelectionChange()

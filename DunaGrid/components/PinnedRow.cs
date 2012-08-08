@@ -41,7 +41,6 @@ namespace DunaGrid.components
         protected override void OnClick(EventArgs e)
         {
             this.Refresh();
-            Console.WriteLine("pocet sloupcu: {0}", this.Columns.Count);
             base.OnClick(e);
         }
 

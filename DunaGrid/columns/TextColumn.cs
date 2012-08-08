@@ -42,18 +42,21 @@ namespace DunaGrid.columns
         {
             base.renderCell(g, value, render_state);
 
-            string hodnota = value.ToString();
+            if (value != null)
+            {
+                string hodnota = value.ToString();
 
-            SizeF velikost = g.Graphics.MeasureString(hodnota, g.Font); //spocitam jakou velikost zabere vykreslena hodnota
+                SizeF velikost = g.Graphics.MeasureString(hodnota, g.Font); //spocitam jakou velikost zabere vykreslena hodnota
 
-            Font font;
+                Font font;
 
-            Brush color;
+                Brush color;
 
-            font = g.Font;
-            color = new SolidBrush(this.GetFontColor(render_state));
+                font = g.Font;
+                color = new SolidBrush(this.GetFontColor(render_state));
 
-            g.Graphics.DrawString(hodnota, font, color, new PointF(3, 3));
+                g.Graphics.DrawString(hodnota, font, color, new PointF(3, 3));
+            }
         }
 
         public override AbstractGridEditor GetEditControl()
