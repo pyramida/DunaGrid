@@ -230,30 +230,34 @@ namespace DunaGrid.components
 
             CellPosition pos = this.GetCell(this.PointToClient(MousePosition));
 
-            //this.Rows[pos.row.Index][pos.col.Name].
-            AbstractGridEditor ctr = pos.row.Edit(pos.col);
-            int y = 0;
-            List<IRow> visible_rows = this.getVisibleRows();
-            foreach (IRow r in visible_rows)
+            if (!pos.col.ReadOnly)
             {
-                if (r.Index == pos.row.Index)
+
+                //this.Rows[pos.row.Index][pos.col.Name].
+                AbstractGridEditor ctr = pos.row.Edit(pos.col);
+                int y = 0;
+                List<IRow> visible_rows = this.getVisibleRows();
+                foreach (IRow r in visible_rows)
                 {
-                    break;
+                    if (r.Index == pos.row.Index)
+                    {
+                        break;
+                    }
+                    y += r.Height + 1;
                 }
-                y += r.Height + 1;
+
+                int x = GetXColPosition(pos.col);
+
+                ctr.Location = new Point(x, y);
+
+                ctr.Validators = pos.col.Validators;
+
+                Controls.Add(ctr);
+                ctr.Focus();
+
+                ctr.LostFocus += new System.EventHandler(ctr_LostFocus);
+                ctr.EndEdit += new System.EventHandler(ctr_EndEdit);
             }
-
-            int x = GetXColPosition(pos.col);
-
-            ctr.Location = new Point(x,y);
-
-            ctr.Validators = pos.col.Validators;
-
-            Controls.Add(ctr);
-            ctr.Focus();
-
-            ctr.LostFocus += new System.EventHandler(ctr_LostFocus);
-            ctr.EndEdit += new System.EventHandler(ctr_EndEdit);
         }
 
         void ctr_EndEdit(object sender, EventArgs e)
