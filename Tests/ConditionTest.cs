@@ -78,8 +78,13 @@ namespace Tests
             grid_columns.Add(new TextColumn("Sloupec 2"));
             grid_columns.Add(new NumberColumn("Sloupec 3"));
 
-            Check(target, "Sloupec 1 == 100", grid_columns, Type.GetType("IColumn"), Type.GetType("int"), Operators.equal, "Sloupec 1", "");
-            Check(target, "100 == Sloupec 1", grid_columns, Type.GetType("int"), Type.GetType("IColumn"), Operators.equal, "", "Sloupec 1");
+            // sloupec 1 je string takze ocekavam jeho naparsovani jako retezec
+            Check(target, "Sloupec 1 == 100", grid_columns, Type.GetType("IColumn"), Type.GetType("System.String"), Operators.equal, "Sloupec 1", "");
+            Check(target, "100 == Sloupec 1", grid_columns, Type.GetType("System.String"), Type.GetType("IColumn"), Operators.equal, "", "Sloupec 1");
+
+            // sloupec 3 je ciselny takze ocekavam jeho naparsovani jako integer
+            Check(target, "Sloupec 3 == 100", grid_columns, Type.GetType("IColumn"), Type.GetType("System.Int32"), Operators.equal, "Sloupec 3", "");
+            Check(target, "100 == Sloupec 3", grid_columns, Type.GetType("System.Int32"), Type.GetType("IColumn"), Operators.equal, "", "Sloupec 3");
         }
 
         private static void CheckColumn(object o, string nazev, string podminka)
@@ -103,30 +108,32 @@ namespace Tests
             if (target.left_value is IColumn)
             {
                 CheckColumn(target.left_value, left_name, podminka);
-                return;
+            }
+            else
+            {
+                if (target.left_value.GetType() != left)
+                {
+                    Fail(podminka, "leva hodnota spatne rozpoznana");
+                }
             }
 
             if (target.right_value is IColumn)
             {
                 CheckColumn(target.right_value, right_name, podminka);
-                return;
             }
-
-            if (target.left_value.GetType() == left)
+            else
             {
-                Fail(podminka, "leva hodnota spatne rozpoznana");
-            }
-
-            if (target.right_value.GetType() == right)
-            {
-                Fail(podminka, "prava hodnota spatne rozpoznana");
+                if (target.right_value.GetType() != right)
+                {
+                    Fail(podminka, "prava hodnota spatne rozpoznana");
+                }
             }
 
         }
 
         private static void Fail(string podminka, string text)
         {
-            Assert.Fail(podminka + " => " + text);
+            Assert.Fail("\"" + podminka + "\" => " + text);
         }
     }
 }
