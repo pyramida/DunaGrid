@@ -130,24 +130,27 @@ namespace DunaGrid.components
 
             int y = 0;
             //TODO: zoptimalizovat
-            for (int row_index = 0; row_index < this.Rows.Count; row_index++)
+            if (this.Rows != null)
             {
-                if (seznam.ContainsKey(row_index))
+                for (int row_index = 0; row_index < this.Rows.Count; row_index++)
                 {
+                    if (seznam.ContainsKey(row_index))
+                    {
+                        if (row_index >= this.start_index)
+                        {
+                            seznam[row_index].Visible = true;
+                            seznam[row_index].Location = new Point(GetXColPosition(this.Columns[seznam[row_index].ColumnName]) - this.MoveX, y);
+                        }
+                        else
+                        {
+                            seznam[row_index].Visible = false;
+                        }
+                    }
+
                     if (row_index >= this.start_index)
                     {
-                        seznam[row_index].Visible = true;
-                        seznam[row_index].Location = new Point(GetXColPosition(this.Columns[seznam[row_index].ColumnName]) - this.MoveX, y);
+                        y += this.Rows[row_index].Height + 1;
                     }
-                    else
-                    {
-                        seznam[row_index].Visible = false;
-                    }
-                }
-
-                if (row_index >= this.start_index)
-                {
-                    y += this.Rows[row_index].Height + 1;
                 }
             }
 

@@ -49,6 +49,7 @@
     <Compile Include="columns\ColumnContext.cs" />
     <Compile Include="columns\ColumnTypeDelegator.cs" />
     <Compile Include="columns\NumberColumn.cs" />
+    <Compile Include="columns\TextBasedColumn.cs" />
     <Compile Include="columns\TextColumn.cs" />
     <Compile Include="columns\validators\IValidator.cs" />
     <Compile Include="columns\validators\NotNullValidator.cs" />
@@ -113,6 +114,12 @@
       <DependentUpon>AbstractGridEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="components\editors\IEditorControl.cs" />
+    <Compile Include="components\editors\IntegerEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="components\editors\IntegerEditor.Designer.cs">
+      <DependentUpon>IntegerEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="components\editors\TextBoxEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -190,6 +197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="components\DunaHScrollBar.resx">
       <DependentUpon>DunaHScrollBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="components\editors\IntegerEditor.resx">
+      <DependentUpon>IntegerEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="components\editors\TextBoxEditor.resx">
       <DependentUpon>TextBoxEditor.cs</DependentUpon>

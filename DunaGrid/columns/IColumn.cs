@@ -24,6 +24,7 @@ namespace DunaGrid.columns
         int DataSourceColumnIndex { set; get; } //cislo sloupce v datovem zdroji (od nuly)
         bool Elastic { set; get; }
         bool Pinned { set; get; }
+        Padding Padding { set; get; }
         ValidatorCollection Validators { get; }
 
         void renderHead(GraphicsContext g, ColumnContext context);

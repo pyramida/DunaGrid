@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DunaGrid.components.editors;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace DunaGrid.columns
 {
-    public class NumberColumn : TextColumn
+    public class NumberColumn : TextBasedColumn
     {
         /// <summary>
         /// prazdny konstruktor
         /// </summary>
         public NumberColumn()
         {
-
+            this.string_format.Alignment = StringAlignment.Far;
         }
 
         /// <summary>
@@ -33,6 +36,11 @@ namespace DunaGrid.columns
         {
             this.column_name = name;
             this.parent = parent;
+        }
+
+        public override AbstractGridEditor GetEditControl()
+        {
+            return new IntegerEditor();
         }
     }
 }

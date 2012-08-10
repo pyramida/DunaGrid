@@ -86,6 +86,12 @@ namespace DunaGrid.columns
             }
         }
 
+        public System.Windows.Forms.Padding Padding
+        {
+            get;
+            set;
+        }
+
         public int DataSourceColumnIndex
         {
             get
@@ -247,7 +253,7 @@ namespace DunaGrid.columns
         }
 
 
-        public validators.ValidatorCollection Validators
+        public virtual validators.ValidatorCollection Validators
         {
             get { return this.validators; }
         }

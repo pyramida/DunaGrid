@@ -20,6 +20,7 @@ namespace DunaGrid.components
             InitializeComponent();
             this.Position = GridPosition.Top;
             this.AutoSizeMode = GridSizeMode.FullLenght;
+            this.DoubleBuffered = true;
         }
 
         public override List<rows.IRow> getVisibleRows()

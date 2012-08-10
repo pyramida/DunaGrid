@@ -422,6 +422,8 @@ namespace DunaGrid
             {
                 this.columns = this.actual_datareader.GetColumns();
 
+                this.SetPaddingToColumns();
+
                 this.columns[3].Pinned = true; //testovaci radek
 
                 this.dunaGridHeaderRow1.Columns = this.columns;
@@ -438,6 +440,14 @@ namespace DunaGrid
                 }
             }
             
+        }
+
+        private void SetPaddingToColumns()
+        {
+            foreach (IColumn c in this.Columns)
+            {
+                c.Padding = new Padding(3); // TODO: brat z nastaveni gridu
+            }
         }
 
         protected void setScrollBars()

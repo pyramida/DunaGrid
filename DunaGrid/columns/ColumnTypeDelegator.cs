@@ -12,7 +12,14 @@ namespace DunaGrid.columns
     {
         public static IColumn getByType(Type t)
         {
-            return new TextColumn(); //jelikoz nemame jiny typ sloupce, tak sem to zatim zbytecne nekomplikoval
+            if (t == Type.GetType("System.Int32"))
+            {
+                return new NumberColumn();
+            }
+            else
+            {
+                return new TextColumn(); //jelikoz nemame jiny typ sloupce, tak sem to zatim zbytecne nekomplikoval
+            }
         }
     }
 }
