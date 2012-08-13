@@ -140,6 +140,7 @@
     </Compile>
     <Compile Include="components\XScrollable.cs" />
     <Compile Include="Condition.cs" />
+    <Compile Include="Backup of Condition.cs" />
     <Compile Include="formatters\ConditionFormatter.cs" />
     <Compile Include="formatters\FormatterCollection.cs" />
     <Compile Include="ICondition.cs" />

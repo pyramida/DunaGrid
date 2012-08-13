@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using DunaGrid.columns;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -77,14 +78,17 @@ namespace Tests
             grid_columns.Add(new TextColumn("Sloupec 1"));
             grid_columns.Add(new TextColumn("Sloupec 2"));
             grid_columns.Add(new NumberColumn("Sloupec 3"));
+            grid_columns.Add(new NumberColumn("cislo"));
 
             // sloupec 1 je string takze ocekavam jeho naparsovani jako retezec
-            Check(target, "Sloupec 1 == 100", grid_columns, Type.GetType("IColumn"), Type.GetType("System.String"), Operators.equal, "Sloupec 1", "");
-            Check(target, "100 == Sloupec 1", grid_columns, Type.GetType("System.String"), Type.GetType("IColumn"), Operators.equal, "", "Sloupec 1");
-
-            // sloupec 3 je ciselny takze ocekavam jeho naparsovani jako integer
-            Check(target, "Sloupec 3 == 100", grid_columns, Type.GetType("IColumn"), Type.GetType("System.Int32"), Operators.equal, "Sloupec 3", "");
-            Check(target, "100 == Sloupec 3", grid_columns, Type.GetType("System.Int32"), Type.GetType("IColumn"), Operators.equal, "", "Sloupec 3");
+            Check(target, "[Sloupec 1] = 100", grid_columns, grid_columns[0], "100", Operators.equal);
+            Check(target, "cislo > 56", grid_columns, grid_columns[3], "56", Operators.greater_than);
+            Check(target, "cislo >= '56'", grid_columns, grid_columns[3], "56", Operators.greater_than | Operators.equal);
+            Check(target, "[Sloupec 2] LIKE '160%'", grid_columns, grid_columns[1], "160%", Operators.like);
+            Check(target, "[Sloupec 2] like '160%'", grid_columns, grid_columns[1], "160%", Operators.like);
+            Check(target, "Sloupec 2 like '160%'", grid_columns, grid_columns[1], "160%", Operators.like);
+            Check(target, "Sloupec 2 like 'neco = pokus'", grid_columns, grid_columns[1], "neco = pokus", Operators.like);
+            Check(target, "Sloupec 1 REGeXp 'neco.*'", grid_columns, grid_columns[0], "neco.*", Operators.regexp);
         }
 
         private static void CheckColumn(object o, string nazev, string podminka)
@@ -96,37 +100,23 @@ namespace Tests
             }
         }
 
-        private static void Check(Condition_Accessor target, string podminka, ColumnCollection cols, Type left, Type right, Operators op, string left_name, string right_name)
+        private static void Check(Condition_Accessor target, string podminka, ColumnCollection cols, object left, object right, Operators op)
         {
-            target.parseString(podminka, cols);
+            target.ParseString(podminka, cols);
 
             if (target.compare_operator != op)
             {
                 Fail(podminka, "spatne urceny operator");
             }
 
-            if (target.left_value is IColumn)
+            if (!left.Equals(target.left_value))
             {
-                CheckColumn(target.left_value, left_name, podminka);
-            }
-            else
-            {
-                if (target.left_value.GetType() != left)
-                {
-                    Fail(podminka, "leva hodnota spatne rozpoznana");
-                }
+                Fail(podminka, "leva strana spatne urcena");
             }
 
-            if (target.right_value is IColumn)
+            if (!right.Equals(target.right_value))
             {
-                CheckColumn(target.right_value, right_name, podminka);
-            }
-            else
-            {
-                if (target.right_value.GetType() != right)
-                {
-                    Fail(podminka, "prava hodnota spatne rozpoznana");
-                }
+                Fail(podminka, "prava strana spatne urcena");
             }
 
         }
@@ -134,6 +124,37 @@ namespace Tests
         private static void Fail(string podminka, string text)
         {
             Assert.Fail("\"" + podminka + "\" => " + text);
+        }
+
+        /// <summary>
+        ///A test for ReplaceStrings
+        ///</summary>
+        [TestMethod()]
+        [DeploymentItem("DunaGrid.dll")]
+        public void ReplaceStringsTest()
+        {
+            Condition_Accessor target = new Condition_Accessor();
+            string s = "neco = 'test text' 'trololoooo' like 'neco'";
+            Dictionary<string, string> dictionary = null;
+            Dictionary<string, string> dictionaryExpected = new Dictionary<string, string>();
+            dictionaryExpected.Add("$0$", "test text");
+            dictionaryExpected.Add("$1$", "trololoooo");
+            dictionaryExpected.Add("$2$", "neco");
+
+            string expected = "neco = $0$ $1$ like $2$";
+            string actual;
+
+            actual = target.ReplaceStrings(s, out dictionary);
+
+            foreach (KeyValuePair<string, string> pair in dictionaryExpected)
+            {
+                if (pair.Value != dictionary[pair.Key])
+                {
+                    Assert.Fail("spatny slovnik stringu");
+                }
+            }
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

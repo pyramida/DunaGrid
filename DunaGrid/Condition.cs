@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DunaGrid.columns;
 using DunaGrid.rows;
+using System.Text.RegularExpressions;
 
 namespace DunaGrid
 {
@@ -30,19 +31,6 @@ namespace DunaGrid
         private object right_value;
 
         /// <summary>
-        /// standardni konstruktor
-        /// </summary>
-        /// <param name="col">sloupec, ke kteremu se podminka vztahuje</param>
-        /// <param name="compare_operator">rovnostni operator</param>
-        /// <param name="value">jedna strana rovnice</param>
-        public Condition(IColumn col, Operators compare_operator, object value)
-        {
-            this.left_value = col;
-            this.compare_operator = compare_operator;
-            this.right_value = value;
-        }
-
-        /// <summary>
         /// Zpracuje retezec na podminku
         /// </summary>
         /// <param name="string_condition">text podminky</param>
@@ -53,37 +41,55 @@ namespace DunaGrid
             this.right_value = null;
             this.compare_operator = Operators.not_equal;
 
-            this.parseString(string_condition, columns);
+            this.ParseString(string_condition, columns);
         }
 
         /// <summary>
         /// rozparsuje podminku ve stringu
         /// nepodporuje slozene podminky!
         /// </summary>
-        /// <param name="s">text, ktery chci parsovat</param>
+        /// <param name="condition_string">text, ktery chci parsovat</param>
         /// <param name="grid_columns">kolekce sloupcu</param>
-        private void parseString(string s, ColumnCollection grid_columns)
+        private void ParseString(string condition_string, ColumnCollection grid_columns)
         {
+            this.left_value = null;
+            this.right_value = null;
+
             //slovnik urcujici, ktery znak znamena jaky operator
             Dictionary<string, Operators> operatory = new Dictionary<string, Operators>();
-            operatory.Add("==", Operators.equal);
-            operatory.Add("!=", Operators.not_equal);
+            operatory.Add("<>", Operators.not_equal);
             operatory.Add(">=", Operators.greater_than | Operators.equal);
             operatory.Add(">", Operators.greater_than);
             operatory.Add("<=", Operators.lower_than | Operators.equal);
             operatory.Add("<", Operators.lower_than);
+            operatory.Add("=", Operators.equal);
             operatory.Add(" LIKE ", Operators.like); //tady jsou mezery nutnosti
             operatory.Add(" REGEXP ", Operators.regexp); //tady taky
 
-            string[] rozrezany = s.Split(operatory.Keys.ToArray<string>(), StringSplitOptions.RemoveEmptyEntries);
+            Dictionary<string, string> strings = new Dictionary<string, string>();
+
+            //odstrani stringy aby se nemotali v parsovani a nahradi je referencnim stringem
+            condition_string = ReplaceStrings(condition_string, out strings);
+
+
+            //zmena operatoru na vsechny znaky velke
+            condition_string = Regex.Replace(condition_string, "([Ll][Ii][Kk][Ee])", "LIKE");
+            condition_string = Regex.Replace(condition_string, "([Rr][Ee][Gg][Ee][Xx][Pp])", "REGEXP");
+
+            string[] rozrezany = condition_string.Split(operatory.Keys.ToArray<string>(), StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < rozrezany.Length; i++)
+            {
+                rozrezany[i] = rozrezany[i].Trim();
+            }
 
             if (rozrezany.Length == 2)
             {
-                Operators op=0;
+                Operators op = 0;
                 //mame levou a pravou stranu rovnice, urcime operator
                 foreach (KeyValuePair<string, Operators> pair in operatory)
                 {
-                    if (s.Contains(pair.Key))
+                    if (condition_string.Contains(pair.Key.Trim()))
                     {
                         op = pair.Value;
                         break;
@@ -92,55 +98,97 @@ namespace DunaGrid
 
                 this.compare_operator = op; //nastavi operator
 
-                //nyni zparsuje jednotlive strany rovnice
-                this.left_value = this.parseType(rozrezany[0], grid_columns);
-
-                this.right_value = this.parseType(rozrezany[1], grid_columns);
-            }
-            else
-            {
-                throw new FormatException("retezec podminky neodpovida formatu");
+                this.left_value = this.ReplaceRefs(this.ParseColumn(rozrezany[0], grid_columns), strings);
+                this.right_value = this.ReplaceRefs(this.ParseColumn(rozrezany[1], grid_columns), strings);                
             }
         }
 
-        private object parseType(string text, ColumnCollection cols)
+        private object ReplaceRefs(object o, Dictionary<string, string> strings)
         {
-            text = text.Trim(); //orizneme potencialni mezery atd.
-
-            if (text[0] == '\'' && text[text.Length - 1] == '\'')
+            if (o is string)
             {
-                //je to retezec
-                return text.Substring(1, text.Length - 2);
+                string s = o.ToString();
+                foreach (KeyValuePair<string, string> pair in strings)
+                {
+                    s = s.Replace(pair.Key, pair.Value);
+                }
+
+                o = s;
+            }
+            return o;
+        }
+
+        private object ParseColumn(string t, ColumnCollection grid_columns)
+        {
+            string col_name;
+            if (this.IsColumn(t, grid_columns, out col_name))
+            {
+                return grid_columns[col_name];
             }
             else
             {
-                //ted je to bud sloupec nebo cislo
-                double Num;
-                System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CreateSpecificCulture("en");
-                bool isNum = double.TryParse(text, System.Globalization.NumberStyles.AllowDecimalPoint, culture, out Num);
-
-                if (isNum)
+                if (t[0] == '\'' && t[t.Length - 1] == '\'')
                 {
-                    //jde o cislo
-                    return Num;
+                    t = CutFirstAndLastLetter(t);
+                }
+                return t;
+            }
+        }
+
+        private string ReplaceStrings(string s, out Dictionary<string, string> dictionary)
+        {
+            MatchCollection matches = Regex.Matches(s, @"'([^']*)'", RegexOptions.IgnoreCase);
+            dictionary = new Dictionary<string, string>();
+
+            int i = 0;
+            foreach (Match match in matches)
+            {
+                Group group = match.Groups[0];
+                string key = "$" + i + "$";
+                dictionary.Add(key, CutFirstAndLastLetter(group.Value));
+                s = s.Replace(group.Value, key);
+                i++;
+            }
+
+            return s;
+        }
+
+        private string CutFirstAndLastLetter(string s)
+        {
+            return s.Substring(1, s.Length - 2);
+        }
+
+        private bool IsColumn(string t, ColumnCollection grid_columns, out string column_name)
+        {
+            bool zavorky = false;
+
+            //sloupce s nazvem o vice slovech 
+            if (t[0] == '[' && t[t.Length - 1] == ']')
+            {
+                t = CutFirstAndLastLetter(t);
+                zavorky = true;
+            }
+
+            if (grid_columns.Contains(t))
+            {
+                column_name = t;
+                return true;
+            }
+            else
+            {
+                if (zavorky)
+                {
+                    throw new ConditionException("Neexistujici sloupec '"+t+"'");
                 }
                 else
                 {
-                    //mel by to byt nazev sloupce
-                    if (cols.Contains(text))
-                    {
-                        return cols[text];
-                    }
-                    else
-                    {
-                        //neplatny nazev sloupce
-                        throw new FormatException("neplatny nazev sloupce '" + text + "'");
-                    }
+                    column_name = null;
                 }
+                return false;
             }
         }
 
-        /// <summary>
+                /// <summary>
         /// vyhodnoti podminku a vrati vysledek
         /// </summary>
         public bool getResult(IRow radek)
@@ -159,7 +207,7 @@ namespace DunaGrid
                 switch (compare_operator)
                 {
                     case Operators.equal:
-                        if (left.Equals(right)) return true;       
+                        if (left.Equals(right)) return true;
                         break;
 
                     case Operators.not_equal:
@@ -208,6 +256,14 @@ namespace DunaGrid
         private bool IsComparable(object firts, object second)
         {
             return true;
+        }
+    }
+
+    public class ConditionException : Exception
+    {
+        public ConditionException(string msg) : base(msg)
+        {
+            
         }
     }
 }

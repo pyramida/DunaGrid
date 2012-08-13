@@ -48,7 +48,7 @@ namespace DunaGridFormTest
             dunaGrid1.DataSource = bs;
 
             DunaGrid.formatters.ConditionFormatter cf = new DunaGrid.formatters.ConditionFormatter();
-            cf.Condition = new DunaGrid.Condition(dunaGrid1.Columns[0], DunaGrid.Operators.equal, 35);
+            //cf.Condition = new DunaGrid.Condition(dunaGrid1.Columns[0], DunaGrid.Operators.equal, 35);
             cf.BackgroundColor = Color.Red;
 
             dunaGrid1.RowFormatters.Add(cf);
@@ -60,7 +60,7 @@ namespace DunaGridFormTest
 
             dunaGrid1.Columns[0].Width = 200;
             dunaGrid1.Columns[1].Width = 100;
-            dunaGrid1.Columns[2].ReadOnly = true;
+            dunaGrid1.Columns[1].ReadOnly = true;
             dunaGrid1.Columns[2].Width = 300;
             dunaGrid1.Columns[3].Width = 100;
             //dunaGrid1.Columns[3].Pinned = true;
