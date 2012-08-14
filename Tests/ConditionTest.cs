@@ -80,7 +80,8 @@ namespace Tests
             grid_columns.Add(new NumberColumn("Sloupec 3"));
             grid_columns.Add(new NumberColumn("cislo"));
 
-            // sloupec 1 je string takze ocekavam jeho naparsovani jako retezec
+            grid_columns.Add(new TextColumn("Sloupec like"));
+
             Check(target, "[Sloupec 1] = 100", grid_columns, grid_columns[0], "100", Operators.equal);
             Check(target, "cislo > 56", grid_columns, grid_columns[3], "56", Operators.greater_than);
             Check(target, "cislo >= '56'", grid_columns, grid_columns[3], "56", Operators.greater_than | Operators.equal);
@@ -89,6 +90,8 @@ namespace Tests
             Check(target, "Sloupec 2 like '160%'", grid_columns, grid_columns[1], "160%", Operators.like);
             Check(target, "Sloupec 2 like 'neco = pokus'", grid_columns, grid_columns[1], "neco = pokus", Operators.like);
             Check(target, "Sloupec 1 REGeXp 'neco.*'", grid_columns, grid_columns[0], "neco.*", Operators.regexp);
+
+            Check(target, "[Sloupec like] like '160%'", grid_columns, grid_columns[4], "160%", Operators.like);
         }
 
         private static void CheckColumn(object o, string nazev, string podminka)
@@ -134,14 +137,15 @@ namespace Tests
         public void ReplaceStringsTest()
         {
             Condition_Accessor target = new Condition_Accessor();
-            string s = "neco = 'test text' 'trololoooo' like 'neco'";
+            string s = "neco = 'test text' 'trololoooo' like 'neco' [pokus]";
             Dictionary<string, string> dictionary = null;
             Dictionary<string, string> dictionaryExpected = new Dictionary<string, string>();
             dictionaryExpected.Add("$0$", "test text");
             dictionaryExpected.Add("$1$", "trololoooo");
             dictionaryExpected.Add("$2$", "neco");
+            dictionaryExpected.Add("$3$", "pokus");
 
-            string expected = "neco = $0$ $1$ like $2$";
+            string expected = "neco = $0$ $1$ like $2$ $3$";
             string actual;
 
             actual = target.ReplaceStrings(s, out dictionary);

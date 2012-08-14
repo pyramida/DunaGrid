@@ -66,10 +66,10 @@ namespace DunaGrid
             operatory.Add(" LIKE ", Operators.like); //tady jsou mezery nutnosti
             operatory.Add(" REGEXP ", Operators.regexp); //tady taky
 
-            Dictionary<string, string> strings = new Dictionary<string, string>();
+            Dictionary<string, string> replacements = new Dictionary<string, string>();
 
             //odstrani stringy aby se nemotali v parsovani a nahradi je referencnim stringem
-            condition_string = ReplaceStrings(condition_string, out strings);
+            condition_string = ReplaceStrings(condition_string, out replacements);
 
 
             //zmena operatoru na vsechny znaky velke
@@ -98,29 +98,25 @@ namespace DunaGrid
 
                 this.compare_operator = op; //nastavi operator
 
-                this.left_value = this.ReplaceRefs(this.ParseColumn(rozrezany[0], grid_columns), strings);
-                this.right_value = this.ReplaceRefs(this.ParseColumn(rozrezany[1], grid_columns), strings);                
+                this.left_value = this.ParseColumn(rozrezany[0], grid_columns, replacements);
+                this.right_value = this.ParseColumn(rozrezany[1], grid_columns, replacements);
             }
         }
 
-        private object ReplaceRefs(object o, Dictionary<string, string> strings)
+        private string ReplaceRefs(string s, Dictionary<string, string> strings)
         {
-            if (o is string)
-            {
-                string s = o.ToString();
                 foreach (KeyValuePair<string, string> pair in strings)
                 {
                     s = s.Replace(pair.Key, pair.Value);
                 }
 
-                o = s;
-            }
-            return o;
+                return s;
         }
 
-        private object ParseColumn(string t, ColumnCollection grid_columns)
+        private object ParseColumn(string t, ColumnCollection grid_columns, Dictionary<string, string> replacements)
         {
             string col_name;
+            t = ReplaceRefs(t, replacements);
             if (this.IsColumn(t, grid_columns, out col_name))
             {
                 return grid_columns[col_name];
@@ -137,17 +133,23 @@ namespace DunaGrid
 
         private string ReplaceStrings(string s, out Dictionary<string, string> dictionary)
         {
-            MatchCollection matches = Regex.Matches(s, @"'([^']*)'", RegexOptions.IgnoreCase);
+            //MatchCollection matches = Regex.Matches(s, , RegexOptions.IgnoreCase);
+            string[] patterns = { @"'([^']*)'", @"\[([^']*)\]" };
             dictionary = new Dictionary<string, string>();
-
+            
             int i = 0;
-            foreach (Match match in matches)
+
+            foreach(string pattern in patterns)
             {
-                Group group = match.Groups[0];
-                string key = "$" + i + "$";
-                dictionary.Add(key, CutFirstAndLastLetter(group.Value));
-                s = s.Replace(group.Value, key);
-                i++;
+                MatchCollection matches = Regex.Matches(s, pattern, RegexOptions.IgnoreCase);
+                foreach (Match match in matches)
+                {
+                    Group group = match.Groups[0];
+                    string key = "$" + i + "$";
+                    dictionary.Add(key, CutFirstAndLastLetter(group.Value));
+                    s = s.Replace(group.Value, key);
+                    i++;
+                }
             }
 
             return s;
@@ -188,7 +190,7 @@ namespace DunaGrid
             }
         }
 
-                /// <summary>
+        /// <summary>
         /// vyhodnoti podminku a vrati vysledek
         /// </summary>
         public bool getResult(IRow radek)
