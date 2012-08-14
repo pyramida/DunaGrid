@@ -37,6 +37,12 @@ namespace DunaGrid.components.editors
             }
         }
 
+        public virtual Padding CellPadding
+        {
+            get;
+            set;
+        }
+
         public virtual int RowIndex
         {
             get;

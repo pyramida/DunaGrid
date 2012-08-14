@@ -18,6 +18,15 @@ namespace DunaGrid.components.editors
             textBox1.KeyDown += new KeyEventHandler(textBox1_KeyDown);
         }
 
+        public override Padding CellPadding
+        {
+            set
+            {
+                base.CellPadding = value;
+                SetTextBoxPosition();
+            }
+        }
+
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
             this.OnKeyDown(e);
@@ -53,11 +62,37 @@ namespace DunaGrid.components.editors
             if (this.valid_data)
             {
                 textBox1.BackColor = Color.White;
+                this.BackColor = Color.White;
             }
             else
             {
                 textBox1.BackColor = Color.Red;
+                this.BackColor = Color.Red;
             }
+        }
+
+        private void SetTextBoxPosition()
+        {
+            textBox1.Location = new Point(
+                    x: this.CellPadding.Left,
+                    y: this.CellPadding.Top
+                );
+
+            textBox1.Size = new Size(
+                    width: this.Width - this.CellPadding.Left - this.CellPadding.Right,
+                    height: this.Height - this.CellPadding.Top - this.CellPadding.Bottom
+                );
+        }
+
+        private void TextBoxEditor_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            SetTextBoxPosition();
+            base.OnResize(e);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace DunaGrid.components.editors
 
         string ColumnName { get; set; }
 
+        Padding CellPadding { get; set; }
+
         ValidatorCollection Validators { get; set; }
 
         void EndEditing();

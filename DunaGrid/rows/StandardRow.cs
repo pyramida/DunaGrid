@@ -233,6 +233,7 @@ namespace DunaGrid.rows
             ctr.Value = this[c.Name];
             ctr.RowIndex = this.Index;
             ctr.ColumnName = c.Name;
+            ctr.CellPadding = c.Padding;
 
             if (this.parent_collection.StartEditRow(this))
             {
