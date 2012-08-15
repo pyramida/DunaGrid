@@ -26,6 +26,22 @@ namespace DunaGrid.components
 
         public event EventHandler NeedResize;
 
+        protected bool border_bottom = false;
+
+        protected const int BORDER_SIZE = 3;
+
+        public bool BottomBorder
+        {
+            get
+            {
+                return border_bottom;
+            }
+            set
+            {
+                border_bottom = value;
+            }
+        }
+ 
         public GridPosition Position
         {
             get;
@@ -42,6 +58,18 @@ namespace DunaGrid.components
             {
                 posun_x = value;
                 this.Refresh();
+            }
+        }
+
+        protected int GetBorderSize()
+        {
+            if (this.BottomBorder)
+            {
+                return BORDER_SIZE;
+            }
+            else
+            {
+                return 0;
             }
         }
 
@@ -198,11 +226,11 @@ namespace DunaGrid.components
         {
             if (this.AutoSizeMode == GridSizeMode.FullLenght)
             {
-                base.SetBoundsCore(x, y, width, this.getHeight(), specified);
+                base.SetBoundsCore(x, y, width, this.getHeight() + 3, specified);
             }
             else
             {
-                base.SetBoundsCore(x, y, width, height, specified);
+                base.SetBoundsCore(x, y, width, height + 3, specified);
             }
         }
 

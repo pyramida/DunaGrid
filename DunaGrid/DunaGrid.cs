@@ -113,6 +113,7 @@ namespace DunaGrid
                     baseGridsContainer1.MainGrid[0].Rows = this.Rows;
                     baseGridsPinnedCols.MainGrid[0].Columns = this.Columns.getPinnedColumns();
                     baseGridsPinnedCols.MainGrid[0].Rows = this.Rows;
+                    baseGridsPinnedCols.RightBorder = true;
                 }
             }
         }
@@ -219,12 +220,12 @@ namespace DunaGrid
             baseGridsContainer1.Items.Add(nr);
             baseGridsPinnedCols.Items.Add(nr2);
 
-            components.FilterRow fr = new components.FilterRow();
+            /*components.FilterRow fr = new components.FilterRow();
             components.FilterRow fr2 = new components.FilterRow();
 
             baseGridsContainer1.Items.Add(fr);
 
-            baseGridsPinnedCols.Items.Add(fr2);
+            baseGridsPinnedCols.Items.Add(fr2);*/
 
             this.DoubleBuffered = true;
             this.ResizeRedraw = true;

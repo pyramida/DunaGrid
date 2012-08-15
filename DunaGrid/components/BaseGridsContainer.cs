@@ -22,6 +22,22 @@ namespace DunaGrid.components
 
         public event EventHandler NeedRefresh;
 
+        protected bool right_border = false;
+
+        private const int BORDER_WIDTH = 3;
+
+        public bool RightBorder
+        {
+            get
+            {
+                return this.right_border;
+            }
+            set
+            {
+                this.right_border = value;
+            }
+        }
+
         public int MoveX
         {
             get
@@ -134,6 +150,18 @@ namespace DunaGrid.components
             this.SetFillGrids(fill, ref top_height, ref bottom_height); 
         }
 
+        private int GetBorderWidth()
+        {
+            if (this.RightBorder)
+            {
+                return BORDER_WIDTH;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         private void SetFullGrids(List<AbstractGrid> grids, GridPosition pos, ref int top, ref int bottom)
         {
             grids.Sort();
@@ -157,7 +185,7 @@ namespace DunaGrid.components
                     g.Location = new Point(0, top);
                     top += g.Height;
                 }
-                g.Width = this.Width;
+                g.Width = this.Width - this.GetBorderWidth();
             }
         }
 
@@ -174,7 +202,7 @@ namespace DunaGrid.components
                     g.Location = new Point(0, top);
                     top += vyska;
                     g.Height = vyska;
-                    g.Width = this.Width;
+                    g.Width = this.Width - this.GetBorderWidth();
                 }
             }
         }
