@@ -238,27 +238,6 @@ namespace DunaGrid.components
             base.OnMouseMove(e);
         }
 
-        /// <summary>
-        /// URCENO NA SMAZANI
-        /// </summary>
-        /// <param name="mouse_position"></param>
-        /// <returns></returns>
-        protected bool IsInResizeArea(Point mouse_position)
-        {
-            if (this.EnableLeftResize && mouse_position.X < this.ResizeTolerance)
-            {
-                return true;
-            }
-            else if (this.EnableRightResize && mouse_position.X > this.Width - this.ResizeTolerance)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         protected override void OnMouseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)

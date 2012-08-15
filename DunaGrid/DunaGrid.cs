@@ -238,6 +238,7 @@ namespace DunaGrid
             nr2.Rows = rows;
 
             dunaGridHeaderRow1.NeedRefresh += new EventHandler(dunaGridHeaderRow1_NeedRefresh);
+            dunaGridRowSelectorsColumn1.NeedRefresh += new EventHandler(dunaGridHeaderRow1_NeedRefresh);
         }
 
         void dunaGridHeaderRow1_NeedRefresh(object sender, EventArgs e)
@@ -288,6 +289,7 @@ namespace DunaGrid
             this.dunaGridRowSelectorsColumn1.Rows = null;
             this.dunaGridRowSelectorsColumn1.Size = new System.Drawing.Size(27, 360);
             this.dunaGridRowSelectorsColumn1.TabIndex = 3;
+            
             // 
             // dunaGridHeaderRow1
             // 

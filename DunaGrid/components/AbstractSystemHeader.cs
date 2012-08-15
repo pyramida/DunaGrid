@@ -223,7 +223,14 @@ namespace DunaGrid.components
             {
                 this.visual_state = state.Normal;
                 Refresh();
-                this.Cursor = Cursors.VSplit;
+                if (this.Orientation == System.Windows.Forms.Orientation.Horizontal)
+                {
+                    this.Cursor = Cursors.VSplit;
+                }
+                else
+                {
+                    this.Cursor = Cursors.HSplit;
+                }
             }
 
             base.OnMouseMove(e);

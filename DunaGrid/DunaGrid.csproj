@@ -138,6 +138,7 @@
     <Compile Include="components\PinnedRow.Designer.cs">
       <DependentUpon>PinnedRow.cs</DependentUpon>
     </Compile>
+    <Compile Include="components\RowResizeEventArgs.cs" />
     <Compile Include="components\XScrollable.cs" />
     <Compile Include="Condition.cs" />
     <Compile Include="Backup of Condition.cs" />

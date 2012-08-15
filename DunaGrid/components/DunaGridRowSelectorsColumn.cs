@@ -14,6 +14,8 @@ namespace DunaGrid.components
     {
         private List<IRow> rows;
 
+        public event EventHandler NeedRefresh;
+
         public List<IRow> Rows 
         {
             get
@@ -62,6 +64,7 @@ namespace DunaGrid.components
                     sel.Location = new Point(0, y);
                     sel.Orientation = Orientation.Vertical;
                     sel.Width = this.Width;
+                    sel.RowResize += new DunaGridRowSelector.RowResizeEventHandler(sel_RowResize);
                     this.Controls.Add(sel);
                     if (i>0)
                     {
@@ -77,6 +80,20 @@ namespace DunaGrid.components
             }
 
             this.ResumeLayout();
+        }
+
+        protected virtual void OnNeedRefresh()
+        {
+            if (NeedRefresh != null)
+            {
+                NeedRefresh(this, EventArgs.Empty);
+            }
+        }
+
+        protected void sel_RowResize(object sender, RowResizeEventArgs e)
+        {
+            CreateControlsNew();
+            OnNeedRefresh();
         }
 
         protected void CreateControls()
